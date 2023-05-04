@@ -1,0 +1,14 @@
+{
+    "name": "AlwaysTrust",
+    "description": "Remove untrusted link confirmation.",
+    "authors": [
+        {
+            "name": "fres",
+            "id": "843448897737064448"
+        }
+    ],
+    "main": "src/index.ts",
+    "vendetta": {
+        "icon": "ic_link"
+    }
+}
