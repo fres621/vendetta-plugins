@@ -1,0 +1,14 @@
+{
+    "name": "ReplyAlert",
+    "description": "Makes replies always mention you.",
+    "authors": [
+        {
+            "name": "fres",
+            "id": "843448897737064448"
+        }
+    ],
+    "main": "src/index.ts",
+    "vendetta": {
+        "icon": "ic_mention_user"
+    }
+}
