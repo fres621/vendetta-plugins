@@ -3,7 +3,7 @@ import { before } from "@vendetta/patcher";
 import { findByStoreName } from "@vendetta/metro";
 
 const UserStore = findByStoreName("UserStore"),
-	selfId = UserStore.getCurrentUser();
+	selfId = UserStore.getCurrentUser().id;
 
 var el = ()=>{};
 
