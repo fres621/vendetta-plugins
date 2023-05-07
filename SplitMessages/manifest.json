@@ -1,1 +1,1 @@
-{"name":"SplitMessages","description":"Splits messages over the message length limit into multiple.","authors":[{"name":"fres","id":"843448897737064448"}],"main":"index.js","vendetta":{"icon":"ic-new-message"},"hash":"84edf735b233db2e346812db79b3069eed4a0c590399d477dc4a5a76caf6d556"}
+{"name":"SplitMessages","description":"Splits messages over the message length limit into multiple.","authors":[{"name":"fres","id":"843448897737064448"}],"main":"index.js","vendetta":{"icon":"ic-new-message"},"hash":"3c5d96a7b06c6421554a1e4f4adc82f6d0ea31d9f97f0cc95394927a1d1e8aaf"}
