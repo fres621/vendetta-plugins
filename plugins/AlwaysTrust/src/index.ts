@@ -1,14 +1,16 @@
+import { before } from "@vendetta/patcher";
 import { findByStoreName } from "@vendetta/metro";
 
-const store = findByStoreName("MaskedLinkStore");
-let oldfunc = ()=>{return false};
+const MaskedLink = findByStoreName("MaskedLinkStore");
+let patches = [];
 
 export default {
     onLoad: () => {
-        oldfunc = store.isTrustedDomain;
-        store.isTrustedDomain = ()=>{return true};
+        patches.push( before("isTrustedDomain", MaskedLink, ()=>{
+            return true;
+        }) );
     },
     onUnload: () => {
-        store.isTrustedDomain = oldfunc;
+        for (const unpatch of patches) unpatch();
     }
 };
