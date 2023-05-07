@@ -5,11 +5,11 @@ import { findByStoreName } from "@vendetta/metro";
 const UserStore = findByStoreName("UserStore"),
 	selfId = UserStore.getCurrentUser().id;
 
-var el = ()=>{};
+let patches = [];
 
     export default {
         onLoad: () => {
-            el = before(
+            patches.push(before(
                 "dispatch",
                 FluxDispatcher,
                 (args) => {
@@ -20,9 +20,9 @@ var el = ()=>{};
                     event.message.mentions.push({id: selfId})
                   };
                 }
-              );              
+              ));              
         },
         onUnload: () => {
-            el();
+          for (const unpatch of patches) unpatch()
         }
     };
