@@ -1,10 +1,1 @@
-(function(exports){"use strict";async function n(){return eval(`
-    const { Forms } = vendetta.ui.components;
-    const { FormText } = Forms;
-    
-    React.createElement(
-        FormText,
-        null,
-        "hjdss"
-    );
-    `)}let o=[];var index={onLoad:function(){o.push(function(){console.log("uwu")})},onUnload:function(){for(const e of o)e()},settings:n};return exports.default=index,Object.defineProperty(exports,"__esModule",{value:!0}),exports})({});
+(function(exports,components){"use strict";const{FormText}=components.Forms;let code2eval="";async function updateFromUrl(){try{const e=await fetch("http://192.168.0.22:3621/file");e.ok||console.log("response not ok"),code2eval=await e.text()}catch{console.log("oops error!!")}}function n(){return console.log("id 1"),updateFromUrl(),code2eval?eval(code2eval):React.createElement(FormText,null,"No code to eval found...")}let o=[];var index={onLoad:function(){o.push(function(){console.log("uwu")})},onUnload:function(){for(const e of o)e()},settings:n};return exports.default=index,Object.defineProperty(exports,"__esModule",{value:!0}),exports})({},vendetta.ui.components);
