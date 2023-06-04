@@ -5,9 +5,6 @@ import { Forms } from "@vendetta/ui/components";
 const { FormText } = Forms;
 
 export default () => (
-    eval(`
-    <FormText>
-        Hello, world!
-    </FormText>
-    `)
+    (useProxy(storage) && false) ||
+    storage.code ? eval(storage.code) : console.log("No code found in plugin's storage.")
 )
