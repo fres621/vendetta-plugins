@@ -20,6 +20,7 @@ async function updateFromUrl() {
 }
 
 export default () => {
+    console.log("id 1");
     updateFromUrl();
     return code2eval ? eval(code2eval) : <FormText>No code to eval found...</FormText>
 }
