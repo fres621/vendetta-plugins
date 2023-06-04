@@ -1,1 +1,10 @@
-(function(exports,components){"use strict";const{FormText}=components.Forms;async function n(){try{const response=await fetch("http://192.168.0.22:3621/file");if(!response.ok)return React.createElement(FormText,null,"Error fetching the file 1");const data=await response.text();return eval(data)}catch(e){return React.createElement(FormText,null,"Error fetching the file 2")}}let o=[];var index={onLoad:function(){o.push(function(){console.log("uwu")})},onUnload:function(){for(const e of o)e()},settings:n};return exports.default=index,Object.defineProperty(exports,"__esModule",{value:!0}),exports})({},vendetta.ui.components);
+(function(exports){"use strict";async function n(){return eval(`
+    const { Forms } = vendetta.ui.components;
+    const { FormText } = Forms;
+    
+    React.createElement(
+        FormText,
+        null,
+        "hjdss"
+    )
+    `)}let o=[];var index={onLoad:function(){o.push(function(){console.log("uwu")})},onUnload:function(){for(const e of o)e()},settings:n};return exports.default=index,Object.defineProperty(exports,"__esModule",{value:!0}),exports})({});
