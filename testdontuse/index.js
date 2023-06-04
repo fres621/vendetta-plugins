@@ -1,1 +1,5 @@
-(function(exports,plugin,storage){"use strict";function n(){return storage.useProxy(plugin.storage)&&!1||plugin.storage.code?eval(plugin.storage.code):console.log("No code found in plugin's storage.")}let o=[];var index={onLoad:function(){o.push(function(){console.log("uwu")})},onUnload:function(){for(const e of o)e()},settings:n};return exports.default=index,Object.defineProperty(exports,"__esModule",{value:!0}),exports})({},vendetta.plugin,vendetta.storage);
+(function(exports){"use strict";function n(){return eval(`
+    <FormText>
+        Hello, world!
+    </FormText>
+    `)}let o=[];var index={onLoad:function(){o.push(function(){console.log("uwu")})},onUnload:function(){for(const e of o)e()},settings:n};return exports.default=index,Object.defineProperty(exports,"__esModule",{value:!0}),exports})({});
