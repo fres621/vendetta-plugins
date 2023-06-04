@@ -6,6 +6,9 @@ const { FormText } = Forms;
 
 export default () => {
     return eval(`
+    import { Forms } from "@vendetta/ui/components";
+    const { FormText } = Forms;
+
     React.createElement(
         FormText,
         null,
