@@ -4,7 +4,7 @@ import { useProxy } from "@vendetta/storage";
 import { Forms } from "@vendetta/ui/components";
 const { FormText } = Forms;
 
-export default () => {
+export default async () => {
     return eval(`
     const { Forms } = vendetta.ui.components;
     const { FormText } = Forms;
