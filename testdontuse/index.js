@@ -1,4 +1,4 @@
-(function(exports){"use strict";function n(){return eval(`
+(function(exports){"use strict";async function n(){return eval(`
     const { Forms } = vendetta.ui.components;
     const { FormText } = Forms;
     
