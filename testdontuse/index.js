@@ -1,4 +1,7 @@
 (function(exports){"use strict";function n(){return eval(`
+    import { Forms } from "@vendetta/ui/components";
+    const { FormText } = Forms;
+
     React.createElement(
         FormText,
         null,
