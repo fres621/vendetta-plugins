@@ -4,10 +4,8 @@ import { useProxy } from "@vendetta/storage";
 import { Forms } from "@vendetta/ui/components";
 const { FormText } = Forms;
 
-export default () => (
-    eval(`
+export default () => {
     <FormText>
-        Hello, world!
+        AAAAAAAAAAA
     </FormText>
-    `)
-)
+}
