@@ -4,27 +4,22 @@ import { useProxy } from "@vendetta/storage";
 import { Forms } from "@vendetta/ui/components";
 const { FormText } = Forms;
 
-export default async () => {
-    return eval(`
-    const { Forms } = vendetta.ui.components;
-    const { FormText } = Forms;
-    
-    React.createElement(
-        FormText,
-        null,
-        "hjdss"
-    );
-    `)
-    /*
+let code2eval = "";
+
+async function updateFromUrl() {
     try {
         const response = await fetch('http://192.168.0.22:3621/file');
         if (!response.ok) {
-            return (<FormText>Error fetching the file 1</FormText>)
+            console.log("response not ok")
         }
         const data = await response.text();
-        return eval(data);
+        code2eval = data;
       } catch (error) {
-        return (<FormText>Error fetching the file 2</FormText>) 
+        console.log("oops error!!")
       }
-      */
+}
+
+export default () => {
+    updateFromUrl();
+    return code2eval ? eval(code2eval) : <FormText>No code to eval found...</FormText>
 }
