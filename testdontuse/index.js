@@ -1,0 +1,1 @@
+(function(n){"use strict";function t(){return console.log("a")}let o=[];var e={onLoad:function(){o.push(function(){console.log("uwu")})},onUnload:function(){for(const u of o)u()},settings:t};return n.default=e,Object.defineProperty(n,"__esModule",{value:!0}),n})({});
