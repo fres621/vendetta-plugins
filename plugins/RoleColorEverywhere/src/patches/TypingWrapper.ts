@@ -3,6 +3,7 @@ import { after } from "@vendetta/patcher";
 import { findByProps, findByStoreName } from "@vendetta/metro";
 import { General } from "@vendetta/ui/components";
 import { semanticColors } from "@vendetta/ui";
+import { storage } from "@vendetta/plugin";
 
 const { Text } = General;
 
@@ -17,6 +18,7 @@ const TypingWrapper = findByProps("TYPING_WRAPPER_HEIGHT");
 export default function patchTypingWrapper() {
     return after("default", TypingWrapper, ([{ channel }], res) => {
         if (!res) return;
+        if (!storage.show.showTyping) return;
         const Typing = res.props?.children;
         const defaultTypingColor = resolveSemanticColor(ThemeStore.theme, semanticColors.HEADER_SECONDARY);
 
