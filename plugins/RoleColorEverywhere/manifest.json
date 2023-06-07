@@ -1,0 +1,14 @@
+{
+    "name": "RoleColorEverywhere",
+    "description": "Displays the top role color in more places.",
+    "authors": [
+        {
+            "name": "fres",
+            "id": "843448897737064448"
+        }
+    ],
+    "main": "src/index.ts",
+    "vendetta": {
+        "icon": "ic_theme_24px"
+    }
+}
