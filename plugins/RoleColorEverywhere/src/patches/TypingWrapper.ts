@@ -18,7 +18,7 @@ const TypingWrapper = findByProps("TYPING_WRAPPER_HEIGHT");
 export default function patchTypingWrapper() {
     return after("default", TypingWrapper, ([{ channel }], res) => {
         if (!res) return;
-        if (!storage.show.showTyping) return;
+        if (storage.hideTyping) return;
         const Typing = res.props?.children;
         const defaultTypingColor = resolveSemanticColor(ThemeStore.theme, semanticColors.HEADER_SECONDARY);
 
