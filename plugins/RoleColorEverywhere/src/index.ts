@@ -11,8 +11,11 @@ export default {
         if (!storage.show) { // Set default config values
             useProxy(storage);
             storage.show = {showTyping: true}
+            console.log("CP inside")
         };
+        console.log("CP 1")
         patches.push(patchTypingWrapper());
+        console.log("CP 2")
     },
     onUnload: () => {
         for (const unpatch of patches) {
