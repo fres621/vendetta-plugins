@@ -1,5 +1,5 @@
 import { ReactNative } from "@vendetta/metro/common";
-import { FormSwitchRow, FormIcon } from "@vendetta/ui/components/Forms";
+import { FormSwitchRow, FormIcon, FormSection } from "@vendetta/ui/components/Forms";
 import { useProxy } from "@vendetta/storage";
 import { storage } from "@vendetta/plugin";
 import { getAssetIDByName } from "@vendetta/ui/assets";
