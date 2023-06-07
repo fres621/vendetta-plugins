@@ -1,5 +1,7 @@
 import { ReactNative } from "@vendetta/metro/common";
 import { FormSwitchRow, FormIcon } from "@vendetta/ui/components/Forms";
+import { useProxy } from "@vendetta/storage";
+import { storage } from "@vendetta/plugin";
 
 export default () => {
     useProxy(storage);
