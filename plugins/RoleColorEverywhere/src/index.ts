@@ -11,6 +11,8 @@ export default {
         if (!storage.show) { // Set default config values
             console.log("CP inside 1")
             useProxy(storage);
+            console.log("it's here");
+            console.log(storage);
             storage.show = {showTyping: true}
             console.log("CP inside 2")
         };
