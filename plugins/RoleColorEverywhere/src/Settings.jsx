@@ -2,6 +2,11 @@ import { ReactNative } from "@vendetta/metro/common";
 import { FormSwitchRow, FormIcon } from "@vendetta/ui/components/Forms";
 import { useProxy } from "@vendetta/storage";
 import { storage } from "@vendetta/plugin";
+import { getAssetIDByName } from "@vendetta/ui/assets";
+
+const Icons = { 
+    Typing: getAssetIDByName('ic_messages')
+  };
 
 export default () => {
     useProxy(storage);
