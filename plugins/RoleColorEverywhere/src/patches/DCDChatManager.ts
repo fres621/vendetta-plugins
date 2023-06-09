@@ -17,6 +17,7 @@ export default function patchDCDChatManager() {
 
             // Get current channel — https://discord.com/channels/1015931589865246730/1015931590741872712/1084205010486820977
             let channel = ChatInputRef.refs[0]?.current?.props?.channel;
+            if (!channel) return;
             if (!channel.guild_id) return;
 
             // Iterate through components of the message content
@@ -27,7 +28,7 @@ export default function patchDCDChatManager() {
               let member = GuildMemberStore.getMember(channel.guild_id, component.userId);
               const hexc = member?.colorString;
               if (!hexc) return;                          // Stop here if the user doesn't have a custom role color
-              const dec = ReactNative.processColor(hexc); // Get the decimal value for the role color
+              const dec = parseInt(hexc.slice(1), 16);    // Get the decimal value for the role color
               row.message.content[index] = {
                 ...component, 
                 roleColor: dec, 
