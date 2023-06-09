@@ -10,29 +10,6 @@ const { meta: { resolveSemanticColor } } = findByProps("colors", "meta");
 const GuildMemberStore = findByStoreName("GuildMemberStore");
 const ChatInputRef = findByProps("insertText");
 
-// cMention generates an object for a content component, I use the one used in Discord join messages that allows displaying coloured text that opens a member profile on press.
-function cMention(text, userId, channelId, hexColor) {
-    console.log(text, userId, channelId, hexColor);
-    return {
-      content: [{
-        type: 'text',
-        content: text
-      }],
-      target: 'usernameOnClick',
-      context: {
-        username: 1,
-        usernameOnClick: {
-          action: 'bindUserMenu',
-          userId: userId,
-          linkColor: ReactNative.processColor(hexColor),
-          messageChannelId: channelId
-        },
-        medium: true
-      },
-      type: 'link'
-    }
-  };
-
 export default function patchDCDChatManager() {
     return before("updateRows", DCDChatManager, (r)=>{
         if (storage.noMention) return;
@@ -44,13 +21,23 @@ export default function patchDCDChatManager() {
 
             // Get current channel — https://discord.com/channels/1015931589865246730/1015931590741872712/1084205010486820977
             let channel = ChatInputRef.refs[0]?.current?.props?.channel;
+            if (!channel.guild_id) return;
 
             // Iterate through components of the message content
             row.message.content.forEach((component, index) => {
-                if (component.type != 'mention') return;
-                let member = GuildMemberStore.getMember(channel.guild_id, component.userId);
-                const color = (member?.colorString || defaultMentionColor);
-                row.message.content[index] = cMention(component.content[0].content, component.userId, component.channelId, color);
+              if (component.type != 'mention') return;  // If the component is a mention
+              if (!component.userId) return;            // If it's an User mention (exclude roles)
+
+              let member = GuildMemberStore.getMember(channel.guild_id, component.userId);
+              const hexc = member?.colorString;
+              if (!hexc) return;                          // Stop here if the user doesn't have a custom role color
+              const dec = ReactNative.processColor(hexc); // Get the decimal value for the role color
+              row.message.content[index] = {
+                ...component, 
+                roleColor: dec, 
+                color: dec, 
+                colorString: hexc
+              };
             });
         });
 
