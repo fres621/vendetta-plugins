@@ -5,7 +5,8 @@ import { storage } from "@vendetta/plugin";
 import { getAssetIDByName } from "@vendetta/ui/assets";
 
 const Icons = { 
-    Typing: getAssetIDByName('ic_messages')
+    Typing: getAssetIDByName('ic_messages'),
+    Mention: getAssetIDByName('ic_mention_user')
   };
 
 export default () => {
@@ -22,7 +23,7 @@ export default () => {
                     <HelpMessage messageType={0}>Enabling show in mentions will remove the background color from mentions due to Discord limitations.</HelpMessage>
                 </View>
                 <FormSwitchRow label="Show in mentions" subLabel="Display the top role color in mentions in the chat." 
-                leading={<FormIcon source={Icons.Typing} />} value={!storage.noMention} onValueChange={(v) => storage.noMention = !v} >
+                leading={<FormIcon source={Icons.Mention} />} value={!storage.noMention} onValueChange={(v) => storage.noMention = !v} >
                 </FormSwitchRow>
             </FormSection>
         </ReactNative.ScrollView>
