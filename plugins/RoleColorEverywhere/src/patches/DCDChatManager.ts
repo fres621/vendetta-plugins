@@ -1,19 +1,15 @@
 import { ReactNative } from '@vendetta/metro/common';
 import { before } from "@vendetta/patcher";
 import { findByProps, findByStoreName } from "@vendetta/metro";
-import { semanticColors } from "@vendetta/ui";
 import { storage } from "@vendetta/plugin";
 
 const { DCDChatManager } = ReactNative.NativeModules;
-const ThemeStore = findByStoreName("ThemeStore");
-const { meta: { resolveSemanticColor } } = findByProps("colors", "meta");
 const GuildMemberStore = findByStoreName("GuildMemberStore");
 const ChatInputRef = findByProps("insertText");
 
 export default function patchDCDChatManager() {
     return before("updateRows", DCDChatManager, (r)=>{
         if (storage.noMention) return;
-        const defaultMentionColor = resolveSemanticColor(ThemeStore.theme, semanticColors.MENTION_FOREGROUND);
         let rows = JSON.parse(r[1]);
         rows.forEach(row => {
             if (row.type != 1) return;
