@@ -17,6 +17,13 @@ export default () => {
                 <FormSwitchRow label="Show in typing" subLabel="Display the top role color in the typing bar." 
                 leading={<FormIcon source={Icons.Typing} />} value={!storage.hideTyping} onValueChange={(v) => storage.hideTyping = !v} >
                 </FormSwitchRow>
+
+                <View style={{ marginHorizontal: 15}}>
+                    <HelpMessage messageType={0}>Enabling show in mentions will remove the background color from mentions due to Discord limitations.</HelpMessage>
+                </View>
+                <FormSwitchRow label="Show in mentions" subLabel="Display the top role color in mentions in the chat." 
+                leading={<FormIcon source={Icons.Typing} />} value={!storage.noMention} onValueChange={(v) => storage.noMention = !v} >
+                </FormSwitchRow>
             </FormSection>
         </ReactNative.ScrollView>
     );
