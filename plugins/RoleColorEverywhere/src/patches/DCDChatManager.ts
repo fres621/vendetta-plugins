@@ -1,11 +1,12 @@
 import { ReactNative } from '@vendetta/metro/common';
 import { before } from "@vendetta/patcher";
-import { findByProps, findByStoreName } from "@vendetta/metro";
+import { findByStoreName } from "@vendetta/metro";
 import { storage } from "@vendetta/plugin";
 
 const { DCDChatManager } = ReactNative.NativeModules;
 const GuildMemberStore = findByStoreName("GuildMemberStore");
-const ChatInputRef = findByProps("insertText");
+const SelectedChannelStore = findByStoreName("SelectedChannelStore");
+const ChannelStore = findByStoreName("ChannelStore");
 
 // Function to easily do stuff with components including getting to formatted text
 function patchComponents(component, func) {
@@ -25,9 +26,11 @@ export default function patchDCDChatManager() {
             if (row.type != 1) return;
             if (!row.message?.content) return;
 
-            // Get current channel — https://discord.com/channels/1015931589865246730/1015931590741872712/1084205010486820977
-            let channel = ChatInputRef.refs[0]?.current?.props?.channel;
-            if (!channel) return;
+            // Get current channel ID — https://discord.com/channels/1015931589865246730/1094699841239650334/1106211737734238238
+            const channelId = SelectedChannelStore.getChannelId()
+            if (!channelId) return;
+            // Get channel object from ID — https://discord.com/channels/1015931589865246730/1062531774187573308/1085578628206694440
+            const channel = ChannelStore.getChannel(channelId);
             if (!channel.guild_id) return;
 
             // Function that will be ran in every component of the message content
