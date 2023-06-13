@@ -50,7 +50,7 @@ export default function patchDCDChatManager() {
               };
             };
             patchComponents({content: row.message.content}, mentionPatch);
-            if (row.message.referencedMessage) patchComponents({content: row.message.referencedMessage.message.content}, mentionPatch);
+            if (row.message.referencedMessage?.message?.content) patchComponents({content: row.message.referencedMessage.message.content}, mentionPatch);
         });
 
         r[1] = JSON.stringify(rows);
