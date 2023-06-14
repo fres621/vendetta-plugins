@@ -40,6 +40,7 @@ function interpolateColor(color1, color2, percentage) {
 
 export default function patchDCDChatManager() {
     return before("updateRows", DCDChatManager, (r)=>{
+      if ((!storage.chatInterpolation || storage.chatInterpolation <= 0) && storage.noMention) return;
         let rows = JSON.parse(r[1]);
         rows.forEach(row => {
             if (row.type != 1) return;

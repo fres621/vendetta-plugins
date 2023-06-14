@@ -15,7 +15,8 @@ const { meta: { resolveSemanticColor } } = findByProps("colors", "meta");
 const Icons = { 
     Typing: getAssetIDByName('ic_messages'),
     Mention: getAssetIDByName('ic_mention_user'),
-    Text: getAssetIDByName('ic_add_text')
+    Text: getAssetIDByName('ic_add_text'),
+    Voice: getAssetIDByName('ic_voice_channel_24px')
 };
 
 const Colors = {
@@ -50,11 +51,15 @@ export default () => {
                 </FormSwitchRow>
 
                 <FormSwitchRow label="Show in chat text" subLabel="Display the top role color in the chat text... Why would you want this?" 
-                leading={<FormIcon source={Icons.Typing} />} value={storage.chatInterpolation>0} onValueChange={(v) => {storage.chatInterpolation = (v ? 100 : 0)}} >
+                leading={<FormIcon source={Icons.Text} />} value={storage.chatInterpolation>0} onValueChange={(v) => {storage.chatInterpolation = (v ? 100 : 0)}} >
                 </FormSwitchRow>
 
                 <Text style={{marginLeft: '5%', color: interpolateColor(Colors.text, "#ff0000", storage.chatInterpolation/100), fontFamily: constants.Fonts.DISPLAY_MEDIUM, fontSize: 16, marginBottom: 5, marginTop: -5}}>Color interpolation (for chat text):</Text>
-                <Swidew onSlide={(v)=>{storage.chatInterpolation = v}} value={storage.chatInterpolation} />
+                <Swidew onSlide={(v)=>{storage.chatInterpolation = v}} value={storage.chatInterpolation} style={{marginBottom: 0}} />
+
+                <FormSwitchRow label="Show in voice channel member list" subLabel="Display the top role color in the voice channel member list." 
+                leading={<FormIcon source={Icons.Voice} />} value={!storage.noVoice} onValueChange={(v) => {storage.noVoice = !v}} >
+                </FormSwitchRow>
             </FormSection>
         </ReactNative.ScrollView>
     );
