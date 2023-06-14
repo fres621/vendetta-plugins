@@ -1,15 +1,23 @@
 import { ReactNative, constants } from "@vendetta/metro/common";
+import { findByProps, findByStoreName } from "@vendetta/metro";
 import { FormSwitchRow, FormIcon, FormSection } from "@vendetta/ui/components/Forms";
 import { useProxy } from "@vendetta/storage";
 import { storage } from "@vendetta/plugin";
 import { getAssetIDByName } from "@vendetta/ui/assets";
 import Swidew from './ui/Swidew';
 
+const ThemeStore = findByStoreName("ThemeStore");
+const { meta: { resolveSemanticColor } } = findByProps("colors", "meta");
+
 const Icons = { 
     Typing: getAssetIDByName('ic_messages'),
     Mention: getAssetIDByName('ic_mention_user'),
     Text: getAssetIDByName('ic_add_text')
-  };
+};
+
+const Colors = {
+    text: resolveSemanticColor(ThemeStore.theme, semanticColors.TEXT_NORMAL)
+};
 
 function interpolateColor(color1, color2, percentage) {
     const hexToRgb = hex => hex.match(/\w\w/g).map(x => parseInt(x, 16));
