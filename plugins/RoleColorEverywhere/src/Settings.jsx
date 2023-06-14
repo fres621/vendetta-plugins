@@ -50,7 +50,7 @@ export default () => {
                 </FormSwitchRow>
 
                 <Text style={{marginLeft: '5%', color: interpolateColor(Colors.text, "#ff0000", uwu/100), fontFamily: constants.Fonts.DISPLAY_MEDIUM, fontSize: 16, marginBottom: 5, marginTop: -5}}>Color interpolation (for chat text):</Text>
-                <Swidew onSlide={onSlide} value={storage.chatInterpolation} />
+                <Swidew onSlide={(v)=>{storage.chatInterpolation = v}} value={storage.chatInterpolation} />
             </FormSection>
         </ReactNative.ScrollView>
     );
