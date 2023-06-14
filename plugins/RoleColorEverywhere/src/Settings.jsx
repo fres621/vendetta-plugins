@@ -34,7 +34,7 @@ function interpolateColor(color1, color2, percentage) {
 
 export default () => {
     useProxy(storage);
-    console.log("d2");
+    storage.chatInterpolation ??= 0;
     return (
         <ReactNative.ScrollView style={{flex: 1}}>
             <FormSection title="Where to show the top role color?" titleStyleType="no_border" >
