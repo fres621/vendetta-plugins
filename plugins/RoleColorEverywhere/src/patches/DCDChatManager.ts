@@ -70,7 +70,7 @@ export default function patchDCDChatManager() {
             };
 
             const defaultTextColor = resolveSemanticColor(ThemeStore.theme, semanticColors.TEXT_NORMAL);
-            console.log(storage.chatInterpolation/100);
+
             const colorPatch = (component, [authorId])=>{
               if (component.type != 'text') return;
               const authorMember = GuildMemberStore.getMember(row.message.guildId, authorId);
@@ -83,7 +83,7 @@ export default function patchDCDChatManager() {
                   usernameOnClick: {
                     action: '0',
                     userId: '0',
-                    linkColor: ReactNative.processColor(interpolateColor(authorMember.colorString, defaultTextColor, storage.chatInterpolation/100)),
+                    linkColor: ReactNative.processColor(interpolateColor(defaultTextColor, authorMember.colorString, storage.chatInterpolation/100)),
                     messageChannelId: '0'
                   },
                   medium: true
