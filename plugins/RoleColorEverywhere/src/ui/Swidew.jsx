@@ -8,14 +8,16 @@ const ThemeStore = findByStoreName("ThemeStore");
 const { meta: { resolveSemanticColor } } = findByProps("colors", "meta");
 const { View } = General;
 const { useState, useCallback } = React;
-
+console.log("S2");
 const Colors = {
     sliderOff: resolveSemanticColor(ThemeStore.theme, semanticColors.DEPRECATED_QUICKSWITCHER_INPUT_BACKGROUND),
     sliderOn: resolveSemanticColor(ThemeStore.theme, semanticColors.REDESIGN_BUTTON_PRIMARY_BACKGROUND),
     thumb: resolveSemanticColor(ThemeStore.theme, semanticColors.MENTION_FOREGROUND)
 };
+console.log("S3");
 
 const Swidew = ({ onSlide, value }) => {
+    console.log("S4");
     const slideValue = value || 0;
     const [thumbSize, setThumbSize] = useState(0);
   
@@ -85,5 +87,6 @@ const Swidew = ({ onSlide, value }) => {
       </View>
     )
 }
+console.log("S5");
 
 export default useCallback(Swidew, []);
