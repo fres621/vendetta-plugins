@@ -1,4 +1,3 @@
-console.log("D:");
 import { ReactNative, constants } from "@vendetta/metro/common";
 import { findByProps, findByStoreName } from "@vendetta/metro";
 import { FormSwitchRow, FormIcon, FormSection } from "@vendetta/ui/components/Forms";
@@ -8,21 +7,21 @@ import { getAssetIDByName } from "@vendetta/ui/assets";
 import { semanticColors } from "@vendetta/ui";
 import { General } from "@vendetta/ui/components";
 import Swidew from "./ui/Swidew";
-console.log("D0");
+
 const { Text } = General;
 const ThemeStore = findByStoreName("ThemeStore");
 const { meta: { resolveSemanticColor } } = findByProps("colors", "meta");
-console.log("D1");
+
 const Icons = { 
     Typing: getAssetIDByName('ic_messages'),
     Mention: getAssetIDByName('ic_mention_user'),
     Text: getAssetIDByName('ic_add_text')
 };
-console.log("D2");
+
 const Colors = {
     text: resolveSemanticColor(ThemeStore.theme, semanticColors.TEXT_NORMAL)
 };
-console.log("D3");
+
 function interpolateColor(color1, color2, percentage) {
     const hexToRgb = hex => hex.match(/\w\w/g).map(x => parseInt(x, 16));
     const rgbToHex = rgb => '#' + rgb.map(x => x.toString(16).padStart(2, '0')).join('');
@@ -34,10 +33,9 @@ function interpolateColor(color1, color2, percentage) {
 
     return rgbToHex(interpolatedRgb);
 };
-console.log("D4");
+
 
 export default () => {
-    console.log("D5");
     useProxy(storage);
     storage.chatInterpolation ??= 0;
     return (
@@ -55,7 +53,7 @@ export default () => {
                 leading={<FormIcon source={Icons.Typing} />} value={storage.chatInterpolation>0} onValueChange={(v) => {storage.chatInterpolation = (v ? 100 : 0)}} >
                 </FormSwitchRow>
 
-                <Text style={{marginLeft: '5%', color: interpolateColor(Colors.text, "#ff0000", uwu/100), fontFamily: constants.Fonts.DISPLAY_MEDIUM, fontSize: 16, marginBottom: 5, marginTop: -5}}>Color interpolation (for chat text):</Text>
+                <Text style={{marginLeft: '5%', color: interpolateColor(Colors.text, "#ff0000", storage.chatInterpolation/100), fontFamily: constants.Fonts.DISPLAY_MEDIUM, fontSize: 16, marginBottom: 5, marginTop: -5}}>Color interpolation (for chat text):</Text>
                 <Swidew onSlide={(v)=>{storage.chatInterpolation = v}} value={storage.chatInterpolation} />
             </FormSection>
         </ReactNative.ScrollView>
