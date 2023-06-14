@@ -1,8 +1,6 @@
 import patchTypingWrapper from "./patches/TypingWrapper";
 import patchDCDChatManager from "./patches/DCDChatManager";
 import Settings from "./Settings";
-import { useProxy } from "@vendetta/storage";
-import { storage } from "@vendetta/plugin";
 
 let patches = [];
 
