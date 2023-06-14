@@ -16,7 +16,7 @@ const Colors = {
 };
 console.log("S3");
 
-const Swidew = ({ onSlide, value }) => {
+const Swidew = useCallback(({ onSlide, value }) => {
     console.log("S4");
     const slideValue = value || 0;
     const [thumbSize, setThumbSize] = useState(0);
@@ -86,8 +86,8 @@ const Swidew = ({ onSlide, value }) => {
         <View style={style.slid}><View style={style.thumb} onLayout={thumbLayout} /></View>
       </View>
     )
-}
+}, []);
 console.log("S5");
 
-export default useCallback(Swidew, []);
+export default Swidew;
 console.log("is it this..?");
