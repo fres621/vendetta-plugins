@@ -4,6 +4,7 @@ import { FormSwitchRow, FormIcon, FormSection } from "@vendetta/ui/components/Fo
 import { useProxy } from "@vendetta/storage";
 import { storage } from "@vendetta/plugin";
 import { getAssetIDByName } from "@vendetta/ui/assets";
+console.log("d0");
 import Swidew from './ui/Swidew.jsx';
 console.log("d1");
 const ThemeStore = findByStoreName("ThemeStore");
