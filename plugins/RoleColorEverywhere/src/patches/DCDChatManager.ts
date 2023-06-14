@@ -70,7 +70,7 @@ export default function patchDCDChatManager() {
             };
 
             const defaultTextColor = resolveSemanticColor(ThemeStore.theme, semanticColors.TEXT_NORMAL);
-
+            console.log(storage.chatInterpolation/100);
             const colorPatch = (component, [authorId])=>{
               if (component.type != 'text') return;
               const authorMember = GuildMemberStore.getMember(row.message.guildId, authorId);
