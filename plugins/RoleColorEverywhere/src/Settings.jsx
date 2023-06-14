@@ -4,8 +4,9 @@ import { FormSwitchRow, FormIcon, FormSection } from "@vendetta/ui/components/Fo
 import { useProxy } from "@vendetta/storage";
 import { storage } from "@vendetta/plugin";
 import { getAssetIDByName } from "@vendetta/ui/assets";
+console.log("d0");
 import Swidew from "./ui/Swidew";
-
+console.log("d1");
 import { General } from "@vendetta/ui/components";
 const { Text } = General;
 
@@ -35,6 +36,7 @@ function interpolateColor(color1, color2, percentage) {
 };
 
 export default () => {
+    console.log("d2");
     useProxy(storage);
     return (
         <ReactNative.ScrollView style={{flex: 1}}>
@@ -50,7 +52,7 @@ export default () => {
                 <FormSwitchRow label="Show in chat text" subLabel="Display the top role color in the chat text... Why would you want this?" 
                 leading={<FormIcon source={Icons.Typing} />} value={storage.chatInterpolation>0} onValueChange={(v) => {storage.chatInterpolation = (v ? 100 : 0)}} >
                 </FormSwitchRow>
-
+                {console.log("d3")}
                 <Text style={{marginLeft: '5%', color: interpolateColor(Colors.text, "#ff0000", uwu/100), fontFamily: constants.Fonts.DISPLAY_MEDIUM, fontSize: 16, marginBottom: 5, marginTop: -5}}>Color interpolation (for chat text):</Text>
                 <Swidew onSlide={(v)=>{storage.chatInterpolation = v}} value={storage.chatInterpolation} />
             </FormSection>
