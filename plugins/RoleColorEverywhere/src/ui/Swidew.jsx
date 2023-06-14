@@ -2,37 +2,31 @@ import { React, ReactNative } from "@vendetta/metro/common";
 import { findByProps, findByStoreName } from "@vendetta/metro";
 import { semanticColors } from "@vendetta/ui";
 import { General } from "@vendetta/ui/components";
-console.log("S1");
+
 const { StyleSheet, PanResponder } = ReactNative;
 const ThemeStore = findByStoreName("ThemeStore");
 const { meta: { resolveSemanticColor } } = findByProps("colors", "meta");
 const { View } = General;
 const { useState, useRef } = React;
-console.log("S2");
+
 const Colors = {
     sliderOff: resolveSemanticColor(ThemeStore.theme, semanticColors.DEPRECATED_QUICKSWITCHER_INPUT_BACKGROUND),
     sliderOn: resolveSemanticColor(ThemeStore.theme, semanticColors.REDESIGN_BUTTON_PRIMARY_BACKGROUND),
     thumb: resolveSemanticColor(ThemeStore.theme, semanticColors.MENTION_FOREGROUND)
 };
-console.log("S3");
 
 const Swidew = ({ onSlide, value }) => {
-    console.log("S4");
     const slideValue = value || 0;
     const [thumbSize, setThumbSize] = useState(0);
     const container = useRef(null);
-    console.log("S4.1");
     function setPos(AbsX) {
-        console.log("S4.T0");
         if (!container.current) return; // ??
         container.current.measure( (fx, fy, width, height, px, py) => {
-            console.log("S4.T1");
             let xPercentage = ((AbsX - px) / (width - px)) * 100
             const valid = Math.min(Math.max(0, xPercentage), 100); // snapping: Math.round(xPercentage / 15)*15 | no snapping: xPercentage
             if (onSlide) onSlide(valid);
         });
     };
-    console.log("S4.2");
   
     const panResponder = React.useRef(
       PanResponder.create({
@@ -92,13 +86,5 @@ const Swidew = ({ onSlide, value }) => {
       </View>
     )
 }
-console.log("S5");
-
-/*
-export default (() => {
-    return useCallback(Swidew, []);
-})();
-*/
 
 export default Swidew;
-console.log("is it this..?");
