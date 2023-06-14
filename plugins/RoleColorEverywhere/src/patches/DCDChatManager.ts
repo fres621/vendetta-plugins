@@ -83,7 +83,7 @@ export default function patchDCDChatManager() {
                   usernameOnClick: {
                     action: '0',
                     userId: '0',
-                    linkColor: ReactNative.processColor(interpolateColor(authorMember.colorString, defaultTextColor, storage.chatInterpolation)),
+                    linkColor: ReactNative.processColor(interpolateColor(authorMember.colorString, defaultTextColor, storage.chatInterpolation/100)),
                     messageChannelId: '0'
                   },
                   medium: true
@@ -94,7 +94,7 @@ export default function patchDCDChatManager() {
             
             if (storage.chatInterpolation > 0) {
               patchComponents({content: row.message.content}, colorPatch, [row.message.authorId]);
-              if (row.message.referencedMessage) patchComponents({content: row.message.referencedMessage.message.content}, colorPatch, [row.message.referencedMessage.message.authorId]);
+              if (row.message.referencedMessage?.message?.content) patchComponents({content: row.message.referencedMessage.message.content}, colorPatch, [row.message.referencedMessage.message.authorId]);
             };
             if (!storage.noMention) {
               patchComponents({content: row.message.content}, mentionPatch, []);
