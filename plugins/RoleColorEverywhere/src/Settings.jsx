@@ -1,3 +1,4 @@
+console.log("D:");
 import { ReactNative, constants } from "@vendetta/metro/common";
 import { findByProps, findByStoreName } from "@vendetta/metro";
 import { FormSwitchRow, FormIcon, FormSection } from "@vendetta/ui/components/Forms";

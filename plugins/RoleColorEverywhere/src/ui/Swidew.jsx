@@ -2,7 +2,7 @@ import { React, ReactNative } from "@vendetta/metro/common";
 import { findByProps, findByStoreName } from "@vendetta/metro";
 import { semanticColors } from "@vendetta/ui";
 import { General } from "@vendetta/ui/components";
-
+console.log("S1");
 const { StyleSheet, PanResponder } = ReactNative;
 const ThemeStore = findByStoreName("ThemeStore");
 const { meta: { resolveSemanticColor } } = findByProps("colors", "meta");
