@@ -1,13 +1,27 @@
-import { ReactNative } from "@vendetta/metro/common";
+import { ReactNative, constants } from "@vendetta/metro/common";
 import { FormSwitchRow, FormIcon, FormSection } from "@vendetta/ui/components/Forms";
 import { useProxy } from "@vendetta/storage";
 import { storage } from "@vendetta/plugin";
 import { getAssetIDByName } from "@vendetta/ui/assets";
+import Swidew from './ui/Swidew';
 
 const Icons = { 
     Typing: getAssetIDByName('ic_messages'),
-    Mention: getAssetIDByName('ic_mention_user')
+    Mention: getAssetIDByName('ic_mention_user'),
+    Text: getAssetIDByName('ic_add_text')
   };
+
+function interpolateColor(color1, color2, percentage) {
+    const hexToRgb = hex => hex.match(/\w\w/g).map(x => parseInt(x, 16));
+    const rgbToHex = rgb => '#' + rgb.map(x => x.toString(16).padStart(2, '0')).join('');
+
+    const rgb1 = hexToRgb(color1);
+    const rgb2 = hexToRgb(color2);
+
+    const interpolatedRgb = rgb1.map((c1, i) => Math.round(c1 + (rgb2[i] - c1) * percentage));
+
+    return rgbToHex(interpolatedRgb);
+};
 
 export default () => {
     useProxy(storage);
@@ -22,6 +36,13 @@ export default () => {
                 <FormSwitchRow label="Show in mentions" subLabel="Display the top role color in mentions in the chat." 
                 leading={<FormIcon source={Icons.Mention} />} value={!storage.noMention} onValueChange={(v) => storage.noMention = !v} >
                 </FormSwitchRow>
+
+                <FormSwitchRow label="Show in chat text" subLabel="Display the top role color in the chat text... Why would you want this?" 
+                leading={<FormIcon source={Icons.Typing} />} value={storage.chatInterpolation>0} onValueChange={(v) => {storage.chatInterpolation = (v ? 100 : 0)}} >
+                </FormSwitchRow>
+
+                <Text style={{marginLeft: '5%', color: interpolateColor(Colors.text, "#ff0000", uwu/100), fontFamily: constants.Fonts.DISPLAY_MEDIUM, fontSize: 16, marginBottom: 5, marginTop: -5}}>Color interpolation (for chat text):</Text>
+                <Swidew onSlide={onSlide} value={storage.chatInterpolation} />
             </FormSection>
         </ReactNative.ScrollView>
     );
