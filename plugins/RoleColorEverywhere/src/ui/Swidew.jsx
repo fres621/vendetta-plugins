@@ -7,7 +7,7 @@ const { StyleSheet, PanResponder } = ReactNative;
 const ThemeStore = findByStoreName("ThemeStore");
 const { meta: { resolveSemanticColor } } = findByProps("colors", "meta");
 const { View } = General;
-const { useState, useCallback } = React;
+const { useState, useRef } = React;
 console.log("S2");
 const Colors = {
     sliderOff: resolveSemanticColor(ThemeStore.theme, semanticColors.DEPRECATED_QUICKSWITCHER_INPUT_BACKGROUND),
