@@ -4,9 +4,10 @@ import { FormSwitchRow, FormIcon, FormSection } from "@vendetta/ui/components/Fo
 import { useProxy } from "@vendetta/storage";
 import { storage } from "@vendetta/plugin";
 import { getAssetIDByName } from "@vendetta/ui/assets";
-console.log("d0");
 
-console.log("d1");
+import { General } from "@vendetta/ui/components";
+const { Text } = General;
+
 const ThemeStore = findByStoreName("ThemeStore");
 const { meta: { resolveSemanticColor } } = findByProps("colors", "meta");
 
@@ -34,7 +35,6 @@ function interpolateColor(color1, color2, percentage) {
 
 export default () => {
     useProxy(storage);
-    storage.chatInterpolation ??= 0;
     return (
         <ReactNative.ScrollView style={{flex: 1}}>
             <FormSection title="Where to show the top role color?" titleStyleType="no_border" >
@@ -51,7 +51,7 @@ export default () => {
                 </FormSwitchRow>
 
                 <Text style={{marginLeft: '5%', color: interpolateColor(Colors.text, "#ff0000", uwu/100), fontFamily: constants.Fonts.DISPLAY_MEDIUM, fontSize: 16, marginBottom: 5, marginTop: -5}}>Color interpolation (for chat text):</Text>
-
+                <Swidew onSlide={(v)=>{storage.chatInterpolation = v}} value={storage.chatInterpolation} />
             </FormSection>
         </ReactNative.ScrollView>
     );
