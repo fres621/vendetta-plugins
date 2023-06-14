@@ -24,12 +24,13 @@ const Swidew = ({ onSlide, value }) => {
     console.log("S4.1");
     function setPos(AbsX) {
         console.log("S4.T0");
-      container.measure( (fx, fy, width, height, px, py) => {
-        console.log("S4.T1");
-        let xPercentage = ((AbsX - px) / (width - px)) * 100
-        const valid = Math.min(Math.max(0, xPercentage), 100); // snapping: Math.round(xPercentage / 15)*15 | no snapping: xPercentage
-        if (onSlide) onSlide(valid);
-      });
+        if (!container) return; // ??
+        container.measure( (fx, fy, width, height, px, py) => {
+            console.log("S4.T1");
+            let xPercentage = ((AbsX - px) / (width - px)) * 100
+            const valid = Math.min(Math.max(0, xPercentage), 100); // snapping: Math.round(xPercentage / 15)*15 | no snapping: xPercentage
+            if (onSlide) onSlide(valid);
+        });
     };
     console.log("S4.2");
   
