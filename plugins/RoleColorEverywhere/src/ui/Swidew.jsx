@@ -90,3 +90,4 @@ const Swidew = ({ onSlide, value }) => {
 console.log("S5");
 
 export default useCallback(Swidew, []);
+console.log("is it this..?");
