@@ -4,8 +4,8 @@ import { FormSwitchRow, FormIcon, FormSection } from "@vendetta/ui/components/Fo
 import { useProxy } from "@vendetta/storage";
 import { storage } from "@vendetta/plugin";
 import { getAssetIDByName } from "@vendetta/ui/assets";
-import Swidew from './ui/Swidew';
-
+import Swidew from './ui/Swidew.jsx';
+console.log("d1");
 const ThemeStore = findByStoreName("ThemeStore");
 const { meta: { resolveSemanticColor } } = findByProps("colors", "meta");
 
@@ -33,7 +33,7 @@ function interpolateColor(color1, color2, percentage) {
 
 export default () => {
     useProxy(storage);
-
+    console.log("d2");
     return (
         <ReactNative.ScrollView style={{flex: 1}}>
             <FormSection title="Where to show the top role color?" titleStyleType="no_border" >
