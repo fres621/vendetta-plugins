@@ -20,9 +20,10 @@ const Swidew = ({ onSlide, value }) => {
     console.log("S4");
     const slideValue = value || 0;
     const [thumbSize, setThumbSize] = useState(0);
+    const container = useRef(null);
   
     function setPos(AbsX) {
-      this.container.measure( (fx, fy, width, height, px, py) => {
+      container.measure( (fx, fy, width, height, px, py) => {
         let xPercentage = ((AbsX - px) / (width - px)) * 100
         const valid = Math.min(Math.max(0, xPercentage), 100); // snapping: Math.round(xPercentage / 15)*15 | no snapping: xPercentage
         if (onSlide) onSlide(valid);
@@ -82,7 +83,7 @@ const Swidew = ({ onSlide, value }) => {
     })
   
     return (
-      <View style={style.container} {...panResponder.panHandlers} ref={c => { this.container = c; }}>
+      <View style={style.container} {...panResponder.panHandlers} ref={container}>
         <View style={style.slid}><View style={style.thumb} onLayout={thumbLayout} /></View>
       </View>
     )
