@@ -89,9 +89,11 @@ const Swidew = ({ onSlide, value }) => {
 }
 console.log("S5");
 
+/*
 export default (() => {
     return useCallback(Swidew, []);
 })();
+*/
 
-//export default useCallback(Swidew, []);
+export default Swidew;
 console.log("is it this..?");
