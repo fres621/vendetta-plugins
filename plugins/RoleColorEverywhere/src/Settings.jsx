@@ -7,21 +7,21 @@ import { getAssetIDByName } from "@vendetta/ui/assets";
 import { semanticColors } from "@vendetta/ui";
 import { General } from "@vendetta/ui/components";
 import Swidew from "./ui/Swidew";
-
+console.log("D0");
 const { Text } = General;
 const ThemeStore = findByStoreName("ThemeStore");
 const { meta: { resolveSemanticColor } } = findByProps("colors", "meta");
-
+console.log("D1");
 const Icons = { 
     Typing: getAssetIDByName('ic_messages'),
     Mention: getAssetIDByName('ic_mention_user'),
     Text: getAssetIDByName('ic_add_text')
 };
-
+console.log("D2");
 const Colors = {
     text: resolveSemanticColor(ThemeStore.theme, semanticColors.TEXT_NORMAL)
 };
-
+console.log("D3");
 function interpolateColor(color1, color2, percentage) {
     const hexToRgb = hex => hex.match(/\w\w/g).map(x => parseInt(x, 16));
     const rgbToHex = rgb => '#' + rgb.map(x => x.toString(16).padStart(2, '0')).join('');
@@ -33,9 +33,12 @@ function interpolateColor(color1, color2, percentage) {
 
     return rgbToHex(interpolatedRgb);
 };
+console.log("D4");
 
 export default () => {
+    console.log("D5");
     useProxy(storage);
+    storage.chatInterpolation ??= 0;
     return (
         <ReactNative.ScrollView style={{flex: 1}}>
             <FormSection title="Where to show the top role color?" titleStyleType="no_border" >
