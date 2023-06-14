@@ -4,6 +4,7 @@ import { FormSwitchRow, FormIcon, FormSection } from "@vendetta/ui/components/Fo
 import { useProxy } from "@vendetta/storage";
 import { storage } from "@vendetta/plugin";
 import { getAssetIDByName } from "@vendetta/ui/assets";
+import Swidew from "./ui/Swidew";
 
 import { General } from "@vendetta/ui/components";
 const { Text } = General;
