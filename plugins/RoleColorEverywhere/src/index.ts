@@ -1,15 +1,17 @@
 import patchTypingWrapper from "./patches/TypingWrapper";
 import patchDCDChatManager from "./patches/DCDChatManager";
 import Settings from "./Settings";
+import { useProxy } from "@vendetta/storage";
+import { storage } from "@vendetta/plugin";
 
 let patches = [];
 
 export default {
     onLoad: () => {
         console.log("s0");
-
+        useProxy(storage);
         console.log("s1");
-
+        storage.chatInterpolation ??= 0;
         console.log("s2");
         patches.push(patchTypingWrapper());
         patches.push(patchDCDChatManager());

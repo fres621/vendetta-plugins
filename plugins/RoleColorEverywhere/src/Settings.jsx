@@ -4,12 +4,11 @@ import { FormSwitchRow, FormIcon, FormSection } from "@vendetta/ui/components/Fo
 import { useProxy } from "@vendetta/storage";
 import { storage } from "@vendetta/plugin";
 import { getAssetIDByName } from "@vendetta/ui/assets";
-console.log("d0");
-
-console.log("d1");
+import { semanticColors } from "@vendetta/ui";
 import { General } from "@vendetta/ui/components";
+import Swidew from "./ui/Swidew";
 
-
+const { Text } = General;
 const ThemeStore = findByStoreName("ThemeStore");
 const { meta: { resolveSemanticColor } } = findByProps("colors", "meta");
 
@@ -36,7 +35,6 @@ function interpolateColor(color1, color2, percentage) {
 };
 
 export default () => {
-    console.log("d2");
     useProxy(storage);
     return (
         <ReactNative.ScrollView style={{flex: 1}}>
@@ -53,6 +51,8 @@ export default () => {
                 leading={<FormIcon source={Icons.Typing} />} value={storage.chatInterpolation>0} onValueChange={(v) => {storage.chatInterpolation = (v ? 100 : 0)}} >
                 </FormSwitchRow>
 
+                <Text style={{marginLeft: '5%', color: interpolateColor(Colors.text, "#ff0000", uwu/100), fontFamily: constants.Fonts.DISPLAY_MEDIUM, fontSize: 16, marginBottom: 5, marginTop: -5}}>Color interpolation (for chat text):</Text>
+                <Swidew onSlide={(v)=>{storage.chatInterpolation = v}} value={storage.chatInterpolation} />
             </FormSection>
         </ReactNative.ScrollView>
     );
