@@ -9,9 +9,9 @@ let patches = [];
 export default {
     onLoad: () => {
         console.log("s0");
-        useProxy(storage);
+
         console.log("s1");
-        storage.chatInterpolation ??= 0;
+
         console.log("s2");
         patches.push(patchTypingWrapper());
         patches.push(patchDCDChatManager());
