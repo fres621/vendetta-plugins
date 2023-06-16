@@ -51,7 +51,7 @@ export default function patchDCDChatManager() {
             if (!channelId) return;
             // Get channel object from ID — https://discord.com/channels/1015931589865246730/1062531774187573308/1085578628206694440
             const channel = ChannelStore.getChannel(channelId);
-            if (!channel.guild_id) return;
+            if (!channel?.guild_id) return;
 
             // Function that will be ran in every component of the message content
             const mentionPatch = (component)=>{
