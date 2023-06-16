@@ -1,13 +1,13 @@
 import { ReactNative } from '@vendetta/metro/common';
-import { before } from "@vendetta/patcher";
-import { findByProps, findByStoreName } from "@vendetta/metro";
+import { after } from "@vendetta/patcher";
+import { findByProps, findByStoreName, findByName } from "@vendetta/metro";
 import { semanticColors } from "@vendetta/ui";
 import { storage } from "@vendetta/plugin";
 
 const ThemeStore = findByStoreName("ThemeStore");
 const { meta: { resolveSemanticColor } } = findByProps("colors", "meta");
 
-const { DCDChatManager } = ReactNative.NativeModules;
+const RowManager = findByName("RowManager");
 const GuildMemberStore = findByStoreName("GuildMemberStore");
 const SelectedChannelStore = findByStoreName("SelectedChannelStore");
 const ChannelStore = findByStoreName("ChannelStore");
@@ -39,70 +39,62 @@ function interpolateColor(color1, color2, percentage) {
 };
 
 export default function patchDCDChatManager() {
-    return before("updateRows", DCDChatManager, (r)=>{
-      if ((!storage.chatInterpolation || storage.chatInterpolation <= 0) && storage.noMention) return;
-        let rows = JSON.parse(r[1]);
-        rows.forEach(row => {
-            if (row.type != 1) return;
-            if (!row.message?.content) return;
+  return after("generate", RowManager.prototype, ([row], {message}) => {
+    if ((!storage.chatInterpolation || storage.chatInterpolation <= 0) && storage.noMention) return;
+        if (row.rowType != 1) return;
+        if (!message?.content) return;
 
-            // Get current channel ID — https://discord.com/channels/1015931589865246730/1094699841239650334/1106211737734238238
-            const channelId = SelectedChannelStore.getChannelId()
-            if (!channelId) return;
-            // Get channel object from ID — https://discord.com/channels/1015931589865246730/1062531774187573308/1085578628206694440
-            const channel = ChannelStore.getChannel(channelId);
-            if (!channel?.guild_id) return;
+    	const channelId = message.channelId;
+    	const channel = ChannelStore.getChannel(channelId);
+    	if (!channel?.guild_id) return;
 
-            // Function that will be ran in every component of the message content
-            const mentionPatch = (component)=>{
-              if (component.type != 'mention') return;  // If the component is a mention
-              if (!component.userId) return;            // If it's an User mention (exclude roles)
+        // Function that will be ran in every component of the message content
+        const mentionPatch = (component)=>{
+          if (component.type != 'mention') return;  // If the component is a mention
+          if (!component.userId) return;            // If it's an User mention (exclude roles)
 
-              let member = GuildMemberStore.getMember(channel.guild_id, component.userId);
-              const hexc = member?.colorString;
-              if (!hexc) return;                          // Stop here if the user doesn't have a custom role color
-              const dec = parseInt(hexc.slice(1), 16);    // Get the decimal value for the role color
-              return {
-                ...component, 
-                roleColor: dec, 
-                color: dec, 
-                colorString: hexc
-              };
-            };
+          let member = GuildMemberStore.getMember(channel.guild_id, component.userId);
+          const hexc = member?.colorString;
+          if (!hexc) return;                          // Stop here if the user doesn't have a custom role color
+          const dec = parseInt(hexc.slice(1), 16);    // Get the decimal value for the role color
+          return {
+            ...component, 
+            roleColor: dec, 
+            color: dec, 
+            colorString: hexc
+          };
+        };
 
-            const defaultTextColor = resolveSemanticColor(ThemeStore.theme, semanticColors.TEXT_NORMAL);
+        const defaultTextColor = resolveSemanticColor(ThemeStore.theme, semanticColors.TEXT_NORMAL);
 
-            const colorPatch = (component, [authorId])=>{
-              if (component.type != 'text') return;
-              const authorMember = GuildMemberStore.getMember(row.message.guildId, authorId);
-              if (!authorMember || !authorMember.colorString) return;
-              return {
-                content: [component],
-                target: 'usernameOnClick',
-                context: {
-                  username: 1,
-                  usernameOnClick: {
-                    action: '0',
-                    userId: '0',
-                    linkColor: ReactNative.processColor(interpolateColor(defaultTextColor, authorMember.colorString, storage.chatInterpolation/100)),
-                    messageChannelId: '0'
-                  },
-                  medium: true
-                },
-                type: 'link'
-              }
-            };
-            
-            if (storage.chatInterpolation > 0) {
-              patchComponents({content: row.message.content}, colorPatch, [row.message.authorId]);
-              if (row.message.referencedMessage?.message?.content) patchComponents({content: row.message.referencedMessage.message.content}, colorPatch, [row.message.referencedMessage.message.authorId]);
-            };
-            if (!storage.noMention) {
-              patchComponents({content: row.message.content}, mentionPatch, []);
-              if (row.message.referencedMessage?.message?.content) patchComponents({content: row.message.referencedMessage.message.content}, mentionPatch, []);
-            };
-        });
+        const colorPatch = (component, [authorId])=>{
+          if (component.type != 'text') return;
+          const authorMember = GuildMemberStore.getMember(message.guildId, authorId);
+          if (!authorMember || !authorMember.colorString) return;
+          return {
+            content: [component],
+            target: 'usernameOnClick',
+            context: {
+              username: 1,
+              usernameOnClick: {
+                action: '0',
+                userId: '0',
+                linkColor: ReactNative.processColor(interpolateColor(defaultTextColor, authorMember.colorString, storage.chatInterpolation/100)),
+                messageChannelId: '0'
+              },
+              medium: true
+            },
+            type: 'link'
+          }
+        };
 
-        r[1] = JSON.stringify(rows);
-    });
+        if (storage.chatInterpolation > 0) {
+          patchComponents({content: message.content}, colorPatch, [message.authorId]);
+          if (message.referencedMessage?.message?.content) patchComponents({content: message.referencedMessage.message.content}, colorPatch, [message.referencedMessage.message.authorId]);
+        };
+        if (!storage.noMention) {
+          patchComponents({content: message.content}, mentionPatch, []);
+          if (message.referencedMessage?.message?.content) patchComponents({content: message.referencedMessage.message.content}, mentionPatch, []);
+        };
+  });
 };
