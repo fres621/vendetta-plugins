@@ -15,6 +15,7 @@ const ChannelStore = findByStoreName("ChannelStore");
 // Function to easily do stuff with components including getting to formatted text
 function patchComponents(component, funcs, args, tree?) {
   if (!component) return;
+  tree = Object.assign([], tree); // don't modify the tree for parent components
   tree ? tree.push(component) : tree = [component];
   if (Array.isArray(component.content)) {
     component.content.forEach((subcomp, index) => component.content[index] = patchComponents(subcomp, funcs, args, tree));
