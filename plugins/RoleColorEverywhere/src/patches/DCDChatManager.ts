@@ -13,16 +13,21 @@ const SelectedChannelStore = findByStoreName("SelectedChannelStore");
 const ChannelStore = findByStoreName("ChannelStore");
 
 // Function to easily do stuff with components including getting to formatted text
-function patchComponents(component, func, args) {
+function patchComponents(component, funcs, args, tree?) {
   if (!component) return;
+  tree ? tree.push(component) : tree = [component];
   if (Array.isArray(component.content)) {
-    component.content.forEach((subcomp, index) => component.content[index] = patchComponents(subcomp, func, args));
+    component.content.forEach((subcomp, index) => component.content[index] = patchComponents(subcomp, funcs, args, tree));
   } else if (component.items) {
-    component.items.forEach((subcomp, index) => component.items[index] = patchComponents(subcomp, func, args));
+    component.items.forEach((subcomp, index) => component.items[index] = patchComponents(subcomp, funcs, args, tree));
   } else if (Array.isArray(component)) {
-    component.forEach((subcomp, index) => component[index] = patchComponents(subcomp, func, args));
+    component.forEach((subcomp, index) => component[index] = patchComponents(subcomp, funcs, args, tree));
   }
-  if (component.type) component = func(component, args) || component;
+  if (component.type) {
+    funcs.forEach(func => {
+      component = func(component, args) || component;
+    });
+  };
   return component;
 };
 
@@ -38,7 +43,7 @@ function interpolateColor(color1, color2, percentage) {
   return rgbToHex(interpolatedRgb);
 };
 
-export default function patchDCDChatManager() {
+export default function patchDCDChatManager() { // this isnt really patching DCDChatManager anymore......
   return after("generate", RowManager.prototype, ([row], {message}) => {
     if ((!storage.chatInterpolation || storage.chatInterpolation <= 0) && storage.noMention) return;
         if (row.rowType != 1) return;
@@ -67,7 +72,7 @@ export default function patchDCDChatManager() {
 
         const defaultTextColor = resolveSemanticColor(ThemeStore.theme, semanticColors.TEXT_NORMAL);
 
-        const colorPatch = (component, [authorId])=>{
+        const colorPatch = (component, [authorId], tree)=>{
           if (component.type != 'text') return;
           const authorMember = GuildMemberStore.getMember(message.guildId, authorId);
           if (!authorMember || !authorMember.colorString) return;
@@ -87,14 +92,14 @@ export default function patchDCDChatManager() {
             type: 'link'
           }
         };
-
+        let patches = [];
         if (storage.chatInterpolation > 0) {
-          patchComponents({content: message.content}, colorPatch, [message.authorId]);
-          if (message.referencedMessage?.message?.content) patchComponents({content: message.referencedMessage.message.content}, colorPatch, [message.referencedMessage.message.authorId]);
+          patches.push(colorPatch);
         };
         if (!storage.noMention) {
-          patchComponents({content: message.content}, mentionPatch, []);
-          if (message.referencedMessage?.message?.content) patchComponents({content: message.referencedMessage.message.content}, mentionPatch, []);
+          patches.push(mentionPatch);
         };
+        patchComponents({content: message.content}, [patches], [message.authorId]);
+        if (message.referencedMessage?.message?.content) patchComponents({content: message.referencedMessage.message.content}, [patches], [message.referencedMessage.message.authorId]);
   });
 };
