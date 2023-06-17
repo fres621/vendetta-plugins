@@ -101,7 +101,7 @@ export default function patchDCDChatManager() { // this isnt really patching DCD
         if (!storage.noMention) {
           patches.push(mentionPatch);
         };
-        patchComponents({content: message.content}, [patches], [message.authorId]);
-        if (message.referencedMessage?.message?.content) patchComponents({content: message.referencedMessage.message.content}, [patches], [message.referencedMessage.message.authorId]);
+        patchComponents({content: message.content}, patches, [message.authorId]);
+        if (message.referencedMessage?.message?.content) patchComponents({content: message.referencedMessage.message.content}, patches, [message.referencedMessage.message.authorId]);
   });
 };
