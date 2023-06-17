@@ -1,6 +1,6 @@
 {
     "name": "SpotifyPreview",
-    "description": "Brings the 30s Spotify song preview from Desktop.",
+    "description": "Lets you preview (30s of audio) Spotify songs by pressing the links.",
     "authors": [
         {
             "name": "fres",
