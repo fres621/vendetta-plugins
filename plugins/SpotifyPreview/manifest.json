@@ -1,0 +1,14 @@
+{
+    "name": "SpotifyPreview",
+    "description": "Brings the 30s Spotify song preview from Desktop.",
+    "authors": [
+        {
+            "name": "fres",
+            "id": "843448897737064448"
+        }
+    ],
+    "main": "src/index.ts",
+    "vendetta": {
+        "icon": "ic_spotify_white_16px"
+    }
+}
