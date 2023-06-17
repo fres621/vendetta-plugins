@@ -1,5 +1,5 @@
 import { find, findByName, findByProps, findByStoreName } from "@vendetta/metro";
-import { instead } from "@vendetta/patcher";
+import { before } from "@vendetta/patcher";
 
 import { semanticColors } from "@vendetta/ui";
 import { showToast } from "@vendetta/ui/toasts";
@@ -41,12 +41,11 @@ function as({'0': link}) {
 const handleClick = findByProps("handleClick");
 
 export default function patch() {
-    return instead("handleClick", handleClick, async function (this: any, args, orig) {
-        const { href: url } = args[0];
-
-        const isSpotify = url.startsWith("https://open.spotify.com/");
-        if (!isSpotify) return orig.apply(this, args);
-      
-		renderActionSheet(as, [url]);
-    })
+  return before("handleClick", handleClick, function ([args]) {
+      const { href } = args;
+      const isSpotify = href.startsWith("https://open.spotify.com/");
+      if (!isSpotify) return;
+      args.href = undefined;
+      renderActionSheet(as, [href]);
+  });
 };
