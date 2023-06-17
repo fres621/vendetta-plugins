@@ -7,7 +7,7 @@
             "id": "843448897737064448"
         }
     ],
-    "main": "src/index.ts",
+    "main": "/index.ts",
     "vendetta": {
         "icon": "ic_spotify_white_16px"
     }
