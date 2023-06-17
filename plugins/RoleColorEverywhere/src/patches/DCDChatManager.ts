@@ -75,7 +75,7 @@ export default function patchDCDChatManager() { // this isnt really patching DCD
 
         const colorPatch = (component, [authorId], tree?)=>{
           let t = tree?.map(c=>c.type)
-          if (t?.includes("mention") || t?.includes("channelMention") || t?.includes("commandMention") || t?.includes("link")) return;
+          if (t?.includes("mention") || t?.includes("channelMention") || t?.includes("roleMention") || t?.includes("commandMention") || t?.includes("link")) return;
           if (component.type != 'text') return;
           const authorMember = GuildMemberStore.getMember(message.guildId, authorId);
           if (!authorMember || !authorMember.colorString) return;
