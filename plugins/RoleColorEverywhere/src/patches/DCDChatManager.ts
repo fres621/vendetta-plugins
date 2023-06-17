@@ -25,7 +25,7 @@ function patchComponents(component, funcs, args, tree?) {
   }
   if (component.type) {
     funcs.forEach(func => {
-      component = func(component, args) || component;
+      component = func(component, args, tree) || component;
     });
   };
   return component;
@@ -74,7 +74,7 @@ export default function patchDCDChatManager() { // this isnt really patching DCD
 
         const colorPatch = (component, [authorId], tree?)=>{
           let t = tree?.map(c=>c.type)
-          if (t.includes("mention") || t.includes("chatMention") || t.includes("link")) return;
+          if (t?.includes("mention") || t?.includes("chatMention") || t?.includes("link")) return;
           if (component.type != 'text') return;
           const authorMember = GuildMemberStore.getMember(message.guildId, authorId);
           if (!authorMember || !authorMember.colorString) return;
