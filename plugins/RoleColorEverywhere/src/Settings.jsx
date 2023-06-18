@@ -8,7 +8,7 @@ import { semanticColors } from "@vendetta/ui";
 import { General, HelpMessage } from "@vendetta/ui/components";
 import Swidew from "./ui/Swidew";
 
-const { Text } = General;
+const { Text, View } = General;
 const ThemeStore = findByStoreName("ThemeStore");
 const { meta: { resolveSemanticColor } } = findByProps("colors", "meta");
 
