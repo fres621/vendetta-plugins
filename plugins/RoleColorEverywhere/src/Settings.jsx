@@ -5,7 +5,7 @@ import { useProxy } from "@vendetta/storage";
 import { storage } from "@vendetta/plugin";
 import { getAssetIDByName } from "@vendetta/ui/assets";
 import { semanticColors } from "@vendetta/ui";
-import { General } from "@vendetta/ui/components";
+import { General, HelpMessage } from "@vendetta/ui/components";
 import Swidew from "./ui/Swidew";
 
 const { Text } = General;
@@ -50,6 +50,7 @@ export default () => {
                 leading={<FormIcon source={Icons.Mention} />} value={!storage.noMention} onValueChange={(v) => storage.noMention = !v} >
                 </FormSwitchRow>
 
+                <View style={{ marginHorizontal: 10, marginBottom: 10 }}><HelpMessage messageType={0}>Limitations cause text coloring to prevent interaction with the text. Instead, you'll have to press anywhere else in the message to open the context menu or use gestures.</HelpMessage></View>
                 <FormSwitchRow label="Show in chat text" subLabel="Display the top role color in the chat text... Why would you want this?" 
                 leading={<FormIcon source={Icons.Text} />} value={storage.chatInterpolation>0} onValueChange={(v) => {storage.chatInterpolation = (v ? 100 : 0)}} >
                 </FormSwitchRow>
