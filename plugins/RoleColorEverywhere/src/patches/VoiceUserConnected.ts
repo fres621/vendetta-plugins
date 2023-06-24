@@ -1,6 +1,10 @@
 import { after } from "@vendetta/patcher";
-import { findByName } from "@vendetta/metro";
+import { findByName, findByProps, findByStoreName } from "@vendetta/metro";
 import { storage } from "@vendetta/plugin";
+import { semanticColors } from "@vendetta/ui";
+
+const ThemeStore = findByStoreName("ThemeStore");
+const { meta: { resolveSemanticColor } } = findByProps("colors", "meta");
 
 export default function patchVoiceUserConnected() {
     return after("default", findByName("VoiceUserConnected", false),([args],res)=>{
@@ -10,7 +14,7 @@ export default function patchVoiceUserConnected() {
             unpatchRender();
             let text = (res.props?.children?.[1]?.props);
             if (!text) return;
-            text.style.color = args.member.colorString;
+            text.style.color = args.member.colorString || resolveSemanticColor(ThemeStore.theme, semanticColors.CHANNELS_DEFAULT);
         });
     });
 };
