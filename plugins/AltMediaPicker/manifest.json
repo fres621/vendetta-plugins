@@ -1,0 +1,14 @@
+{
+    "name": "AltMediaPicker",
+    "description": "Use an alternative media picker when sending attachments.",
+    "authors": [
+        {
+            "name": "fres",
+            "id": "843448897737064448"
+        }
+    ],
+    "main": "src/index.ts",
+    "vendetta": {
+        "icon": "ic_image"
+    }
+}
