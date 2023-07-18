@@ -1,6 +1,7 @@
 import patchTypingWrapper from "./patches/TypingWrapper";
 import patchDCDChatManager from "./patches/DCDChatManager";
 import patchVoiceUserConnected from "./patches/VoiceUserConnected";
+import patchMemberList from "./patches/MemberList";
 import Settings from "./Settings";
 
 let patches = [];
@@ -10,6 +11,7 @@ export default {
         patches.push(patchTypingWrapper());
         patches.push(patchDCDChatManager());
         patches.push(patchVoiceUserConnected());
+        patches.push(patchMemberList());
     },
     onUnload: () => {
         for (const unpatch of patches) {

@@ -16,7 +16,8 @@ const Icons = {
     Typing: getAssetIDByName('ic_messages'),
     Mention: getAssetIDByName('ic_mention_user'),
     Text: getAssetIDByName('ic_add_text'),
-    Voice: getAssetIDByName('ic_voice_channel_24px')
+    Voice: getAssetIDByName('ic_voice_channel_24px'),
+    Role: getAssetIDByName('ic_person_shield')
 };
 
 const Colors = {
@@ -48,6 +49,10 @@ export default () => {
 
                 <FormSwitchRow label="Show in mentions" subLabel="Display the top role color in mentions in the chat." 
                 leading={<FormIcon source={Icons.Mention} />} value={!storage.noMention} onValueChange={(v) => storage.noMention = !v} >
+                </FormSwitchRow>
+
+                <FormSwitchRow label="Show in member list" subLabel="Display the top role color in the member list role section headers." 
+                leading={<FormIcon source={Icons.Role} />} value={!storage.noRole} onValueChange={(v) => storage.noRole = !v} >
                 </FormSwitchRow>
 
                 <View style={{ marginHorizontal: 10, marginBottom: 2 }}><HelpMessage messageType={0}>(Regarding option below) - Limitations cause text coloring to prevent interaction with the text. Instead, you'll have to press anywhere else in the message to open the context menu or use gestures.</HelpMessage></View>
