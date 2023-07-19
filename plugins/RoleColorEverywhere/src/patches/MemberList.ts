@@ -14,6 +14,7 @@ export default function patchMemberList() {
         const aaa = findInReactTree(b, r => r?.props?.roleId);
         if (!aaa) return;
         if (isNaN(aaa.props.roleId)) return;
+        if (aaa.props.excludedApplications) return;
         let uwu = {type: Object.assign({}, aaa.type)};
 
         after("type", uwu.type, (_, res) => {
