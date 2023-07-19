@@ -7,7 +7,6 @@ import { storage } from "@vendetta/plugin";
 const { View } = ReactNative
 const GuildStore = findByStoreName("GuildStore");
 
-console.log("Started");
 export default function patchMemberList() {
     return after("render", View, (_, b) => {
         if (storage.noRole) return;
