@@ -21,7 +21,7 @@ export default function patchMemberList() {
 
             after("render", owo.type, (_, d)=>{
                 let role = GuildStore.getGuild(aaa.props.guildId)?.roles?.[aaa.props.roleId];
-                if (!role.colorString) return;
+                if (!role?.colorString) return;
                 d.props.style.push({color: role.colorString});
             });
 
