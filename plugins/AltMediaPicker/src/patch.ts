@@ -4,32 +4,33 @@ import { before } from "@vendetta/patcher";
 const SelectedChannelStore = findByStoreName("SelectedChannelStore");
 
 function mediapick(channelId) {
-    findByProps("launchImageLibrary").launchImageLibrary(
-        {
-          mediaType: "photo",
-        },
-        ({ assets }) => {
-          findByProps("handleAttachFile").handleSelectKeyboardItem(
-            channelId,
-            {
-              node: {
-                image: {
-                  playableDuration: 0,
-                  height: assets[0].height,
-                  filename: assets[0].fileName,
-                  width: assets[0].width,
-                  mimeType: assets[0].type,
-                  uri: assets[0].uri,
-                },
-                type: "ALAssetTypePhoto",
-              },
-            },
-            false,
-            { target: 0 },
-            undefined
-          );
-        }
-      );
+    findByProps("launchImageLibrary").launchImageLibrary({
+        mediaType: 'photo'
+      }, ({assets})=>{
+          if (!assets) return;
+          assets = assets.slice(0, 10);
+          assets.forEach(asset => {
+                findByProps("handleAttachFile").handleSelectKeyboardItem(
+                  channelId,
+                  {
+                    node: {
+                      image: {
+                        playableDuration: 0,
+                        height: asset.height,
+                        filename: asset.fileName,
+                        width: asset.width,
+                        mimeType: asset.type,
+                        uri: asset.uri,
+                      },
+                      type: "ALAssetTypePhoto",
+                    },
+                  },
+                  false,
+                  { target: 0 },
+                  undefined
+                );
+          });
+      })
 };
 
 const Pressable = findByDisplayName("Pressable",false);
