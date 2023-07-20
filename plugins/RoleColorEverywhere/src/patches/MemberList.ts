@@ -14,9 +14,10 @@ export default function patchMemberList() {
         if (!aaa) return;
         if (isNaN(aaa.props.roleId)) return;
         if (aaa.props.excludedApplications) return;
+        if (!aaa.type) return; // i should figure out when the crash actually happens but for now this should stop crashes
         let uwu = {type: Object.assign({}, aaa.type)};
-
         after("type", uwu.type, (_, res) => {
+            if (!res?.props?.children?.[1]?.type) return; // same as last comment, all I know is that people are getting a "type is not a function in Object" crash
             let owo = {type: Object.assign({}, res.props.children[1].type)};
 
             after("render", owo.type, (_, d)=>{
