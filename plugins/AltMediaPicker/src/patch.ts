@@ -1,5 +1,5 @@
 import { findByDisplayName, findByProps, findByStoreName } from "@vendetta/metro";
-import { before } from "@vendetta/patcher";
+import { before, instead } from "@vendetta/patcher";
 
 const SelectedChannelStore = findByStoreName("SelectedChannelStore");
 
@@ -33,19 +33,9 @@ function mediapick(channelId) {
       })
 };
 
-const Pressable = findByDisplayName("Pressable",false);
-
 export default function patch() {
-    return before("render", Pressable.default.type, (args) => {
-        if(!args) return;
-        if(!args[0]) return;
-        const [ props ] = args;
-        
-        if (props.accessibilityLabel != "Files") return;
-        
-        props.onPress = function() {
-          mediapick(SelectedChannelStore.getChannelId());
-        };
-    });
+  return instead("handleAttachFile", findByProps("handleAttachFile"), (args, orig)=>{
+    mediapick(SelectedChannelStore.getChannelId());
+  });
 };
 
