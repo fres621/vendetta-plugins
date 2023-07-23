@@ -15,6 +15,7 @@ export default function patchMemberList() {
         if (isNaN(aaa.props.roleId)) return;
         if (aaa.props.excludedApplications) return;
         if (aaa.props.hasOwnProperty("displayRoleIcon")) return; // fixes linked roles crash
+        if (aaa.props.hasOwnProperty("searchable")) return; // fixes tabs v2 crash
         let uwu = {type: Object.assign({}, aaa.type)};
         after("type", uwu.type, (_, res) => {
             let owo = {type: Object.assign({}, res.props.children[1].type)};
