@@ -100,7 +100,7 @@ export default function patchDCDChatManager() { // this isnt really patching DCD
           patches.push(colorPatch);
         };
         if (!storage.noMention) {
-          patches.push(mentionPatch);
+          patches.push(mentionPatch); message.shouldShowRoleOnName = true;
         };
         patchComponents({content: message.content}, patches, [message.authorId]);
         if (message.referencedMessage?.message?.content) patchComponents({content: message.referencedMessage.message.content}, patches, [message.referencedMessage.message.authorId]);
