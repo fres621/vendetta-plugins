@@ -17,7 +17,7 @@ function renderActionSheet(component: any, props: { [key: string]: any }) {
 };
 const { BottomSheetScrollView } = findByProps("BottomSheetScrollView");
 
-let WebView = findByName("WebView");
+const WebView = findByName("WebView") || findByProps("WebView").default.render;
 let wv = (link)=>{ 
     const bgcolor = resolveSemanticColor(ThemeStore.theme, semanticColors.MODAL_BACKGROUND);
     return (
