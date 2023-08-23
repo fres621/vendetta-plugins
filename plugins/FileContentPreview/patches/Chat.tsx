@@ -27,7 +27,7 @@ function testBtn(onPress) {
 function createFCModal(filename = "unknown", url = "https://cdn.discordapp.com/attachments/593084706593964043/1143675462376239236/SPOILER_a.txt", bytes = 1) {
     return ()=>{
         const [content, setContent] = React.useState("");
-        let maxBytes = '100';
+        let maxBytes = '10000';
         
         fetch(url, {
             headers: {
