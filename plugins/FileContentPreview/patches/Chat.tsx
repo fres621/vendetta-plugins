@@ -43,6 +43,17 @@ function createFCModal(filename = "unknown", url = "https://cdn.discordapp.com/a
             };
         });
         
+        let loading = (  
+            <View style={{margin: 32}}>
+              <ActivityIndicator size="large" />
+            </View>
+            );
+
+        let loaded = (    
+            <View style={{margin: 15}}>
+              <FormText>{content}</FormText>
+            </View>
+            )
         
         return (
             <Navigator
@@ -53,15 +64,7 @@ function createFCModal(filename = "unknown", url = "https://cdn.discordapp.com/a
                     headerRight: testBtn(() => { console.log("uwu") }),
                     render: () => {
                         return (
-                        content ? (  
-                          <View style={{margin: 32}}>
-                            <ActivityIndicator size="large" />
-                          </View>
-                          ) : (    
-                          <View style={{margin: 15}}>
-                            <FormText>{content}</FormText>
-                          </View>
-                          )
+                        content ? loaded : loading
                         );
                     },
                     title: filename.toUpperCase()
