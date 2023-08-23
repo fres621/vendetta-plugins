@@ -18,17 +18,19 @@ function makeRPL(filename = "unknown", size = "? bytes") {
            ctaEnabled: true }
     };
 
-export default after("generate", RowManager.prototype, ([row], {message}) => {
-    if (row.rowType != 1) return;
-    if (!message.attachments) return;
-    let rpls = [];
-    let attachs = [];
-    message.attachments.forEach(attachment => {
-        if (attachment.filename.toLowerCase().endsWith(".txt")) {
-        rpls.push(makeRPL(attachment.filename, attachment.size));
-      } else {
-        attachs.push(attachment);
-      };
-    });
-    if (rpls.length) {message.codedLinks.push(...rpls); message.attachments = attachs};
-  });
+export default function() {
+    return after("generate", RowManager.prototype, ([row], {message}) => {
+        if (row.rowType != 1) return;
+        if (!message.attachments) return;
+        let rpls = [];
+        let attachs = [];
+        message.attachments.forEach(attachment => {
+            if (attachment.filename.toLowerCase().endsWith(".txt")) {
+            rpls.push(makeRPL(attachment.filename, attachment.size));
+        } else {
+            attachs.push(attachment);
+        };
+        });
+        if (rpls.length) {message.codedLinks.push(...rpls); message.attachments = attachs};
+  })
+};

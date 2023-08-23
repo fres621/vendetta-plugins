@@ -120,26 +120,28 @@ function createFCModal(filename = "unknown", url = "https://cdn.discordapp.com/a
 const MessageStore = findByStoreName("MessageStore");
 const SelectedChannelStore = findByStoreName("SelectedChannelStore");
 
-export default after("render", findByName("Chat").prototype, (_a, b) => {
-  before("onTapInviteEmbed", b.props, ([{ nativeEvent: { index, messageId } }])=>{
-    
-    let channel = SelectedChannelStore.getChannelId();
-    let message = MessageStore.getMessage(channel, messageId);
-    let codedLinks = message.codedLinks;
-    let attachments = message.attachments;
-    if (index >= codedLinks.length) {
-      let attachmentIndex = index-codedLinks.length;
-      let attachment = attachments[attachmentIndex];
-      modals.pushModal({
-        key: 'file-content-preview',
-        modal: {
-            key: 'file-content-preview',
-            modal: createFCModal("uwu", attachment.url, attachment.size),
-            animation: 'slide-up',
-            shouldPersistUnderModals: false,
-            closable: true
-        }
+export default function() {
+    return after("render", findByName("Chat").prototype, (_a, b) => {
+        before("onTapInviteEmbed", b.props, ([{ nativeEvent: { index, messageId } }])=>{
+            
+            let channel = SelectedChannelStore.getChannelId();
+            let message = MessageStore.getMessage(channel, messageId);
+            let codedLinks = message.codedLinks;
+            let attachments = message.attachments;
+            if (index >= codedLinks.length) {
+            let attachmentIndex = index-codedLinks.length;
+            let attachment = attachments[attachmentIndex];
+            modals.pushModal({
+                key: 'file-content-preview',
+                modal: {
+                    key: 'file-content-preview',
+                    modal: createFCModal("uwu", attachment.url, attachment.size),
+                    animation: 'slide-up',
+                    shouldPersistUnderModals: false,
+                    closable: true
+                }
+            });
+            };
+        });
     });
-    };
-  });
-});
+};
