@@ -80,6 +80,7 @@ const SelectedChannelStore = findByStoreName("SelectedChannelStore");
 
 export default function() {
     return after("render", findByName("Chat").prototype, (_a, b) => {
+        if (!b.props.hasOwnProperty("onTapInviteEmbed")) return; // This happens when you're viewing an image
         before("onTapInviteEmbed", b.props, ([{ nativeEvent: { index, messageId } }])=>{
             
             let channel = SelectedChannelStore.getChannelId();
