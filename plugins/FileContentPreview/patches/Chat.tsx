@@ -6,7 +6,6 @@ import { showToast } from "@vendetta/ui/toasts";
 import { React, clipboard, ReactNative } from "@vendetta/metro/common";
 import { Forms, General } from "@vendetta/ui/components";
 
-const RowManager = findByName("RowManager");
 const ThemeStore = findByStoreName("ThemeStore");
 const { meta: { resolveSemanticColor } } = findByProps("colors", "meta");
 
