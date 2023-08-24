@@ -1,18 +1,23 @@
 import { findByProps, findByName, findByStoreName } from "@vendetta/metro";
 import { after, before } from "@vendetta/patcher";
+import { semanticColors } from "@vendetta/ui";
 import { getAssetIDByName } from "@vendetta/ui/assets";
-import { React, ReactNative } from "@vendetta/metro/common";
+import { showToast } from "@vendetta/ui/toasts";
+import { React, clipboard, ReactNative } from "@vendetta/metro/common";
 import { Forms, General } from "@vendetta/ui/components";
 
-const { View, TouchableOpacity } = General;
+const RowManager = findByName("RowManager");
+const ThemeStore = findByStoreName("ThemeStore");
+const { meta: { resolveSemanticColor } } = findByProps("colors", "meta");
+
+const { View, Text, TouchableOpacity } = General;
 const { FormIcon, FormText } = Forms;
 const { ActivityIndicator } = ReactNative;
 
 const { default: Navigator, getRenderCloseButton } = findByProps('getRenderCloseButton');
 const modals = findByProps('pushModal');
 
-
-
+const humanize = findByProps("intword");
 
 const downloadIcon = getAssetIDByName("ic_download_24px");
 
@@ -67,7 +72,25 @@ function createFCModal(filename = "unknown", url = "https://cdn.discordapp.com/a
                         content ? loaded : loading
                         );
                     },
-                    title: filename.toUpperCase()
+                    headerTitle: ()=> {
+                        let headerColor = resolveSemanticColor(ThemeStore.theme, semanticColors.HEADER_PRIMARY);
+                        return <TouchableOpacity
+                        onPress={() => {
+                          clipboard.setString(filename);
+                          showToast(
+                            "Copied content to clipboard",
+                            getAssetIDByName("toast_copy_link")
+                          );
+                        }}
+                      >
+                        <Text numberOfLines={1} style={{ color: headerColor }}>
+                          {filename}
+                        </Text>
+                        <Text numberOfLines={1} style={{ color: headerColor, fontSize: 12 }}>
+                          {humanize.intword(bytes, [ 'bytes', 'KB', 'MB', 'GB', 'TB', 'PB' ], 1024)}
+                        </Text>
+                      </TouchableOpacity>;
+                    }
                 }
             }}
             />
