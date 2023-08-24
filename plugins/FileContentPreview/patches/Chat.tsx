@@ -77,8 +77,8 @@ function createFCModal(filename = "unknown", url = "https://cdn.discordapp.com/a
                         onPress={() => {
                           clipboard.setString(filename);
                           showToast(
-                            "Copied content to clipboard",
-                            getAssetIDByName("toast_copy_link")
+                            "Copied filename to clipboard",
+                            getAssetIDByName("toast_copy_message")
                           );
                         }}
                       >
@@ -86,7 +86,7 @@ function createFCModal(filename = "unknown", url = "https://cdn.discordapp.com/a
                           {filename}
                         </Text>
                         <Text numberOfLines={1} style={{ color: headerColor, fontSize: 12 }}>
-                          {humanize.intword(bytes, [ 'bytes', 'KB', 'MB', 'GB', 'TB', 'PB' ], 1024)}
+                          {humanize.intword(bytes, [ 'bytes', 'KB', 'MB', 'GB', 'TB', 'PB' ], 1024, undefined, undefined, undefined, ' ')}
                         </Text>
                       </TouchableOpacity>;
                     }
