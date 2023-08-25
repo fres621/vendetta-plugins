@@ -11,7 +11,7 @@ const { meta: { resolveSemanticColor } } = findByProps("colors", "meta");
 
 const { View, Text, TouchableOpacity } = General;
 const { FormIcon, FormText } = Forms;
-const { ActivityIndicator } = ReactNative;
+const { ActivityIndicator, ScrollView } = ReactNative;
 
 const { default: Navigator, getRenderCloseButton } = findByProps('getRenderCloseButton');
 const modals = findByProps('pushModal');
@@ -54,9 +54,9 @@ function createFCModal(filename = "unknown", url = "https://cdn.discordapp.com/a
             );
 
         let loaded = (    
-            <View style={{margin: 15}}>
+            <ScrollView style={{margin: 15, marginBottom: 50}}>
               <FormText>{content}</FormText>
-            </View>
+            </ScrollView>
             )
         
         return (
