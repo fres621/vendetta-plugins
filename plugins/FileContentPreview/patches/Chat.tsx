@@ -54,8 +54,11 @@ function createFCModal(filename = "unknown", url = "https://cdn.discordapp.com/a
             </View>
             );
 
+        const [wordWrap, setwordWrap] = React.useState(false);
+
         const Colors = {
             header: resolveSemanticColor(ThemeStore.theme, semanticColors.HEADER_PRIMARY),
+            test: resolveSemanticColor(ThemeStore.theme, semanticColors.TEXT_MUTED),
             bgDark: resolveSemanticColor(ThemeStore.theme, semanticColors.BACKGROUND_SECONDARY_ALT),
             bgBright: resolveSemanticColor(ThemeStore.theme, semanticColors.BACKGROUND_SECONDARY),
             bgBrighter: resolveSemanticColor(ThemeStore.theme, semanticColors.BACKGROUND_ACCENT)
@@ -74,7 +77,6 @@ function createFCModal(filename = "unknown", url = "https://cdn.discordapp.com/a
             <Path d="M2 18.75C2 18.3358 2.33579 18 2.75 18H9.25C9.66421 18 10 18.3358 10 18.75C10 19.1642 9.66421 19.5 9.25 19.5H2.75C2.33579 19.5 2 19.1642 2 18.75Z" />
             </Svg>);
 
-        const [wordWrap, setwordWrap] = React.useState(false);
         let loaded = (    
             <View style={{marginTop: 0}}>
             <View style={{
