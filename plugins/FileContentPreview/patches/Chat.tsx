@@ -13,6 +13,8 @@ const { View, Text, TouchableOpacity } = General;
 const { FormIcon } = Forms;
 const { ActivityIndicator, ScrollView } = ReactNative;
 
+const download = ReactNative.NativeModules.MediaManager.downloadMediaAsset;
+
 const { default: Navigator, getRenderCloseButton } = findByProps('getRenderCloseButton');
 const modals = findByProps('pushModal');
 
@@ -29,7 +31,7 @@ function testBtn(onPress) {
     );
 };
 
-function createFCModal(filename = "unknown", url = "https://cdn.discordapp.com/attachments/593084706593964043/1143675462376239236/SPOILER_a.txt", bytes = 1) {
+function createFCModal(filename = "unknown", url = "https://cdn.discordapp.com/attachments/1068304660269641738/1144843403151020122/file.txt", bytes = 1) {
     return ()=>{
         const [content, setContent] = React.useState("");
         let maxBytes = '10000';
@@ -116,7 +118,15 @@ function createFCModal(filename = "unknown", url = "https://cdn.discordapp.com/a
             screens={{
                 FILE_CONTENT_PREVIEW: {
                     headerLeft: getRenderCloseButton(() => modals.popModal('file-content-preview')),
-                    headerRight: testBtn(() => { console.log("uwu") }),
+                    headerRight: testBtn(() => { 
+                      download(url, 0).then(saved=>{
+                        if (saved) {
+                        showToast("Saved file", getAssetIDByName("ic_selection_checked_24px"));
+                        } else {
+                        showToast("Error saving file", getAssetIDByName("ic_close_circle"));
+                        };
+                      });
+                     }),
                     render: () => {
                         return (
                         content ? loaded : loading
@@ -167,7 +177,7 @@ export default function() {
                 key: 'file-content-preview',
                 modal: {
                     key: 'file-content-preview',
-                    modal: createFCModal("uwu", attachment.url, attachment.size),
+                    modal: createFCModal(attachment.filename, attachment.url, attachment.size),
                     animation: 'slide-up',
                     shouldPersistUnderModals: false,
                     closable: true
