@@ -29,9 +29,9 @@ const Path = findByName("Svg",false).Path;
 
 const SafeArea = findByProps("useSafeAreaInsets");
 
-function testBtn(onPress) {
+function testBtn(onPress, onLongPress) {
     return ()=>(
-    <TouchableOpacity onPress={onPress}>
+    <TouchableOpacity onPress={onPress} onLongPress={onLongPress}>
         <FormIcon source={getAssetIDByName("ic_download_24px")} style={{ marginRight: 8, marginLeft: -8, opacity: 1 }} />
     </TouchableOpacity>  
     );
@@ -165,6 +165,12 @@ function createFCModal(filename = "unknown", url = "https://cdn.discordapp.com/a
                         showToast(translations.FILE_SAVE_ERROR[getLocale()] ?? "Error saving file", getAssetIDByName("ic_close_circle"));
                         };
                       });
+                     }, () => {
+                      clipboard.setString(url);
+                      showToast(
+                        Locale.Messages.COPIED + " " + Locale.Messages.SEARCH_ANSWER_HAS_LINK,
+                        getAssetIDByName("toast_copy_link")
+                      );
                      }),
                     render: () => {
                         return (
