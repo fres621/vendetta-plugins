@@ -38,7 +38,7 @@ function createFCModal(filename = "unknown", url = "https://cdn.discordapp.com/a
         const [loadedBytes, setLoadedBytes] = React.useState(maxBytes);
         const [state, setState] = React.useState({content: "", loadedBytes: maxBytes});
         
-        if (loadedBytes === maxBytes) {
+        if (state.loadedBytes === maxBytes) {
           fetch(url, {
               headers: {
                 'Range': 'bytes=0-' + String(maxBytes)
