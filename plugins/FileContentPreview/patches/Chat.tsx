@@ -36,21 +36,25 @@ function createFCModal(filename = "unknown", url = "https://cdn.discordapp.com/a
         const [content, setContent] = React.useState("");
         let maxBytes = 10000;
         const [loadedBytes, setLoadedBytes] = React.useState(maxBytes);
+        const [state, setState] = React.useState({content: "", loadedBytes: maxBytes});
         
-        fetch(url, {
-            headers: {
-              'Range': 'bytes=0-' + String(maxBytes)
-            }
-        }).then(r=>{
-          console.log("this is called")
-            if (!r.ok) {
-                setContent("Error reading file content: Network response was not ok");
-            } else {
-                r.text().then(text=>{
-                    setContent(text);
-                });
-            };
-        });
+        if (loadedBytes === maxBytes) {
+          fetch(url, {
+              headers: {
+                'Range': 'bytes=0-' + String(maxBytes)
+              }
+          }).then(r=>{
+              if (!r.ok) {
+                  //setContent("Error reading file content: Network response was not ok");
+                  setState({content: "", loadedBytes: 0});
+              } else {
+                  r.text().then(text=>{
+                      //setContent(text);
+                      setState({content: text, loadedBytes: state.loadedBytes});
+                  });
+              };
+          });
+        };
         
         let loading = (  
             <View style={{margin: 32}}>
@@ -87,17 +91,19 @@ function createFCModal(filename = "unknown", url = "https://cdn.discordapp.com/a
             <TouchableOpacity 
             style={{backgroundColor: Colors.bgBright, borderRadius: 5, padding: 10, marginBottom: 20, marginTop: 5}}
             onPress={()=>{
-              setLoadedBytes(loadedBytes + maxBytes);
+              //setLoadedBytes(loadedBytes + maxBytes);
               fetch(url, {
                 headers: {
-                  'Range': 'bytes=' + String(loadedBytes-maxBytes) + '-' + String(loadedBytes)
+                  'Range': 'bytes=' + String(loadedBytes) + '-' + String(loadedBytes + maxBytes)
                 }
               }).then(r=>{
                   if (!r.ok) {
-                      setContent(content + "\nError loading more of the file content: Network response was not ok");
+                      //setContent(content + "\nError loading more of the file content: Network response was not ok");
+                      console.log("Error loading more bytes: Network response was not ok");
                   } else {
                       r.text().then(text=>{
-                          setContent(content + text);
+                          //setContent(content + text);
+                          setState({content: content + text, loadedBytes: state.loadedBytes + maxBytes});
                       });
                   };
               });
