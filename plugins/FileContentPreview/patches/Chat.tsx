@@ -42,6 +42,7 @@ function createFCModal(filename = "unknown", url = "https://cdn.discordapp.com/a
               'Range': 'bytes=0-' + String(maxBytes)
             }
         }).then(r=>{
+          console.log("this is called")
             if (!r.ok) {
                 setContent("Error reading file content: Network response was not ok");
             } else {
