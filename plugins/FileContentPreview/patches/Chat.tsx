@@ -23,6 +23,8 @@ const humanize = findByProps("intword");
 const Svg = findByName("Svg",false).default;
 const Path = findByName("Svg",false).Path;
 
+const SafeArea = findByProps("useSafeAreaInsets");
+
 function testBtn(onPress) {
     return ()=>(
     <TouchableOpacity onPress={onPress}>
@@ -110,6 +112,8 @@ function createFCModal(filename = "unknown", url = "https://cdn.discordapp.com/a
           </>
         );
 
+        const insets = SafeArea.useSafeAreaInsets();
+
         let loaded = (    
             <View style={{marginTop: 0}}>
             <View style={{
@@ -134,7 +138,7 @@ function createFCModal(filename = "unknown", url = "https://cdn.discordapp.com/a
               {wordwrapsvg}
               </TouchableOpacity>
             </View>
-            <ScrollView style={{margin: 15, marginBottom: 100}}>
+            <ScrollView style={{margin: 15, marginBottom: insets.bottom}}>
               <ScrollView horizontal={!wordWrap}>
                 <Text selectable={true} style={{color: Colors.header}}>{state.content}</Text>
               </ScrollView>
