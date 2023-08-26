@@ -35,9 +35,6 @@ function createFCModal(filename = "unknown", url = "https://cdn.discordapp.com/a
     return ()=>{
         let maxBytes = 10000;
         const [state, setState] = React.useState({content: "", loadedBytes: maxBytes, firstTime: true});
-        console.log("-- Render --");
-        console.log("current state:", state);
-        console.log("-- end --");
         if (state.firstTime) {
           fetch(url, {
               headers: {
