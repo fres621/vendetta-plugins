@@ -34,11 +34,11 @@ function testBtn(onPress) {
 function createFCModal(filename = "unknown", url = "https://cdn.discordapp.com/attachments/1068304660269641738/1144843403151020122/file.txt", bytes = 1) {
     return ()=>{
         let maxBytes = 10000;
-        const [state, setState] = React.useState({content: "", loadedBytes: maxBytes});
+        const [state, setState] = React.useState({content: "", loadedBytes: maxBytes, firstTime: true});
         console.log("-- Render --");
         console.log("current state:", state);
         console.log("-- end --");
-        if (state.loadedBytes === maxBytes) {
+        if (state.firstTime) {
           fetch(url, {
               headers: {
                 'Range': 'bytes=0-' + String(maxBytes)
@@ -46,11 +46,11 @@ function createFCModal(filename = "unknown", url = "https://cdn.discordapp.com/a
           }).then(r=>{
               if (!r.ok) {
                   //setContent("Error reading file content: Network response was not ok");
-                  setState({content: "", loadedBytes: 0});
+                  setState({content: "", loadedBytes: 0, firstTime: false});
               } else {
                   r.text().then(text=>{
                       //setContent(text);
-                      setState({content: text, loadedBytes: state.loadedBytes});
+                      setState({content: text, loadedBytes: state.loadedBytes, firstTime: false});
                   });
               };
           });
@@ -104,7 +104,7 @@ function createFCModal(filename = "unknown", url = "https://cdn.discordapp.com/a
                   } else {
                       r.text().then(text=>{
                           //setContent(content + text);
-                          setState({content: state.content + text, loadedBytes: state.loadedBytes + maxBytes});
+                          setState({content: state.content + text, loadedBytes: state.loadedBytes + maxBytes, firstTime: false});
                       });
                   };
               });
