@@ -138,7 +138,7 @@ function createFCModal(filename = "unknown", url = "https://cdn.discordapp.com/a
               {wordwrapsvg}
               </TouchableOpacity>
             </View>
-            <ScrollView style={{margin: 15, marginBottom: insets.bottom}}>
+            <ScrollView style={{margin: 15, marginBottom: 50+insets.bottom}}>
               <ScrollView horizontal={!wordWrap}>
                 <Text selectable={true} style={{color: Colors.header}}>{state.content}</Text>
               </ScrollView>
