@@ -99,7 +99,8 @@ function createFCModal(filename = "unknown", url = "https://cdn.discordapp.com/a
               }).then(r=>{
                   if (!r.ok) {
                       //setContent(content + "\nError loading more of the file content: Network response was not ok");
-                      console.log("Error loading more bytes: Network response was not ok");
+                      //console.log("Error loading more bytes: Network response was not ok");
+                      showToast("Error: Network response was not ok", getAssetIDByName("ic_close_circle"));
                   } else {
                       r.text().then(text=>{
                           //setContent(content + text);
