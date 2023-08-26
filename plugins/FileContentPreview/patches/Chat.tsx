@@ -33,9 +33,7 @@ function testBtn(onPress) {
 
 function createFCModal(filename = "unknown", url = "https://cdn.discordapp.com/attachments/1068304660269641738/1144843403151020122/file.txt", bytes = 1) {
     return ()=>{
-        const [content, setContent] = React.useState("");
         let maxBytes = 10000;
-        const [loadedBytes, setLoadedBytes] = React.useState(maxBytes);
         const [state, setState] = React.useState({content: "", loadedBytes: maxBytes});
         
         if (state.loadedBytes === maxBytes) {
@@ -87,14 +85,14 @@ function createFCModal(filename = "unknown", url = "https://cdn.discordapp.com/a
 
         let unloadedRemaining = (
           <>
-            <Text style={{color: Colors.test, marginTop: 7}}>+ {humanize.intword(bytes-loadedBytes, [ 'bytes', 'KB', 'MB', 'GB', 'TB', 'PB' ], 1024, undefined, undefined, undefined, ' ')} not loaded.</Text>
+            <Text style={{color: Colors.test, marginTop: 7}}>+ {humanize.intword(bytes-state.loadedBytes, [ 'bytes', 'KB', 'MB', 'GB', 'TB', 'PB' ], 1024, undefined, undefined, undefined, ' ')} not loaded.</Text>
             <TouchableOpacity 
             style={{backgroundColor: Colors.bgBright, borderRadius: 5, padding: 10, marginBottom: 20, marginTop: 5}}
             onPress={()=>{
               //setLoadedBytes(loadedBytes + maxBytes);
               fetch(url, {
                 headers: {
-                  'Range': 'bytes=' + String(loadedBytes) + '-' + String(loadedBytes + maxBytes)
+                  'Range': 'bytes=' + String(state.loadedBytes) + '-' + String(state.loadedBytes + maxBytes)
                 }
               }).then(r=>{
                   if (!r.ok) {
@@ -104,7 +102,7 @@ function createFCModal(filename = "unknown", url = "https://cdn.discordapp.com/a
                   } else {
                       r.text().then(text=>{
                           //setContent(content + text);
-                          setState({content: content + text, loadedBytes: state.loadedBytes + maxBytes});
+                          setState({content: state.content + text, loadedBytes: state.loadedBytes + maxBytes});
                       });
                   };
               });
@@ -139,9 +137,9 @@ function createFCModal(filename = "unknown", url = "https://cdn.discordapp.com/a
             </View>
             <ScrollView style={{margin: 15, marginBottom: 50}}>
               <ScrollView horizontal={!wordWrap}>
-                <Text selectable={true} style={{color: Colors.header}}>{content}</Text>
+                <Text selectable={true} style={{color: Colors.header}}>{state.content}</Text>
               </ScrollView>
-              {loadedBytes < bytes && unloadedRemaining}
+              {state.loadedBytes < bytes && unloadedRemaining}
             </ScrollView>
           </View>
             )
@@ -163,7 +161,7 @@ function createFCModal(filename = "unknown", url = "https://cdn.discordapp.com/a
                      }),
                     render: () => {
                         return (
-                        content ? loaded : loading
+                        state.content ? loaded : loading
                         );
                     },
                     headerTitle: ()=> {
