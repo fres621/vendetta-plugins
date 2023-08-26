@@ -133,7 +133,7 @@ function createFCModal(filename = "unknown", url = "https://cdn.discordapp.com/a
               <ScrollView horizontal={!wordWrap}>
                 <Text selectable={true} style={{color: Colors.header}}>{content}</Text>
               </ScrollView>
-              {loadedBytes >= bytes && unloadedRemaining}
+              {loadedBytes < bytes && unloadedRemaining}
             </ScrollView>
           </View>
             )
