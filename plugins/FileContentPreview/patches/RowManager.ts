@@ -1,6 +1,11 @@
-import { findByName } from "@vendetta/metro";
+import { findByProps, findByName } from "@vendetta/metro";
 import { after } from "@vendetta/patcher";
+import translations from "../translations";
+
 const RowManager = findByName("RowManager");
+
+const Locale = findByProps("Messages");
+const { getLocale } = findByProps("getLocale");
 
 function makeRPL(filename = "unknown", size = "? bytes") {
     return { borderColor: -251658241,
@@ -9,11 +14,11 @@ function makeRPL(filename = "unknown", size = "? bytes") {
            headerColor: -4867391,
            headerText: '',
            acceptLabelBackgroundColor: -14441126,
-           titleText: 'FILE — ' + size,
+           titleText: Locale.Messages.SEARCH_ANSWER_HAS_ATTACHMENT.toUpperCase() + ' — ' + size,
            type: null,
            extendedType: 4,
            participantAvatarUris: [],
-           acceptLabelText: 'Preview',
+           acceptLabelText: translations.PREVIEW[getLocale()] ?? "Preview",
            noParticipantsText: '\n' + filename,
            ctaEnabled: true }
     };

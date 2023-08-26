@@ -5,6 +5,10 @@ import { getAssetIDByName } from "@vendetta/ui/assets";
 import { showToast } from "@vendetta/ui/toasts";
 import { React, clipboard, ReactNative } from "@vendetta/metro/common";
 import { Forms, General } from "@vendetta/ui/components";
+import translations from "../translations";
+
+const Locale = findByProps("Messages");
+const { getLocale } = findByProps("getLocale");
 
 const ThemeStore = findByStoreName("ThemeStore");
 const { meta: { resolveSemanticColor } } = findByProps("colors", "meta");
@@ -108,7 +112,7 @@ function createFCModal(filename = "unknown", url = "https://cdn.discordapp.com/a
                   };
               });
             }}
-            ><Text style={{color: Colors.header, textTransform: "uppercase", fontWeight: 'bold', textAlign: 'center', fontSize: 20}}>Load more</Text></TouchableOpacity>
+            ><Text style={{color: Colors.header, textTransform: "uppercase", fontWeight: 'bold', textAlign: 'center', fontSize: 20}}>{Locale.Messages.VOICE_PANEL_LOAD_MORE}</Text></TouchableOpacity>
           </>
         );
 
@@ -126,7 +130,7 @@ function createFCModal(filename = "unknown", url = "https://cdn.discordapp.com/a
             }}>
               <TouchableOpacity 
               onPress={()=>{setwordWrap(!wordWrap)}}
-              onLongPress={()=>{showToast("Toggle Word Wrap", getAssetIDByName("ic_information_filled_24px"))}}
+              onLongPress={()=>{showToast(translations.TOGGLE_WORD_WRAP[getLocale()] ?? "Toggle Word Wrap", getAssetIDByName("ic_information_filled_24px"))}}
               style={{
                 backgroundColor: wordWrap ? Colors.bgBrighter : Colors.bgDark,
                 padding: 4,
@@ -156,9 +160,9 @@ function createFCModal(filename = "unknown", url = "https://cdn.discordapp.com/a
                     headerRight: testBtn(() => { 
                       download(url, 0).then(saved=>{
                         if (saved) {
-                        showToast("Saved file", getAssetIDByName("ic_selection_checked_24px"));
+                        showToast(translations.FILE_SAVED[getLocale()] ?? "File saved", getAssetIDByName("ic_selection_checked_24px"));
                         } else {
-                        showToast("Error saving file", getAssetIDByName("ic_close_circle"));
+                        showToast(translations.FILE_SAVE_ERROR[getLocale()] ?? "Error saving file", getAssetIDByName("ic_close_circle"));
                         };
                       });
                      }),
@@ -173,7 +177,7 @@ function createFCModal(filename = "unknown", url = "https://cdn.discordapp.com/a
                         onPress={() => {
                           clipboard.setString(filename);
                           showToast(
-                            "Copied filename to clipboard",
+                            Locale.Messages.COPIED_TEXT,
                             getAssetIDByName("toast_copy_message")
                           );
                         }}
