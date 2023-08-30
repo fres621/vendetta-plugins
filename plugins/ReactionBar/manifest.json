@@ -1,0 +1,14 @@
+{
+    "name": "ReactionBar",
+    "description": "Adds a bar for quickly adding reactions to a message when you reply to it",
+    "authors": [
+        {
+            "name": "fres",
+            "id": "843448897737064448"
+        }
+    ],
+    "main": "/index.ts",
+    "vendetta": {
+        "icon": "ic_add_reaction_v2"
+    }
+}
