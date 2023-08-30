@@ -110,7 +110,7 @@ export default function() {
               animated: c.animated
             };
             return undefined;
-          }).filter((e) => e !== undefined).slice(0, 15);
+          }).filter((e) => e !== undefined);
     
         if (!savedRES) save({id: guildId, emojis});
     
