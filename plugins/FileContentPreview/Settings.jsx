@@ -35,7 +35,7 @@ export default () => {
                 fontFamily: constants.Fonts.DISPLAY_MEDIUM, fontSize: 16, 
                 marginBottom: 5, marginTop: -5
                 }}>
-                    Current value: {`${ hm(storage.chunkSize) } (${ unpt(storage.chunkSize) }%)`}
+                    Current value: {`${ hm(storage.chunkSize) } (${ Math.round(unpt(storage.chunkSize)) }%)`}
             </Text>
         </ScrollView>
     )
