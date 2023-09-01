@@ -1,5 +1,6 @@
 import patchChat from "./patches/Chat";
 import patchRM from "./patches/RowManager";
+import Settings from "./Settings";
 
 let patches = [];
 
@@ -12,5 +13,6 @@ export default {
         for (const unpatch of patches) {
             unpatch();
         };
-    }
+    },
+    settings: Settings
 }
