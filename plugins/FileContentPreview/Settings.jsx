@@ -1,5 +1,6 @@
 import { FormRow } from "@vendetta/ui/components/Forms";
 import { ReactNative, constants } from "@vendetta/metro/common";
+import { useProxy } from "@vendetta/storage";
 import { storage } from "@vendetta/plugin";
 import Swidew from "./ui/Swidew";
 
