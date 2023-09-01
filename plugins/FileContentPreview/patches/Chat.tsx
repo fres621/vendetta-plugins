@@ -40,7 +40,7 @@ function testBtn(onPress, onLongPress) {
 
 function createFCModal(filename = "unknown", url = "https://cdn.discordapp.com/attachments/1068304660269641738/1144843403151020122/file.txt", bytes = 1) {
     return ()=>{
-        let maxBytes = storage.chunkSize || 2569728;
+        let maxBytes = storage.chunkSize || 60928;
         const [state, setState] = React.useState({content: "", loadedBytes: maxBytes, firstTime: true});
         if (state.firstTime) {
           fetch(url, {

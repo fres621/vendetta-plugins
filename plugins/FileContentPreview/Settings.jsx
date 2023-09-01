@@ -21,9 +21,10 @@ const humanize = findByProps("intword");
 
 export default () => {
     useProxy(storage);
-    storage.chunkSize ??= 2569728;
-    let ptBytes = (v)=>(v / 100) * (51200000 - 10240) + 10240;
-    let unpt = (ptBytes) => ((ptBytes - 10240) / (51200000 - 10240)) * 100;
+    storage.chunkSize ??= 60928;
+    let max = 1024000, min = 10240;
+    let ptBytes = (v)=>(v / 100) * (max - min) + min;
+    let unpt = (ptBytes) => ((ptBytes - min) / (max - min)) * 100;
     let hm = (v)=> humanize.intword(v, [ 'bytes', 'KB', 'MB', 'GB', 'TB', 'PB' ], 1024, undefined, undefined, undefined, ' ');
     return (
         <ScrollView style={{flex: 1, marginTop: 10}}>
