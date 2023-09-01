@@ -2,9 +2,11 @@ import { FormRow } from "@vendetta/ui/components/Forms";
 import { ReactNative, constants } from "@vendetta/metro/common";
 import { useProxy } from "@vendetta/storage";
 import { storage } from "@vendetta/plugin";
+import { General } from "@vendetta/ui/components";
 import Swidew from "./ui/Swidew";
 
 const { ScrollView } = ReactNative;
+const { Text } = General;
 
 const Colors = {
     text: resolveSemanticColor(ThemeStore.theme, semanticColors.TEXT_NORMAL)
