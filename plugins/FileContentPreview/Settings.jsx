@@ -1,12 +1,17 @@
+import { findByProps, findByStoreName } from "@vendetta/metro";
 import { FormRow } from "@vendetta/ui/components/Forms";
 import { ReactNative, constants } from "@vendetta/metro/common";
 import { useProxy } from "@vendetta/storage";
 import { storage } from "@vendetta/plugin";
+import { semanticColors } from "@vendetta/ui";
 import { General } from "@vendetta/ui/components";
 import Swidew from "./ui/Swidew";
 
 const { ScrollView } = ReactNative;
 const { Text } = General;
+
+const ThemeStore = findByStoreName("ThemeStore");
+const { meta: { resolveSemanticColor } } = findByProps("colors", "meta");
 
 const Colors = {
     text: resolveSemanticColor(ThemeStore.theme, semanticColors.TEXT_NORMAL)
