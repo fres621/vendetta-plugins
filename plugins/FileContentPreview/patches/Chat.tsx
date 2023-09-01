@@ -6,6 +6,7 @@ import { showToast } from "@vendetta/ui/toasts";
 import { React, clipboard, ReactNative } from "@vendetta/metro/common";
 import { Forms, General } from "@vendetta/ui/components";
 import translations from "../translations";
+import { storage } from "@vendetta/plugin";
 
 const Locale = findByProps("Messages");
 const { getLocale } = findByProps("getLocale");
@@ -39,7 +40,7 @@ function testBtn(onPress, onLongPress) {
 
 function createFCModal(filename = "unknown", url = "https://cdn.discordapp.com/attachments/1068304660269641738/1144843403151020122/file.txt", bytes = 1) {
     return ()=>{
-        let maxBytes = 10000;
+        let maxBytes = storage.chunkSize || 2569728;
         const [state, setState] = React.useState({content: "", loadedBytes: maxBytes, firstTime: true});
         if (state.firstTime) {
           fetch(url, {
