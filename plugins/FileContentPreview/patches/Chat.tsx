@@ -7,6 +7,7 @@ import { React, clipboard, ReactNative } from "@vendetta/metro/common";
 import { Forms, General } from "@vendetta/ui/components";
 import translations from "../translations";
 import { storage } from "@vendetta/plugin";
+import { constants } from "@vendetta/metro/common";
 
 const Locale = findByProps("Messages");
 const { getLocale } = findByProps("getLocale");
@@ -16,7 +17,7 @@ const { meta: { resolveSemanticColor } } = findByProps("colors", "meta");
 
 const { View, Text, TouchableOpacity } = General;
 const { FormIcon } = Forms;
-const { ActivityIndicator, ScrollView } = ReactNative;
+const { ActivityIndicator, ScrollView, Image, Modal } = ReactNative;
 
 const download = ReactNative.NativeModules.MediaManager.downloadMediaAsset;
 
@@ -67,6 +68,7 @@ function createFCModal(filename = "unknown", url = "https://cdn.discordapp.com/a
             );
 
         const [wordWrap, setwordWrap] = React.useState(false);
+        const [nl, setnl] = React.useState([]);
 
         const Colors = {
             header: resolveSemanticColor(ThemeStore.theme, semanticColors.HEADER_PRIMARY),
@@ -117,7 +119,11 @@ function createFCModal(filename = "unknown", url = "https://cdn.discordapp.com/a
           </>
         );
 
+        const [isOverlayVisible, setIsOverlayVisible] = React.useState(false);
+        const scrollViewRef = React.useRef(null);
+
         const insets = SafeArea.useSafeAreaInsets();
+        let lineIteration = 0;
 
         let loaded = (    
             <View style={{marginTop: 0}}>
@@ -129,26 +135,122 @@ function createFCModal(filename = "unknown", url = "https://cdn.discordapp.com/a
                   flexWrap: "nowrap",
                   justifyContent: "space-between"
             }}>
-              <TouchableOpacity 
-              onPress={()=>{setwordWrap(!wordWrap)}}
-              onLongPress={()=>{showToast(translations.TOGGLE_WORD_WRAP[getLocale()] ?? "Toggle Word Wrap", getAssetIDByName("ic_information_filled_24px"))}}
-              style={{
-                backgroundColor: wordWrap ? Colors.bgBrighter : Colors.bgDark,
-                padding: 4,
-                borderRadius: 5,
-                borderWidth: 2,
-                borderColor: wordWrap ? Colors.bgBright : Colors.bgDark
-              }}
-              >
-              {wordwrapsvg}
-              </TouchableOpacity>
+              <View style={{
+                display: "flex",
+                flexDirection: "row"
+              }}>
+                <TouchableOpacity 
+                onPress={()=>{setwordWrap(!wordWrap)}}
+                onLongPress={()=>{showToast(translations.TOGGLE_WORD_WRAP[getLocale()] ?? "Toggle Word Wrap", getAssetIDByName("ic_information_filled_24px"))}}
+                style={{
+                  backgroundColor: wordWrap ? Colors.bgBrighter : Colors.bgDark,
+                  padding: 4,
+                  borderRadius: 5,
+                  borderWidth: 2,
+                  borderColor: wordWrap ? Colors.bgBright : Colors.bgDark
+                }}>
+                  {wordwrapsvg}
+                </TouchableOpacity>
+                <TouchableOpacity 
+                      onPress={()=>{setIsOverlayVisible(true)}}
+                      onLongPress={()=>{showToast(Locale.Messages.JUMP, getAssetIDByName("ic_information_filled_24px"))}}
+                      style={{
+                          marginLeft: 10,
+                          backgroundColor: wordWrap ? Colors.bgBrighter : Colors.bgDark,
+                          padding: 4,
+                          borderRadius: 5,
+                          borderWidth: 2,
+                          borderColor: wordWrap ? Colors.bgBright : Colors.bgDark
+                      }}
+                      >
+                      <Image 
+                      source={getAssetIDByName("ic_reply_24px")} 
+                      style={{ 
+                          height: 24, width: 24, 
+                          transform: [{ scaleX: -1 }, { rotate: '-90deg' }] }}
+                      />
+                </TouchableOpacity>
+              </View>
             </View>
-            <ScrollView style={{margin: 15, marginBottom: 50+insets.bottom}}>
+            <ScrollView ref={scrollViewRef} style={{margin: 15, marginBottom: 50+insets.bottom}}>
               <ScrollView horizontal={!wordWrap}>
-                <Text selectable={true} style={{color: Colors.header}}>{state.content}</Text>
+                <View style={{ flexDirection: 'row' }}>
+                <View style={{borderTopLeftRadius: 4, borderBottomLeftRadius: 4, backgroundColor: Colors.bgDark, marginRight: 5, paddingRight: 2, paddingLeft: 2, alignSelf: 'flex-start'}}>
+                    <Text style={{textAlign: 'right', color: Colors.test, lineHeight: 20}}>
+                        {nl.map((line)=>line?++lineIteration:' ').join('\n')}
+                    </Text>
+                </View>
+                <Text selectable={true} style={{color: Colors.header, lineHeight: 20, flex: 1}} onTextLayout={(e)=>{
+                    let lines = e.nativeEvent.lines;
+                    // Code below: For each line, if it's the first line or the line before has a line break return true,
+                    // otherwise return false, this way I have an array of booleans which lets me know whether I should put
+                    // a line number at a certain index
+                    setnl(lines.map((_line, i)=>i>0 ? lines[i-1].text.indexOf("\n")>-1 : true));
+                    }}>{state.content}</Text>
+                </View>
               </ScrollView>
               {state.loadedBytes < bytes && unloadedRemaining}
             </ScrollView>
+            <Modal
+            transparent={true}
+            animationType="none"
+            visible={isOverlayVisible}
+            onRequestClose={()=>setIsOverlayVisible(false)}
+            >
+                <View style={{
+                    flex: 1,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    backgroundColor: 'rgba(0, 0, 0, 0.5)', // Semi-transparent background color
+                }}>
+                    <View style={{
+                        backgroundColor: Colors.bgBright,
+                        padding: 20,
+                        borderRadius: 10,
+                        width: '90%',
+                    }}>
+                        <View style={{
+                            flexDirection: 'row',
+                            justifyContent: 'space-between',
+                            alignItems: 'center',
+                            marginBottom: 15
+                        }}>
+                        <Forms.FormText style={{fontSize: 20, fontFamily: constants.Fonts.PRIMARY_BOLD}}>{Locale.Messages.JUMP}</Forms.FormText>
+                        <TouchableOpacity onPress={()=>setIsOverlayVisible(false)}>
+                            <FormIcon source={getAssetIDByName("ic_close_16px")} style={{ opacity: 1 }} />
+                        </TouchableOpacity>
+                        </View>
+                        <TouchableOpacity style={{
+                            backgroundColor: Colors.bgDark, borderRadius: 5, 
+                            padding: 10, marginBottom: 15, marginTop: 5,
+                            flexDirection: 'row', justifyContent: 'space-between',
+                            alignItems: 'center'
+                        }} onPress={()=>{
+                            let scrollView: any = scrollViewRef?.current;
+                            setIsOverlayVisible(false)
+                            scrollView?.scrollToEnd?.({ animated: true });
+                        }}>
+                            <FormIcon source={getAssetIDByName("ic_jump_to_bottom_24px")} style={{ opacity: 1 }} />
+                            <Forms.FormText style={{color: Colors.test, fontSize: 16, fontFamily: constants.Fonts.PRIMARY_BOLD, textTransform: "uppercase"}}>{translations.JUMP_BOTTOM[getLocale()] ?? "Jump to the bottom"}</Forms.FormText>
+                            <View />
+                        </TouchableOpacity>
+                        <TouchableOpacity style={{
+                            backgroundColor: Colors.bgDark, borderRadius: 5, 
+                            padding: 10, marginBottom: 10,
+                            flexDirection: 'row', justifyContent: 'space-between',
+                            alignItems: 'center'
+                        }} onPress={()=>{
+                            let scrollView: any = scrollViewRef?.current;
+                            setIsOverlayVisible(false)
+                            scrollView?.scrollTo?.({ y: 0, animated: true });
+                        }}>
+                            <FormIcon source={getAssetIDByName("ic_jump_to_bottom_24px")} style={{ opacity: 1, transform: [{ scaleY: -1 }] }} />
+                            <Forms.FormText style={{color: Colors.test, fontSize: 16, fontFamily: constants.Fonts.PRIMARY_BOLD, textTransform: "uppercase"}}>{translations.JUMP_TOP[getLocale()] ?? "Jump to the top"}</Forms.FormText>
+                            <View />
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </Modal>
           </View>
             )
         

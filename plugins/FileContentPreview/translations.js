@@ -30,5 +30,17 @@ export default {
         "en-GB": "Toggle Word Wrap",
         "es-ES": "Salto de línea",
         "uk": "Перемикач автопереносу слов"
+    },
+    "JUMP_BOTTOM": {
+        "en-US": "Jump to the bottom",
+        "en-GB": "Jump to the bottom",
+        "es-ES": "Saltar al final",
+        "uk": "Прокрутіть до низу"
+    },
+    "JUMP_TOP": {
+        "en-US": "Jump to the top",
+        "en-GB": "Jump to the top",
+        "es-ES": "Saltar al principio",
+        "uk": "Прокрутіть до верху"
     }
 }
