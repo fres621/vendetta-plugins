@@ -6,7 +6,7 @@ import { showToast } from "@vendetta/ui/toasts";
 const ThemeStore = findByStoreName("ThemeStore");
 const { meta: { resolveSemanticColor } } = findByProps("colors", "meta");
 
-const { default: { render: ActionSheet } } = (find(x => x.default?.render?.name == "ActionSheet") ?? { default: { render: false } });
+const ActionSheet = findByProps("ActionSheet")?.ActionSheet ?? find((x) => x.render?.name === "ActionSheet");
 const LazyActionSheet = findByProps("openLazy", "hideActionSheet");
 
 // https://discord.com/channels/1015931589865246730/1062531774187573308/1117197626648039494
