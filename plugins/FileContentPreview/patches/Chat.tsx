@@ -156,11 +156,11 @@ function createFCModal(filename = "unknown", url = "https://cdn.discordapp.com/a
                       onLongPress={()=>{showToast(Locale.Messages.JUMP, getAssetIDByName("ic_information_filled_24px"))}}
                       style={{
                           marginLeft: 10,
-                          backgroundColor: wordWrap ? Colors.bgBrighter : Colors.bgDark,
+                          backgroundColor: Colors.bgDark,
                           padding: 4,
                           borderRadius: 5,
                           borderWidth: 2,
-                          borderColor: wordWrap ? Colors.bgBright : Colors.bgDark
+                          borderColor: Colors.bgDark
                       }}
                       >
                       <Image 
