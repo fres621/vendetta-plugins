@@ -1,6 +1,6 @@
 {
     "name": "FileContentPreview",
-    "description": "Certainly! A more descriptive and informative description for the FileContentPreview component might be: Enables users to view a concise preview of text file contents within the application, facilitating quick content assessment and interaction.",
+    "description": "Allows you to preview the contents of text files in the app.",
     "authors": [
         {
             "name": "fres",
