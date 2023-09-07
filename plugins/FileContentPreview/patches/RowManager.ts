@@ -32,7 +32,7 @@ export default function() {
         let rpls = [];
         let attachs = [];
         message.attachments.forEach(attachment => {
-            if (filetypes.has(attachment.filename.toLowerCase().split(".").at(-1))) {
+            if (filetypes.has(attachment.filename.toLowerCase().split(".").pop())) {
                 rpls.push(makeRPL(attachment.filename, attachment.size));
             } else {
                 attachs.push(attachment);
