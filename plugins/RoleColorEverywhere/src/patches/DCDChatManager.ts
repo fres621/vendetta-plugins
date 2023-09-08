@@ -47,62 +47,62 @@ function interpolateColor(color1, color2, percentage) {
 export default function patchDCDChatManager() { // this isnt really patching DCDChatManager anymore......
   return after("generate", RowManager.prototype, ([row], {message}) => {
     if ((!storage.chatInterpolation || storage.chatInterpolation <= 0) && storage.noMention) return;
-        if (row.rowType != 1) return;
-        if (!message?.content) return;
+    if (row.rowType != 1) return;
 
-    	const channelId = message.channelId;
-    	const channel = ChannelStore.getChannel(channelId);
-    	if (!channel?.guild_id) return;
+    const channelId = message.channelId;
+    const channel = ChannelStore.getChannel(channelId);
+    if (!channel?.guild_id) return;
 
-        // Function that will be ran in every component of the message content
-        const mentionPatch = (component)=>{
-          if (component.type != 'mention') return;  // If the component is a mention
-          if (!component.userId) return;            // If it's an User mention (exclude roles)
+    // Function that will be ran in every component of the message content
+    const mentionPatch = (component)=>{
+      if (component.type != 'mention') return;  // If the component is a mention
+      if (!component.userId) return;            // If it's an User mention (exclude roles)
 
-          let member = GuildMemberStore.getMember(channel.guild_id, component.userId);
-          const hexc = member?.colorString;
-          if (!hexc) return;                          // Stop here if the user doesn't have a custom role color
-          const dec = parseInt(hexc.slice(1), 16);    // Get the decimal value for the role color
-          return {
-            ...component, 
-            roleColor: dec, 
-            color: dec, 
-            colorString: hexc
-          };
-        };
+      let member = GuildMemberStore.getMember(channel.guild_id, component.userId);
+      const hexc = member?.colorString;
+      if (!hexc) return;                          // Stop here if the user doesn't have a custom role color
+      const dec = parseInt(hexc.slice(1), 16);    // Get the decimal value for the role color
+      return {
+        ...component, 
+        roleColor: dec, 
+        color: dec, 
+        colorString: hexc
+      };
+    };
 
-        const defaultTextColor = resolveSemanticColor(ThemeStore.theme, semanticColors.TEXT_NORMAL);
+    const defaultTextColor = resolveSemanticColor(ThemeStore.theme, semanticColors.TEXT_NORMAL);
 
-        const colorPatch = (component, [authorId], tree?)=>{
-          let t = tree?.map(c=>c.type)
-          if (t?.includes("mention") || t?.includes("channelMention") || t?.includes("roleMention") || t?.includes("commandMention") || t?.includes("link")) return;
-          if (component.type != 'text') return;
-          const authorMember = GuildMemberStore.getMember(message.guildId, authorId);
-          if (!authorMember || !authorMember.colorString) return;
-          return {
-            content: [component],
-            target: 'usernameOnClick',
-            context: {
-              username: 1,
-              usernameOnClick: {
-                action: '0',
-                userId: '0',
-                linkColor: ReactNative.processColor(interpolateColor(defaultTextColor, authorMember.colorString, storage.chatInterpolation/100)),
-                messageChannelId: '0'
-              },
-              medium: true
-            },
-            type: 'link'
-          }
-        };
-        let patches = [];
-        if (storage.chatInterpolation > 0) {
-          patches.push(colorPatch);
-        };
-        if (!storage.noMention) {
-          patches.push(mentionPatch); message.shouldShowRoleOnName = true;
-        };
-        patchComponents({content: message.content}, patches, [message.authorId]);
-        if (message.referencedMessage?.message?.content) patchComponents({content: message.referencedMessage.message.content}, patches, [message.referencedMessage.message.authorId]);
+    const colorPatch = (component, [authorId], tree?)=>{
+      let t = tree?.map(c=>c.type)
+      if (t?.includes("mention") || t?.includes("channelMention") || t?.includes("roleMention") || t?.includes("commandMention") || t?.includes("link")) return;
+      if (component.type != 'text') return;
+      const authorMember = GuildMemberStore.getMember(message.guildId, authorId);
+      if (!authorMember || !authorMember.colorString) return;
+      return {
+        content: [component],
+        target: 'usernameOnClick',
+        context: {
+          username: 1,
+          usernameOnClick: {
+            action: '0',
+            userId: '0',
+            linkColor: ReactNative.processColor(interpolateColor(defaultTextColor, authorMember.colorString, storage.chatInterpolation/100)),
+            messageChannelId: '0'
+          },
+          medium: true
+        },
+        type: 'link'
+      }
+    };
+    let patches = [];
+    if (storage.chatInterpolation > 0) {
+      patches.push(colorPatch);
+    };
+    if (!storage.noMention) {
+      patches.push(mentionPatch); message.shouldShowRoleOnName = true;
+    };
+    if (message.content) patchComponents({content: message.content}, patches, [message.authorId]);
+    if (message.embeds) message.embeds.forEach(embed=>patchComponents({content: embed.description}, patches, [message.authorId]));
+    if (message.referencedMessage?.message?.content) patchComponents({content: message.referencedMessage.message.content}, patches, [message.referencedMessage.message.authorId]);
   });
 };
