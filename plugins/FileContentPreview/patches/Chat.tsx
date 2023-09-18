@@ -6,6 +6,7 @@ import { showToast } from "@vendetta/ui/toasts";
 import { React, clipboard, ReactNative } from "@vendetta/metro/common";
 import { Forms, General } from "@vendetta/ui/components";
 import translations from "../translations";
+import filetypes from "../filetypes";
 import { storage } from "@vendetta/plugin";
 import { constants } from "@vendetta/metro/common";
 
@@ -317,10 +318,10 @@ export default function() {
             let channel = SelectedChannelStore.getChannelId();
             let message = MessageStore.getMessage(channel, messageId);
             let codedLinks = message.codedLinks;
-            let attachments = message.attachments;
+            let textFiles = message.attachments.filter(attachment=>filetypes.has(attachment.filename.toLowerCase().split(".").pop()));
             if (index >= codedLinks.length) {
             let attachmentIndex = index-codedLinks.length;
-            let attachment = attachments[attachmentIndex];
+            let attachment = textFiles[attachmentIndex];
             modals.pushModal({
                 key: 'file-content-preview',
                 modal: {
