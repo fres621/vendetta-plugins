@@ -15,7 +15,6 @@ export default function patch() {
         if (!c?.props?.children?.[1].type) return;
         after("type", c.props.children[1], ([pr], d)=>{
           if (!d?.props?.children?.[1]) return;
-          console.log(pr);
           let t = d.props.children[1];
           const [pageVal, setPageVal] = React.useState(1+Math.floor(pr.offset/pr.pageLength));
           t.props.children = Locale.Messages.PAGINATION_PAGE_OF.format({page: pageVal, totalPages: 1+Math.floor(pr.totalResults/pr.pageLength)}) + '  |  ' + t.props.children.split('  |  ')[1]
@@ -27,7 +26,7 @@ export default function patch() {
             style={{ position: 'absolute', left: -9999 }}
             ref={textInputRef}
             value={String(pageVal)}
-            onChangeText={(e)=>{setPageVal(Number(e)); console.log(e)}}
+            onChangeText={(e)=>setPageVal(Number(e))}
             onBlur={()=>{
               let psize = s.SEARCH_PAGE_SIZE;
               if (pageVal*psize-psize === pr.offset) return;
