@@ -7,41 +7,55 @@ const { TouchableOpacity } = General;
 const { TextInput } = ReactNative;
 
 const Locale = findByProps("Messages");
-const s = findByProps("SEARCH_PAGE_SIZE");
+const SearchingModule = findByProps("SEARCH_PAGE_SIZE");
 
 export default function patch() {
-    return after("default", findByName("ConnectedSearchResults", false), (a, b) => {
-      after("render", b.type.prototype, (_, c)=>{
-        if (!c?.props?.children?.[1].type) return;
-        after("type", c.props.children[1], ([pr], d)=>{
-          if (!d?.props?.children?.[1]) return;
-          let t = d.props.children[1];
-          const [pageVal, setPageVal] = React.useState(1+Math.floor(pr.offset/pr.pageLength));
-          t.props.children = Locale.Messages.PAGINATION_PAGE_OF.format({page: pageVal, totalPages: 1+Math.floor(pr.totalResults/pr.pageLength)}) + '  |  ' + t.props.children.split('  |  ')[1]
-          const textInputRef = React.useRef<any>(null);
-          d.props.children[1] = 
-          [<TouchableOpacity onPress={()=>{textInputRef?.current?.focus?.();}} style={{flex: 1, height: 18}}>{t}</TouchableOpacity>,
-          <TextInput
-            keyboardType='numeric'
-            style={{ position: 'absolute', left: -9999 }}
-            ref={textInputRef}
-            value={String(pageVal)}
-            onChangeText={(e)=>setPageVal(Number(e))}
-            onBlur={()=>{
-              let psize = s.SEARCH_PAGE_SIZE;
-              if (pageVal*psize-psize === pr.offset) return;
-              if (pageVal*psize > pr.offset) {
-                s.SEARCH_PAGE_SIZE = pageVal*psize-pr.offset-psize;
-                pr.searchNextPage();
-              } else {
-                s.SEARCH_PAGE_SIZE = pr.offset-pageVal*psize+psize;
-                pr.searchPreviousPage();
-              }
-              s.SEARCH_PAGE_SIZE = psize;
-            }}
-            />
-          ];
-        }, false);
-      }, true);
+    return after("default", findByName("ConnectedSearchResults", false), (_, searchResultsRes) => {
+        after("render", searchResultsRes.type.prototype, (_, renderRes) => {
+            if (!renderRes?.props?.children?.[1].type) return;
+
+            after("type", renderRes.props.children[1], ([paging], typeRes) => {
+                const [page, setPage] = React.useState(1 + Math.floor(paging.offset / paging.pageLength));
+                const inputRef = React.useRef<any>(null);
+
+                const endpoint = typeRes?.props?.children?.[1];
+                if (!endpoint) return;
+                
+                endpoint.props.children = Locale.Messages.PAGINATION_PAGE_OF.format({
+                    page,
+                    totalPages: 1 + Math.floor(paging.totalResults / paging.pageLength)
+                }) + '  |  ' + endpoint.props.children.split('  |  ')[1];
+
+                typeRes.props.children[1] = [
+                    <TouchableOpacity 
+                        onPress={() => inputRef?.current?.focus?.()} 
+                        style={{ flex: 1, height: 18 }}
+                    >
+                        {endpoint}
+                    </TouchableOpacity>,
+                    <TextInput
+                        keyboardType='numeric'
+                        style={{ position: 'absolute', left: -9999 }}
+                        ref={inputRef}
+                        value={String(page)}
+                        onChangeText={(e) => setPage(Number(e))}
+                        onBlur={() => {
+                            const pageSize = SearchingModule.SEARCH_PAGE_SIZE;
+                            if (page * pageSize - pageSize === paging.offset) return;
+
+                            if (page * pageSize > paging.offset) {
+                                SearchingModule.SEARCH_PAGE_SIZE = page * pageSize - paging.offset - pageSize;
+                                paging.searchNextPage();
+                            } else {
+                                SearchingModule.SEARCH_PAGE_SIZE = paging.offset - page * pageSize + pageSize;
+                                paging.searchPreviousPage();
+                            }
+                            
+                            SearchingModule.SEARCH_PAGE_SIZE = pageSize;
+                        }}
+                    />
+                ];
+            }, false);
+        }, true);
     });
-  };
+};
