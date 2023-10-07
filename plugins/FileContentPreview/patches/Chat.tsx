@@ -22,7 +22,10 @@ const { ActivityIndicator, ScrollView, Image, Modal } = ReactNative;
 
 const download = ReactNative.NativeModules.MediaManager.downloadMediaAsset;
 
-const { default: Navigator, getRenderCloseButton } = findByProps('getRenderCloseButton');
+// https://github.com/nexpid/VendettaPlugins/blob/main/stuff/types.tsx#L42C1-L46C61
+const Navigator = findByName("Navigator") ?? findByProps("Navigator")?.Navigator;
+const closeButton = findByProps("getRenderCloseButton")?.getRenderCloseButton ?? findByProps("getHeaderCloseButton")?.getHeaderCloseButton;
+
 const modals = findByProps('pushModal');
 
 const humanize = findByProps("intword");
@@ -260,7 +263,7 @@ function createFCModal(filename = "unknown", url = "https://cdn.discordapp.com/a
             initialRouteName="FILE_CONTENT_PREVIEW"
             screens={{
                 FILE_CONTENT_PREVIEW: {
-                    headerLeft: getRenderCloseButton(() => modals.popModal('file-content-preview')),
+                    headerLeft: closeButton(() => modals.popModal('file-content-preview')),
                     headerRight: testBtn(() => { 
                       download(url, 0).then(saved=>{
                         if (saved) {
