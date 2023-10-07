@@ -9,8 +9,6 @@ import translations from "../translations";
 import { storage } from "@vendetta/plugin";
 import { constants } from "@vendetta/metro/common";
 
-const Locale = findByProps("Messages");
-
 const ThemeStore = findByStoreName("ThemeStore");
 const { meta: { resolveSemanticColor } } = findByProps("colors", "meta");
 
@@ -125,7 +123,7 @@ function createFCModal(filename = "unknown", url = "https://cdn.discordapp.com/a
                   };
               });
             }}
-            ><Text style={{color: Colors.header, textTransform: "uppercase", fontWeight: 'bold', textAlign: 'center', fontSize: 20}}>{Locale.Messages.VOICE_PANEL_LOAD_MORE}</Text></TouchableOpacity>
+            ><Text style={{color: Colors.header, textTransform: "uppercase", fontWeight: 'bold', textAlign: 'center', fontSize: 20}}>{i18n.Messages.VOICE_PANEL_LOAD_MORE}</Text></TouchableOpacity>
           </>
         );
 
@@ -176,7 +174,7 @@ function createFCModal(filename = "unknown", url = "https://cdn.discordapp.com/a
                 </TouchableOpacity>
                 <TouchableOpacity 
                       onPress={()=>{setIsOverlayVisible(true)}}
-                      onLongPress={()=>{showToast(Locale.Messages.JUMP, getAssetIDByName("ic_information_filled_24px"))}}
+                      onLongPress={()=>{showToast(i18n.Messages.JUMP, getAssetIDByName("ic_information_filled_24px"))}}
                       style={{
                           marginLeft: 10,
                           backgroundColor: Colors.bgDark,
@@ -238,7 +236,7 @@ function createFCModal(filename = "unknown", url = "https://cdn.discordapp.com/a
                             alignItems: 'center',
                             marginBottom: 15
                         }}>
-                        <Forms.FormText style={{fontSize: 20, fontFamily: constants.Fonts.PRIMARY_BOLD}}>{Locale.Messages.JUMP}</Forms.FormText>
+                        <Forms.FormText style={{fontSize: 20, fontFamily: constants.Fonts.PRIMARY_BOLD}}>{i18n.Messages.JUMP}</Forms.FormText>
                         <TouchableOpacity onPress={()=>setIsOverlayVisible(false)}>
                             <FormIcon source={getAssetIDByName("ic_close_16px")} style={{ opacity: 1 }} />
                         </TouchableOpacity>
@@ -294,7 +292,7 @@ function createFCModal(filename = "unknown", url = "https://cdn.discordapp.com/a
                      }, () => {
                       clipboard.setString(url);
                       showToast(
-                        Locale.Messages.COPIED + " " + Locale.Messages.SEARCH_ANSWER_HAS_LINK,
+                        i18n.Messages.COPIED + " " + i18n.Messages.SEARCH_ANSWER_HAS_LINK,
                         getAssetIDByName("toast_copy_link")
                       );
                      }),
@@ -309,7 +307,7 @@ function createFCModal(filename = "unknown", url = "https://cdn.discordapp.com/a
                         onPress={() => {
                           clipboard.setString(filename);
                           showToast(
-                            Locale.Messages.COPIED_TEXT,
+                            i18n.Messages.COPIED_TEXT,
                             getAssetIDByName("toast_copy_message")
                           );
                         }}
