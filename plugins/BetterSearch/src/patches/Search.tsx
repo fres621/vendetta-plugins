@@ -38,16 +38,17 @@ export default function patch() {
                         style={{ position: 'absolute', left: -9999 }}
                         ref={inputRef}
                         value={String(page)}
-                        onChangeText={(e) => setPage(Math.min(Math.max(Number(e), 1), Math.ceil(paging.totalResults/SearchingModule.SEARCH_PAGE_SIZE)))}
+                        onChangeText={(e) => setPage(Number(e))}
                         onBlur={() => {
+                            const validPage = Math.min(Math.max(page, 1), Math.ceil(paging.totalResults/SearchingModule.SEARCH_PAGE_SIZE));
                             const pageSize = SearchingModule.SEARCH_PAGE_SIZE;
-                            if (page * pageSize - pageSize === paging.offset) return;
+                            if (validPage * pageSize - pageSize === paging.offset) return;
 
-                            if (page * pageSize > paging.offset) {
-                                SearchingModule.SEARCH_PAGE_SIZE = page * pageSize - paging.offset - pageSize;
+                            if (validPage * pageSize > paging.offset) {
+                                SearchingModule.SEARCH_PAGE_SIZE = validPage * pageSize - paging.offset - pageSize;
                                 paging.searchNextPage();
                             } else {
-                                SearchingModule.SEARCH_PAGE_SIZE = paging.offset - page * pageSize + pageSize;
+                                SearchingModule.SEARCH_PAGE_SIZE = paging.offset - validPage * pageSize + pageSize;
                                 paging.searchPreviousPage();
                             }
                             
