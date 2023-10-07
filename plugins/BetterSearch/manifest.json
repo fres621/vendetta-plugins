@@ -9,6 +9,6 @@
     ],
     "main": "src/index.ts",
     "vendetta": {
-        "icon": "search_empty_state"
+        "icon": "search"
     }
 }
