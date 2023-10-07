@@ -1,1 +1,1 @@
-{"name":"BetterSearch","description":"Improves the Discord message search feature.","authors":[{"name":"fres","id":"843448897737064448"}],"main":"index.js","vendetta":{"icon":"search_empty_state"},"hash":"0892ba88eb3fbeffa9d0c4326af3a351b704073937056fe25a0e99100740be2e"}
+{"name":"BetterSearch","description":"Improves the Discord message search feature.","authors":[{"name":"fres","id":"843448897737064448"}],"main":"index.js","vendetta":{"icon":"search"},"hash":"0892ba88eb3fbeffa9d0c4326af3a351b704073937056fe25a0e99100740be2e"}
