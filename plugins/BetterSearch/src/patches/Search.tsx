@@ -37,7 +37,7 @@ export default function patch() {
                         keyboardType='numeric'
                         style={{ position: 'absolute', left: -9999 }}
                         ref={inputRef}
-                        value={String(page)}
+                        value={Number.isNaN(page) ? '' : String(page)}
                         onChangeText={(e) => setPage(parseInt(e))}
                         onBlur={() => {
                             const pageSize = SearchingModule.SEARCH_PAGE_SIZE;
