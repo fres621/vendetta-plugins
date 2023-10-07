@@ -309,30 +309,60 @@ function createFCModal(filename = "unknown", url = "https://cdn.discordapp.com/a
 
 const MessageStore = findByStoreName("MessageStore");
 const SelectedChannelStore = findByStoreName("SelectedChannelStore");
+const { MessagesHandlers } = findByProps("MessagesHandlers");
+
+// thank you https://github.com/acquitelol/better-chat-gestures/blob/master/src/index.tsx
+
+let _patchHandlers = (handlers) => {
+  if (handlers.__fcp_patched) return;
+  handlers.__fcp_patched = true;
+  let patches: any[] = [];
+
+  handlers.hasOwnProperty("handleTapInviteEmbed") && patches.push(before("handleTapInviteEmbed", handlers, ([{ nativeEvent: { index, messageId } }])=>{
+    let channel = SelectedChannelStore.getChannelId();
+    let message = MessageStore.getMessage(channel, messageId);
+    let codedLinks = message.codedLinks;
+    let attachments = message.attachments;
+    if (index >= codedLinks.length) {
+      let attachmentIndex = index-codedLinks.length;
+      let attachment = attachments[attachmentIndex];
+      modals.pushModal({
+          key: 'file-content-preview',
+          modal: {
+              key: 'file-content-preview',
+              modal: createFCModal(attachment.filename, attachment.url, attachment.size),
+              animation: 'slide-up',
+              shouldPersistUnderModals: false,
+              closable: true
+          }
+      });
+    };
+  }));
+
+  return () => {
+    handlers.__fcp_patched = false;
+    patches.forEach(unpatch=>unpatch());
+  };
+};
 
 export default function() {
-    return after("render", findByName("Chat").prototype, (_a, b) => {
-        if (!b.props.hasOwnProperty("onTapInviteEmbed")) return; // This happens when you're viewing an image
-        before("onTapInviteEmbed", b.props, ([{ nativeEvent: { index, messageId } }])=>{
-            
-            let channel = SelectedChannelStore.getChannelId();
-            let message = MessageStore.getMessage(channel, messageId);
-            let codedLinks = message.codedLinks;
-            let textFiles = message.attachments.filter(attachment=>filetypes.has(attachment.filename.toLowerCase().split(".").pop()));
-            if (index >= codedLinks.length) {
-            let attachmentIndex = index-codedLinks.length;
-            let attachment = textFiles[attachmentIndex];
-            modals.pushModal({
-                key: 'file-content-preview',
-                modal: {
-                    key: 'file-content-preview',
-                    modal: createFCModal(attachment.filename, attachment.url, attachment.size),
-                    animation: 'slide-up',
-                    shouldPersistUnderModals: false,
-                    closable: true
-                }
-            });
-            };
-        });
+  let patches: any[] = [];
+  let patchHandlers = (e) => {let s = _patchHandlers(e); s && patches.push(s)};
+
+  const origGetParams = Object.getOwnPropertyDescriptor(MessagesHandlers.prototype, "params")!.get;
+  origGetParams && Object.defineProperty(MessagesHandlers.prototype, "params", {
+    configurable: true,
+    get() {
+      this && patchHandlers(this);
+      return origGetParams.call(this);
+    }
+  });
+
+  return () => {
+    origGetParams && Object.defineProperty(MessagesHandlers.prototype, "params", {
+      configurable: true,
+      get: origGetParams
     });
+    patches.forEach(unpatch=>unpatch());
+  };
 };
