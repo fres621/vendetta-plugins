@@ -40,15 +40,15 @@ export default function patch() {
                         value={String(page)}
                         onChangeText={(e) => setPage(Number(e))}
                         onBlur={() => {
-                            const validPage = Math.min(Math.max(page, 1), Math.ceil(paging.totalResults/SearchingModule.SEARCH_PAGE_SIZE));
+                            const targetPageOffset = Math.min(Math.max(page, 1), Math.ceil(paging.totalResults/SearchingModule.SEARCH_PAGE_SIZE)) * pageSize;
                             const pageSize = SearchingModule.SEARCH_PAGE_SIZE;
-                            if (validPage * pageSize - pageSize === paging.offset) return;
+                            if (targetPageOffset - pageSize === paging.offset) return;
 
-                            if (validPage * pageSize > paging.offset) {
-                                SearchingModule.SEARCH_PAGE_SIZE = validPage * pageSize - paging.offset - pageSize;
+                            if (targetPageOffset > paging.offset) {
+                                SearchingModule.SEARCH_PAGE_SIZE = targetPageOffset - paging.offset - pageSize;
                                 paging.searchNextPage();
                             } else {
-                                SearchingModule.SEARCH_PAGE_SIZE = paging.offset - validPage * pageSize + pageSize;
+                                SearchingModule.SEARCH_PAGE_SIZE = paging.offset - targetPageOffset + pageSize;
                                 paging.searchPreviousPage();
                             }
                             
