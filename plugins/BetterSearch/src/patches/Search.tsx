@@ -38,7 +38,7 @@ export default function patch() {
                         style={{ position: 'absolute', left: -9999 }}
                         ref={inputRef}
                         value={String(page)}
-                        onChangeText={(e) => setPage(Number(e))}
+                        onChangeText={(e) => setPage(parseInt(e))}
                         onBlur={() => {
                             const pageSize = SearchingModule.SEARCH_PAGE_SIZE;
                             const targetPageOffset = Math.min(Math.max(page, 1), Math.ceil(paging.totalResults/pageSize)) * pageSize;
