@@ -17,17 +17,16 @@ const Colors = {
   bgBrighter: resolveSemanticColor(ThemeStore.theme, semanticColors.BACKGROUND_ACCENT)
 };
 
-const [autoCollapse, setAutoCollapse] = React.useState(storage.autoCollapse);
 export default () => {
     useProxy(storage);
 
+    const [autoCollapse, setAutoCollapse] = React.useState(storage.autoCollapse);
     function toggleAutoCollapse() {
         storage.autoCollapse = !storage.autoCollapse;
         setAutoCollapse(storage.autoCollapse);
     };
 
     const [hideIcons, setHideIcons] = React.useState(storage.hideIcons);
-
     function toggleHideIcons() {
         storage.hideIcons = !storage.hideIcons;
         setHideIcons(storage.hideIcons);
