@@ -47,7 +47,7 @@ export default () => {
                 />}
             />
         </Colonthree>
-        <Colonthree onPress={toggleAutoCollapse} color={Colors.bgBrighter+'00'} pressedColor={Colors.bgBrighter+'FF'}>
+        <Colonthree onPress={toggleHideIcons} color={Colors.bgBrighter+'00'} pressedColor={Colors.bgBrighter+'FF'}>
             <FormRow
                 label="Hide icons"
                 subLabel="Don't display server icons for collapsed folders."
