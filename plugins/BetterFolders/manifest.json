@@ -1,0 +1,14 @@
+{
+    "name": "BetterFolders",
+    "description": "Hide server icons in collapsed folders | Automatically collapse folders as you open different ones",
+    "authors": [
+        {
+            "name": "fres",
+            "id": "843448897737064448"
+        }
+    ],
+    "main": "/index.ts",
+    "vendetta": {
+        "icon": "img_guild_folder"
+    }
+}
