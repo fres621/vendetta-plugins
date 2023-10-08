@@ -35,7 +35,7 @@ export default () => {
         setHideIcons(storage.hideIcons);
     };
 
-    <ScrollView style={{flex: 1, marginTop: 10}}>
+    return <ScrollView style={{flex: 1, marginTop: 10}}>
         <Colonthree onPress={toggleAutoCollapse} color={Colors.bgBrighter+'00'} pressedColor={Colors.bgBrighter+'FF'}>
             <FormRow
                 label="Auto collapse"
