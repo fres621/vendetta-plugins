@@ -67,8 +67,7 @@ export default function() {
       });
     });
 
-
-    updateFolderIcons
+    updateFolderIcons();
 
     return () => {
         updateFolderIcons();
