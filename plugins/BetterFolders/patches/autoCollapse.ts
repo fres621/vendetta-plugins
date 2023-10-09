@@ -1,3 +1,4 @@
+import { storage } from "@vendetta/plugin";
 import { findByStoreName } from "@vendetta/metro";
 import { FluxDispatcher } from "@vendetta/metro/common";
 
@@ -6,6 +7,7 @@ const { isFolderExpanded } = findByStoreName("ExpandedGuildFolderStore");
 
 export default function() {
     let fn = ({ folderId: thisId }) => {
+      if (!storage.autoCollapse) return;
       if (!isFolderExpanded(thisId)) return;
       getGuildFolders().filter(f=>f.folderId && isFolderExpanded(f.folderId)).forEach(({ folderId }) => {
         if (folderId === thisId) return;

@@ -6,6 +6,7 @@ import { Forms } from "@vendetta/ui/components";
 import { semanticColors } from "@vendetta/ui";
 import { findByStoreName, findByProps } from "@vendetta/metro";
 import Colonthree from "./Colonthree";
+import updateFolderIcons from "../updateFolderIcons";
 
 const { FormSwitch, FormRow, FormIcon } = Forms;
 const { ScrollView } = ReactNative;
@@ -13,10 +14,10 @@ const { ScrollView } = ReactNative;
 const ThemeStore = findByStoreName("ThemeStore");
 const { meta: { resolveSemanticColor } } = findByProps("colors", "meta");
 
+
 const Colors = {
   bgBrighter: resolveSemanticColor(ThemeStore.theme, semanticColors.BACKGROUND_ACCENT)
 };
-
 
 
 export default () => {
@@ -32,6 +33,7 @@ export default () => {
     
     function toggleHideIcons() {
         storage.hideIcons = !storage.hideIcons;
+        updateFolderIcons();
         setHideIcons(storage.hideIcons);
     };
 

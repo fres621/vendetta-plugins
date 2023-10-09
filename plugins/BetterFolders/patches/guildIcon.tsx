@@ -1,24 +1,17 @@
+import { storage } from "@vendetta/plugin";
 import { findByPropsAll, findByStoreName } from "@vendetta/metro";
 import { React } from "@vendetta/metro/common";
 import { getAssetIDByName } from "@vendetta/ui/assets";
 import { after } from "@vendetta/patcher";
 import { General } from "@vendetta/ui/components";
-import { FluxDispatcher } from "@vendetta/metro/common";
+import updateFolderIcons from "../updateFolderIcons";
 
 const { View, Image } = General;
 
-const { getGuildFolders } = findByStoreName("UserSettingsProtoStore");
-const { isFolderExpanded } = findByStoreName("ExpandedGuildFolderStore");
-
-function updateFolderIcons() {
-    getGuildFolders().filter(f=>f.folderId && !isFolderExpanded(f.folderId)).forEach(({ folderId }) => {
-        FluxDispatcher.dispatch({ type: 'TOGGLE_GUILD_FOLDER_EXPAND', folderId });
-        FluxDispatcher.dispatch({ type: 'TOGGLE_GUILD_FOLDER_EXPAND', folderId });
-        });
-};
 
 export default function() {
     let patch = after("GuildContainer", findByPropsAll("GuildContainer").at(-1), ([props], b) =>{
+      if (!storage.hideIcons) return;
       let GuildFolderPreview = props?.children?.type;
   
       if (!GuildFolderPreview?.type) { // Makes the plugin work for some older Discord versions
