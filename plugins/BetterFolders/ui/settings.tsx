@@ -51,7 +51,7 @@ export default () => {
             <FormRow
                 label="Hide icons"
                 subLabel="Don't display server icons for collapsed folders."
-                leading={<FormIcon source={getAssetIDByName("ic_hide_media")} />}
+                leading={<FormIcon source={getAssetIDByName("ic_hide")} />}
                 trailing={<FormSwitch
                     value={hideIcons}
                     onValueChange={toggleHideIcons}
