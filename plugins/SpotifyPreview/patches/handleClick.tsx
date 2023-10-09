@@ -17,35 +17,42 @@ function renderActionSheet(component: any, props: { [key: string]: any }) {
 };
 const { BottomSheetScrollView } = findByProps("BottomSheetScrollView");
 
+let isList = (type) => type === "playlist" || type === "album";
+
 const WebView = findByName("WebView") || findByProps("WebView").default.render;
-let wv = (link)=>{ 
+let wv = (link, type)=>{ 
     const bgcolor = resolveSemanticColor(ThemeStore.theme, semanticColors.MODAL_BACKGROUND);
     return (
         <WebView
           source={{ uri: link }}
-          style={{ marginTop: 20, backgroundColor: bgcolor, height: 100, width: "100%" }}
+          style={{ marginTop: 20, backgroundColor: bgcolor, height: isList(type)?352:152, width: "100%" }}
+          nestedScrollEnabled={isList(type)}
         />
       );
 };
 
-function as({'0': link}) {
-    return (
-        <ActionSheet>
-            <BottomSheetScrollView contentContainerStyle={{ marginBottom: 100 }}>
-            {wv(link.replace('https://open.spotify.com', 'https://open.spotify.com/embed'))}
-            </BottomSheetScrollView>
-        </ActionSheet>
-        );
+function as({'0': link, '1': pageType}) {
+  return (
+      <ActionSheet>
+          <BottomSheetScrollView contentContainerStyle={{ marginBottom: 100 }}>
+          {wv(link.replace('https://open.spotify.com', 'https://open.spotify.com/embed'), pageType)}
+          </BottomSheetScrollView>
+      </ActionSheet>
+      );
 }
 
 const handleClick = findByProps("handleClick");
 
 export default function patch() {
   return before("handleClick", handleClick, function ([args]) {
-      const { href } = args;
-      const isSpotify = href.startsWith("https://open.spotify.com/");
-      if (!isSpotify) return;
-      args.href = undefined;
-      renderActionSheet(as, [href]);
+    const { href } = args;
+    const isSpotify = href.startsWith("https://open.spotify.com/");
+    if (!isSpotify) return;
+
+    let type = href.split("/")[3];
+    if (!["track", "playlist", "episode", "album"].includes(type)) return; // Unsupported page
+
+    args.href = undefined;
+    renderActionSheet(as, [href, type]);
   });
 };
