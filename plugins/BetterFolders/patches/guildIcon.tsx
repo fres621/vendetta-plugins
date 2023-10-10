@@ -63,7 +63,7 @@ export default function() {
     updateFolderIcons();
 
     return () => {
-        updateFolderIcons();
+        setTimeout(()=>updateFolderIcons(), 100);
         patch();
     };
   }

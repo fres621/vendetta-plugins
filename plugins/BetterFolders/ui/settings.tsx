@@ -33,7 +33,7 @@ export default () => {
     
     function toggleHideIcons() {
         storage.hideIcons = !storage.hideIcons;
-        updateFolderIcons();
+        setTimeout(()=>updateFolderIcons(), 100);
         setHideIcons(storage.hideIcons);
     };
 
