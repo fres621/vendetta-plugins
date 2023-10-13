@@ -8,6 +8,7 @@ import { Forms, General } from "@vendetta/ui/components";
 import translations from "../translations";
 import { storage } from "@vendetta/plugin";
 import { constants } from "@vendetta/metro/common";
+import filetypes from "../filetypes";
 
 const ThemeStore = findByStoreName("ThemeStore");
 const { meta: { resolveSemanticColor } } = findByProps("colors", "meta");
@@ -342,10 +343,10 @@ let _patchHandlers = (handlers) => {
     let channel = SelectedChannelStore.getChannelId();
     let message = MessageStore.getMessage(channel, messageId);
     let codedLinks = message.codedLinks;
-    let attachments = message.attachments;
+    let textFiles = message.attachments.filter(attachment=>filetypes.has(attachment.filename.toLowerCase().split(".").pop()));
     if (index >= codedLinks.length) {
       let attachmentIndex = index-codedLinks.length;
-      let attachment = attachments[attachmentIndex];
+      let attachment = textFiles[attachmentIndex];
       modals.pushModal({
           key: 'file-content-preview',
           modal: {
