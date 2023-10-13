@@ -7,6 +7,7 @@ let patches = [];
 export default {
     onLoad: () => {
         storage.everyone ??= false;
+        storage.showWhenNone ??= false;
         patches.push(patch());
     },
     onUnload: () => {

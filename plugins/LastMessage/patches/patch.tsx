@@ -70,6 +70,7 @@ const listen = () => {
 
 function LastMessageTime({id}) {
     const timestamp = useLastMessage(id);
+    if (!timestamp && !storage.showWhenNone) return <></>;
     return (
         <View style={{ marginTop: 10 }}>
             <Text style={[TextStyleSheet['text-xs/medium']]}>

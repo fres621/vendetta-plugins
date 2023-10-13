@@ -22,23 +22,38 @@ export default () => {
     useProxy(storage);
 
     const [everyone, setEveryone] = React.useState(storage.everyone);
+    const [showWhenNone, shouldShowWhenNone] = React.useState(storage.everyone);
     function toggleEveryone() {
         storage.everyone = !storage.everyone;
         setEveryone(storage.everyone);
+    };
+    function toggleShowWhenNone() {
+        storage.showWhenNone = !storage.showWhenNone;
+        shouldShowWhenNone(storage.showWhenNone);
     };
 
     return (
         <ScrollView style={{flex: 1, marginTop: 10}}>
             <FormRow
-                    label="Log everyone"
-                    subLabel="Log every user instead of only friends. This might make the app slower and use more memory."
-                    leading={<FormIcon source={getAssetIDByName("ic_header_members_add_24px")} />}
-                    trailing={<FormSwitch
-                        value={everyone}
-                        onValueChange={toggleEveryone}
-                    />}
-                    onPress={toggleEveryone}
-                />
+                label="Log everyone"
+                subLabel="Log every user instead of only friends. This might make the app slower and use more memory."
+                leading={<FormIcon source={getAssetIDByName("ic_header_members_add_24px")} />}
+                trailing={<FormSwitch
+                    value={everyone}
+                    onValueChange={toggleEveryone}
+                />}
+                onPress={toggleEveryone}
+            />
+            <FormRow
+                label="Show when unknown"
+                subLabel="Show the last message text when there is none logged."
+                leading={<FormIcon source={getAssetIDByName("ic_text_in_voice_24px")} />}
+                trailing={<FormSwitch
+                    value={showWhenNone}
+                    onValueChange={()=>{toggleShowWhenNone}}
+                />}
+                onPress={()=>{toggleShowWhenNone}}
+            />
         </ScrollView>
     )
 }
