@@ -1,0 +1,18 @@
+{
+    "name": "AudioPlayer",
+    "description": "Play audio files in chat.",
+    "authors": [
+        {
+            "name": "fres",
+            "id": "843448897737064448"
+        },
+        {
+            "name": "Clyde",
+            "id": "1081004946872352958"
+        }
+    ],
+    "main": "/index.ts",
+    "vendetta": {
+        "icon": "ic_stage_music"
+    }
+}
