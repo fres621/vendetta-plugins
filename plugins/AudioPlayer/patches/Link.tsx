@@ -11,7 +11,7 @@ function prepareAudio(audioUrl) {
     console.log({isAudioPrepared});
     if (isAudioPrepared) DCDSoundManager.release(4259920);
     isAudioPrepared = true;
-    return new Promise<any[]>((resolve) => DCDSoundManager.prepare(audioUrl, "voice", 4259920, (...args)=>resolve(args)));
+    return new Promise<any[]>((resolve) => DCDSoundManager.prepare(audioUrl, "ring_tone", 4259920, (...args)=>resolve(args)));
 };
 
 let isAudioPreparing = false;
