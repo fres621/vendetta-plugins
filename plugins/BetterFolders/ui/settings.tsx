@@ -7,6 +7,7 @@ import { semanticColors } from "@vendetta/ui";
 import { findByStoreName, findByProps } from "@vendetta/metro";
 import Colonthree from "./Colonthree";
 import updateFolderIcons from "../updateFolderIcons";
+import { after } from "@vendetta/patcher";
 
 const { FormSwitch, FormRow, FormIcon } = Forms;
 const { ScrollView } = ReactNative;
@@ -25,6 +26,7 @@ export default () => {
 
     const [autoCollapse, setAutoCollapse] = React.useState(storage.autoCollapse);
     const [hideIcons, setHideIcons] = React.useState(storage.hideIcons);
+    const [shouldUpdate, setShouldUpdate] = React.useState(false);
     
     function toggleAutoCollapse() {
         storage.autoCollapse = !storage.autoCollapse;
@@ -33,7 +35,12 @@ export default () => {
     
     function toggleHideIcons() {
         storage.hideIcons = !storage.hideIcons;
-        setTimeout(()=>updateFolderIcons(), 100);
+        // setTimeout(()=>updateFolderIcons(), 100);                                can't update the folder icons while in the settings screen
+        if (!shouldUpdate) {
+            let unpatch = after("useIsModalOpen", findByProps("useIsModalOpen"),
+                () => { unpatch(); updateFolderIcons(); });                         // So instead ill call it once after the user gone to chat
+            setShouldUpdate(true);
+        };
         setHideIcons(storage.hideIcons);
     };
 

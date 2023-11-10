@@ -8,5 +8,5 @@ export default function updateFolderIcons() {
     getGuildFolders().filter(f=>f.folderId && !isFolderExpanded(f.folderId)).forEach(({ folderId }) => {
         FluxDispatcher.dispatch({ type: 'TOGGLE_GUILD_FOLDER_EXPAND', folderId });
         FluxDispatcher.dispatch({ type: 'TOGGLE_GUILD_FOLDER_EXPAND', folderId });
-        });
+    });
 };
