@@ -20,13 +20,13 @@ const Colors = {
   bgBrighter: resolveSemanticColor(ThemeStore.theme, semanticColors.BACKGROUND_ACCENT)
 };
 
+var shouldUpdate = true;
 
 export default () => {
     useProxy(storage);
 
     const [autoCollapse, setAutoCollapse] = React.useState(storage.autoCollapse);
     const [hideIcons, setHideIcons] = React.useState(storage.hideIcons);
-    const [shouldUpdate, setShouldUpdate] = React.useState(false);
     
     function toggleAutoCollapse() {
         storage.autoCollapse = !storage.autoCollapse;
@@ -36,10 +36,10 @@ export default () => {
     function toggleHideIcons() {
         storage.hideIcons = !storage.hideIcons;
         // setTimeout(()=>updateFolderIcons(), 100);                                can't update the folder icons while in the settings screen
-        if (!shouldUpdate) {
-            let unpatch = after("useIsModalOpen", findByProps("useIsModalOpen"),
-                () => { unpatch(); setTimeout(()=>updateFolderIcons(), 100); });                         // So instead ill call it once after the user gone to chat
-            setShouldUpdate(true);
+        if (shouldUpdate) {
+            let unpatch = after("useIsModalOpen", findByProps("useIsModalOpen"),    // So instead ill call it once after the user gone to chat
+                () => { unpatch(); setTimeout(() => updateFolderIcons(), 100); shouldUpdate = true; }); 
+            shouldUpdate = false;
         };
         setHideIcons(storage.hideIcons);
     };
