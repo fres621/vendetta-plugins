@@ -1,0 +1,14 @@
+{
+    "name": "PinDMs",
+    "description": "Pin DMs to the top of your DM list",
+    "authors": [
+        {
+            "name": "fres",
+            "id": "843448897737064448"
+        }
+    ],
+    "main": "/index.ts",
+    "vendetta": {
+        "icon": "icon-pins"
+    }
+}
