@@ -12,7 +12,7 @@ const ActionSheetRow = findByProps("ActionSheetRow")?.ActionSheetRow ?? Forms.Fo
 const PinIcon = getAssetIDByName("icon-pins");
 
 export default function patch() {
-    return after("default", findByName("ChannelLongPressActionSheet", false), (_, b) => {
+    return after("default", findByName("ChannelLongPressActionSheet", false), ([props], b) => {
         after("type", b, (_, d) => {
             const buttons = findInReactTree(d, e => e.key === "dm")?.props?.children;
             if (!buttons) return;
@@ -27,7 +27,7 @@ export default function patch() {
                             )}
                         />
                     }
-                    onPress={() => renderActionSheet(PinDMActionSheet, { channelId: "boo" })}
+                    onPress={() => renderActionSheet(PinDMActionSheet, { channelId: props.channelId })}
                 />
             ));
 
