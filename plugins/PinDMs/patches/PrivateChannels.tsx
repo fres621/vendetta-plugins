@@ -1,74 +1,161 @@
-import { findByName, findByProps } from "@vendetta/metro";
+import { findByName, findByProps, findByStoreName } from "@vendetta/metro";
 import { React } from "@vendetta/metro/common";
-import { after, instead } from "@vendetta/patcher";
-import { Forms, ErrorBoundary } from "@vendetta/ui/components";
+import { after } from "@vendetta/patcher";
+import { ErrorBoundary, General } from "@vendetta/ui/components";
 import { storage } from "@vendetta/plugin";
+import { useProxy } from "@vendetta/storage";
+import { PinnedDMsCategory, IndexedCategories } from "../types";
 
-const { FormTitle } = Forms;
+const { Pressable } = General;
 
 const { getPrivateChannelRowHeight } = findByProps("getPrivateChannelRowHeightWithoutPadding");
+const CategoryChannel = findByName("CategoryChannel");
+
+const UserGuildSettingsStore = findByStoreName("UserGuildSettingsStore");
+const ReadStateStore = findByStoreName("ReadStateStore");
+
+
+
+const FastList = findByName("FastList");
+
+const { getPrivateChannelIds } = findByProps("getPrivateChannelIds");
+const { getChannelId: getSelectedChannelId } = findByStoreName("SelectedChannelStore");
+
+/** React hook for reacting to store updates */
+function useStore(store): null {
+    if (!(store.addChangeListener || store.addChangeListener)) throw new Error("Invalid store provided.");
+    const [, forceUpdate] = React.useReducer((n) => ~n, 0);
+
+    React.useEffect(() => {
+        const listener = () => forceUpdate();
+
+        store.addChangeListener(listener);
+
+        return () => void store.removeChangeListener(listener);
+    }, []);
+
+    return null;
+}
 
 export default function patch() {
     let patches: any[] = [];
     let isNestedPatched = false;
 
     patches.push(after("default", findByName("ConnectedPrivateChannels", false), (_, b) => {
-
         if (isNestedPatched) return;
         isNestedPatched = true;
 
-        // TODO: Maybe find a better way rather than this
-        let indices: any[] = [];
-        b.props.privateChannelIds.forEach((id, index) => {
-            if (storage.pinnedDMs.includes(id)) indices.push(index);
-        });
+        /** Returns whether a channel should be hidden if it's category is collapsed */
+        function hideIfCollapsed({ id, selected }): boolean {
+            /** Boolean, true if there are unread messages and false otherwise. */
+            const unread = ReadStateStore.hasUnread(id);
+            const muted = UserGuildSettingsStore.isChannelMuted(null, id);
+
+            if (selected) return false;
+            if (unread && !muted) return false; // broken (?)
+            return true;
+        }
 
         patches.push(after("render", b.type.prototype, (_, res) => {
             if (!res.props?.children?.props?.children) return;
-            const uwu = res.props.children.props.children;
+            const children = res.props.children.props.children;
 
-            uwu[2].props.sections = [1, uwu[2].props.sections[0] - indices.length];
+            // Component function to be able to use hooks here
+            function Test({ comp }) {
+                useProxy(storage);                  // storage (obvious use case)
+                useStore(ReadStateStore);           // channel unreads
+                useStore(UserGuildSettingsStore);   // channel muted
+
+                const originalList = comp;
+                const pinnedDMs: PinnedDMsCategory[] = storage.pinnedDMs;
+
+                function getCountsAndCategories() {
+                    const counts = { categories: 1 + pinnedDMs.length, channels: 0, collapsedChannels: 0 }; // convenience
+                    const categories: IndexedCategories = Object.fromEntries(Object.values(pinnedDMs).map(e => [e.id, { channels: [], collapsed: storage.collapsedPinnedDMs.includes(e.id) }]));
+                    getPrivateChannelIds().forEach((id: string, index: number) => {
+                        let category = pinnedDMs.find(category => category.ids.includes(id));
+                        if (!category) return;
+
+                        counts.channels += 1;
+                        let renderCategory = categories[category.id];
+
+                        const shouldHideIfCategoryIsCollapsed = hideIfCollapsed({ id, selected: getSelectedChannelId() === id });
+                        if (renderCategory.collapsed && shouldHideIfCategoryIsCollapsed) counts.collapsedChannels += 1;
+                        renderCategory.channels.push({ id, shouldHideIfCategoryIsCollapsed, index });
+                    });
+                    return { counts, categories };
+                }
+
+                const { counts, categories } = getCountsAndCategories();
+
+                /** Sets whether categoryId is collapsed. */
+                function setCollapsed(categoryId, collapsed) {
+                    if (collapsed) {
+                        if (!storage.collapsedPinnedDMs.includes(categoryId)) storage.collapsedPinnedDMs = [...storage.collapsedPinnedDMs, categoryId];
+                    } else {
+                        storage.collapsedPinnedDMs = storage.collapsedPinnedDMs.filter(id => id != categoryId);
+                    }
+                }
+
+                function renderItem(sectionIndex, itemIndex) {
+                    if (sectionIndex === 0) {
+                        return (
+                            <ErrorBoundary>
+                                <>
+                                    {Object.entries(categories).map(([categoryId, { channels, collapsed }]) => {
+                                        const category = pinnedDMs.find(c => c.id === categoryId)!;
+                                        return (
+                                            <>
+                                                <Pressable onPress={() => setCollapsed(categoryId, !collapsed)}>
+                                                    <CategoryChannel name={category.name} collapsed={collapsed} />
+                                                </Pressable>
+                                                {channels.map(dm => {
+                                                    const channel = originalList.props.renderItem(0, dm.index);
+                                                    if (!collapsed) return channel;
+
+                                                    const { selected } = channel.props;
+                                                    if (hideIfCollapsed({ id: dm.id, selected })) return null;
+                                                    return channel;
+                                                })}
+                                            </>
+                                        )
+                                    })}
+                                    <CategoryChannel name={"Direct Messages"} renderChevron={false} />
+                                </>
+                            </ErrorBoundary>
+                        );
+                    }
+
+                    if (Object.values(categories).map(c => c.channels).flat().some(e => e.index === itemIndex)) return null;
+                    return originalList.props.renderItem(sectionIndex, itemIndex);
+                }
+
+                function itemSize(sectionIndex, itemIndex) {
+                    if (sectionIndex === 0) {
+                        return 32 * counts.categories + getPrivateChannelRowHeight(1) * (counts.channels - counts.collapsedChannels);
+                    }
+                    if (Object.values(categories).map(c => c.channels).flat().some(e => e.index === itemIndex)) return 0;
+                    return originalList.props.itemSize(sectionIndex, itemIndex);
+                }
 
 
-            instead("renderItem", uwu[2].props, (args, orig) => {
-                const [sectionIndex, itemIndex] = args;
-                if (sectionIndex === 0) {
+                return (
+                    <FastList
+                        {...originalList.props}
+                        sections={[1, originalList.props.sections[0] - 0]}
+                        renderItem={renderItem}
+                        itemSize={itemSize}
+                        onScroll={() => undefined} // original onScroll will uh cause rerender a lot uh uh
+                    />
+                );
+            };
 
-                    /* Errors if orig(0, 0) is a GC and I'm trying to make it a DM
-                    function PrivateChannel(props) {
-                        let pc = orig(0, 0);
-                        pc.props = props;
-                        return pc;
-                    };
-                    */
+            // I forgot what I put this for but if i put it here there must be a reason (?)
+            const PatchComponent = React.memo(Test);
 
-                    return (
-                        <ErrorBoundary>
-                            <>
-                                <FormTitle title="Pinned DMs" />
-                                {indices.map(index => {
-                                    return orig(0, index);
-                                })}
-                                <FormTitle title="Direct Messages" />
-                            </>
-                        </ErrorBoundary>
-                    );
-                };
+            children[2] = <PatchComponent comp={children[2]} />;
 
-                if (indices.includes(itemIndex)) return null;
-
-                return orig(...args);
-            });
-
-            instead("itemSize", uwu[2].props, (args, orig) => {
-                const [sectionIndex, itemIndex] = args;
-                if (sectionIndex === 0) {
-                    // form title: 32 + 13, channel: getPrivateChannelRowHeight(1) (50)
-                    return (32 + 13) * 2 + getPrivateChannelRowHeight(1) * indices.length;
-                };
-                if (indices.includes(itemIndex)) return 0;
-                return orig(...args);
-            });
+            return;
 
         }));
 
