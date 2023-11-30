@@ -1,26 +1,19 @@
 import { storage } from "@vendetta/plugin";
-import patch from "./patches/PrivateChannels";
-
-const PinDMsDevApi = {
-    pin: (channelId) => {
-        storage.pinnedDMs.push(channelId);
-    },
-    unpin: (channelId) => {
-        storage.pinnedDMs = storage.pinnedDMs.filter(e => e != channelId);
-    },
-    getPinnedDMs: () => storage.pinnedDMs
-};
+import patchPrivateChannels from "./patches/PrivateChannels";
+import patchActionSheet from "./patches/ActionSheet";
+import PinDMsApi from "./api";
 
 let patches = [];
 
 export default {
     onLoad: () => {
         storage.pinnedDMs ??= [];
-        patches.push(patch());
+        patches.push(patchPrivateChannels());
+        patches.push(patchActionSheet());
         // Temporary, proper Settings will be added later on
         Object.defineProperty(window, "PinDMsDevApi", {
             configurable: true,
-            value: PinDMsDevApi
+            value: PinDMsApi
         });
     },
     onUnload: () => {
