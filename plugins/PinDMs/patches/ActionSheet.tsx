@@ -5,10 +5,8 @@ import { getAssetIDByName } from "@vendetta/ui/assets";
 import { Forms } from "@vendetta/ui/components";
 import { findInReactTree } from "@vendetta/utils";
 import PinDMActionSheet from "../components/PinDMActionSheet";
-import { renderActionSheet } from "../components/misc";
+import { Row, renderActionSheet } from "../components/misc";
 
-// hug https://github.com/aeongdesu/vdplugins/blob/cac02834c69663d76b713db3a325366c4a337702/plugins/Dislate/src/patches/ActionSheet.tsx#L15
-const ActionSheetRow = findByProps("ActionSheetRow")?.ActionSheetRow ?? Forms.FormRow;
 const PinIcon = getAssetIDByName("icon-pins");
 
 export default function patch() {
@@ -17,10 +15,10 @@ export default function patch() {
             const buttons = findInReactTree(d, e => e.key === "dm")?.props?.children;
             if (!buttons) return;
             buttons.push((
-                <ActionSheetRow
+                <Row
                     label={`Pin DM`}
                     icon={
-                        <ActionSheetRow.Icon
+                        <Row.Icon
                             source={PinIcon}
                             IconComponent={() => (
                                 <Forms.FormIcon source={PinIcon} />
