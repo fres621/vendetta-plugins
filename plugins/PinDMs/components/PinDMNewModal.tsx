@@ -71,7 +71,7 @@ export default function PinDMNewModal({ onExit }) {
                         }
                     }
                 >
-                    <Text variant="heading-lg/extrabold" style={{ textAlign: "center" }}>New Category</Text>
+                    <Text variant="heading-lg/extrabold" style={{ textAlign: "center" }}>{i18n.Messages.CATEGORY_NAME_PLACEHOLDER}</Text>
                     <InputView
                         value=""
                         error={error}
