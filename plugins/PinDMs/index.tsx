@@ -15,6 +15,7 @@ export default {
                 ids: []
             }
         ] as PinnedDMsCategory[];
+        storage.collapsedPinnedDMs ??= [];
         patches.push(patchPrivateChannels());
         patches.push(patchActionSheet());
         // Temporary, proper Settings will be added later on
