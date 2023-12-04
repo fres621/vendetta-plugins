@@ -2,6 +2,7 @@ import { storage } from "@vendetta/plugin";
 import { findByProps } from "@vendetta/metro";
 const { fromTimestamp } = findByProps("extractTimestamp");
 
+// TODO maybe add storage.collapsedPinnedDMs in the api
 const PinDMsApi = {
     pin: (channelId, categoryId) => {
         const category = storage.pinnedDMs.findIndex(c => c.id === categoryId);
