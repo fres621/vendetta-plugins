@@ -1,8 +1,8 @@
 import { findByStoreName, findByProps } from "@vendetta/metro";
-import { React, ReactNative } from "@vendetta/metro/common";
+import { React, ReactNative, i18n } from "@vendetta/metro/common";
 import { getAssetIDByName } from "@vendetta/ui/assets";
 import PinDMsApi from "../api";
-import { ActionSheet, ActionSheetCloseButton, ActionSheetTitleHeader, BottomSheetFlatList, LazyActionSheet, Row } from "./misc";
+import { ActionSheet, ActionSheetCloseButton, ActionSheetTitleHeader, BottomSheetFlatList, LazyActionSheet, Row, renderActionSheet } from "./misc";
 import { Forms } from "@vendetta/ui/components";
 import { openNewCategoryModal } from "./PinDMNewModal";
 
@@ -16,7 +16,7 @@ const { computeChannelName } = findByProps("computeChannelName");
 
 export default function PinDMActionSheet({ channelId }) {
     const channel = ChannelStore.getChannel(channelId);
-    const name = channel.type == 3 ? computeChannelName(channel) : (RelationshipStore.getNickname(channel.recipients[0]) ?? channel.rawRecipients[0].global_name);
+    const name = channel.type == 3 ? computeChannelName(channel) : (RelationshipStore.getNickname(channel.recipients[0]) ?? channel.rawRecipients[0].global_name ?? channel.rawRecipients[0].globalName);
     if (channel.type != 1 && channel.type != 3) return; // no idea what this could be !!!
 
     function getIcon() {
@@ -42,9 +42,9 @@ export default function PinDMActionSheet({ channelId }) {
         )),
         {
             id: "add",
-            label: "New Category",
+            label: i18n.Messages.CATEGORY_NAME_PLACEHOLDER,
             icon: getAssetIDByName("ic_add_24px"),
-            onPress: openNewCategoryModal
+            onPress: () => (LazyActionSheet.hideActionSheet(), openNewCategoryModal({ onExit: () => renderActionSheet(PinDMActionSheet, { channelId }) }))
         }
     ];
 

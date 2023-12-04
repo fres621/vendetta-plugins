@@ -16,7 +16,7 @@ export default function patch() {
             if (!buttons) return;
             buttons.push((
                 <Row
-                    label={`Pin DM`}
+                    label="Pin DM"
                     icon={
                         <Row.Icon
                             source={PinIcon}

@@ -2,6 +2,8 @@ import { find, findByProps } from "@vendetta/metro";
 import { Forms } from "@vendetta/ui/components";
 import { showToast } from "@vendetta/ui/toasts";
 
+export const { ClearButtonVisibility, default: InputView } = findByProps("ClearButtonVisibility");
+export const { TextStyleSheet, Text } = findByProps('TextStyleSheet');
 export const LazyActionSheet = findByProps("openLazy", "hideActionSheet");
 export const ActionSheet = findByProps("ActionSheet")?.ActionSheet ?? find((x) => x.render?.name === "ActionSheet");
 export const { BottomSheetScrollView, BottomSheetFlatList } = findByProps("BottomSheetScrollView");
