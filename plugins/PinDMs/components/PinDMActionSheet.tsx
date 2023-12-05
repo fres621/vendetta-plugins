@@ -37,7 +37,7 @@ export default function PinDMActionSheet({ channelId }) {
                 id: category.id,
                 label: category.name,
                 icon: null,
-                onPress: () => null
+                onPress: () => (LazyActionSheet.hideActionSheet(), PinDMsApi.pin(channelId, category.id))
             }
         )),
         {
