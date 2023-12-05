@@ -151,9 +151,9 @@ export default function patch() {
             };
 
             // I forgot what I put this for but if i put it here there must be a reason (?)
-            const PatchComponent = React.memo(Test);
+            //const PatchComponent = React.memo(Test);
 
-            children[2] = <PatchComponent comp={children[2]} />;
+            children[2] = <Test comp={children[2]} />;
 
             return;
 

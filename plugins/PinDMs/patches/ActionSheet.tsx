@@ -5,7 +5,7 @@ import { getAssetIDByName } from "@vendetta/ui/assets";
 import { Forms } from "@vendetta/ui/components";
 import { findInReactTree } from "@vendetta/utils";
 import PinDMActionSheet from "../components/PinDMActionSheet";
-import { Row, renderActionSheet } from "../components/misc";
+import { LazyActionSheet, Row, renderActionSheet } from "../components/misc";
 import PinDMsApi from "../api";
 
 const PinIcon = getAssetIDByName("icon-pins");
@@ -27,7 +27,7 @@ export default function patch() {
                                 )}
                             />
                         }
-                        onPress={() => PinDMsApi.unpin(props.channelId)}
+                        onPress={() => (LazyActionSheet.hideActionSheet(), PinDMsApi.unpin(props.channelId))}
                     />
                 ));
             } else {

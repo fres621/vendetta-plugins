@@ -22,7 +22,7 @@ const PinDMsApi = {
     createCategory: (name: string): void => {
         storage.pinnedDMs.push({
             ids: [],
-            id: fromTimestamp(+Date.now()), // Generate random snowflake for category ID
+            id: fromTimestamp(+Date.now()), // Generate snowflake for category ID
             name
         })
     },
