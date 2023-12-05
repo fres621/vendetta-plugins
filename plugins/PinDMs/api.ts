@@ -5,6 +5,8 @@ const { fromTimestamp } = findByProps("extractTimestamp");
 // TODO maybe add storage.collapsedPinnedDMs in the api
 const PinDMsApi = {
     pin: (channelId, categoryId) => {
+        // v Not sure if it's a good idea to add the appropiate restrictions here instead of before calling these functions (?)
+        if (PinDMsApi.isPinned(channelId)) return;
         const category = storage.pinnedDMs.findIndex(c => c.id === categoryId);
         storage.pinnedDMs[category].ids = [...storage.pinnedDMs[category].ids, channelId];
     },
