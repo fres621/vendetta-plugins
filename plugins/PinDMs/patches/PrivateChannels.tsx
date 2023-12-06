@@ -13,13 +13,15 @@ const CategoryChannel = findByName("CategoryChannel");
 
 const UserGuildSettingsStore = findByStoreName("UserGuildSettingsStore");
 const ReadStateStore = findByStoreName("ReadStateStore");
+const { getChannelId: getSelectedChannelId } = findByStoreName("SelectedChannelStore");
 
 
 
 const FastList = findByName("FastList");
 
 const { getPrivateChannelIds } = findByProps("getPrivateChannelIds");
-const { getChannelId: getSelectedChannelId } = findByStoreName("SelectedChannelStore");
+const { shouldShowMessageRequests } = findByProps("shouldShowMessageRequests");
+
 
 /** React hook for reacting to store updates */
 function useStore(store): null {
@@ -81,7 +83,7 @@ export default function patch() {
 
                         const shouldHideIfCategoryIsCollapsed = hideIfCollapsed({ id, selected: getSelectedChannelId() === id });
                         if (renderCategory.collapsed && shouldHideIfCategoryIsCollapsed) counts.collapsedChannels += 1;
-                        renderCategory.channels.push({ id, shouldHideIfCategoryIsCollapsed, index });
+                        renderCategory.channels.push({ id, shouldHideIfCategoryIsCollapsed, index: (index + +shouldShowMessageRequests()) });
                     });
                     return { counts, categories };
                 }
@@ -102,6 +104,7 @@ export default function patch() {
                         return (
                             <ErrorBoundary>
                                 <>
+                                    {shouldShowMessageRequests() && originalList.props.renderItem(0, 0)}
                                     {Object.entries(categories).map(([categoryId, { channels, collapsed }]) => {
                                         const category = pinnedDMs.find(c => c.id === categoryId)!;
                                         return (
@@ -127,22 +130,22 @@ export default function patch() {
                     }
 
                     if (Object.values(categories).map(c => c.channels).flat().some(e => e.index === itemIndex)) return null;
-                    return originalList.props.renderItem(sectionIndex, itemIndex);
+                    return originalList.props.renderItem(sectionIndex, (itemIndex + +shouldShowMessageRequests()));
                 }
 
                 function itemSize(sectionIndex, itemIndex) {
                     if (sectionIndex === 0) {
-                        return 32 * counts.categories + getPrivateChannelRowHeight(1) * (counts.channels - counts.collapsedChannels);
+                        return 32 * counts.categories + getPrivateChannelRowHeight(1) * ((counts.channels - counts.collapsedChannels) + +shouldShowMessageRequests());
                     }
                     if (Object.values(categories).map(c => c.channels).flat().some(e => e.index === itemIndex)) return 0;
-                    return originalList.props.itemSize(sectionIndex, itemIndex);
+                    return originalList.props.itemSize(sectionIndex, (itemIndex + +shouldShowMessageRequests()));
                 }
 
 
                 return (
                     <FastList
                         {...originalList.props}
-                        sections={[1, originalList.props.sections[0] - 0]}
+                        sections={[1, originalList.props.sections[0]]}
                         renderItem={renderItem}
                         itemSize={itemSize}
                         onScroll={() => undefined} // original onScroll will uh cause rerender a lot uh uh
