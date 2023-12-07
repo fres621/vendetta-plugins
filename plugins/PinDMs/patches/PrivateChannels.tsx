@@ -130,7 +130,8 @@ export default function patch() {
                     }
 
                     if (Object.values(categories).map(c => c.channels).flat().some(e => e.index === itemIndex)) return null;
-                    return originalList.props.renderItem(sectionIndex, (itemIndex + +shouldShowMessageRequests()));
+                    if (shouldShowMessageRequests() && !itemIndex) return null;
+                    return originalList.props.renderItem(sectionIndex, itemIndex);
                 }
 
                 function itemSize(sectionIndex, itemIndex) {
@@ -138,7 +139,8 @@ export default function patch() {
                         return 32 * counts.categories + getPrivateChannelRowHeight(1) * ((counts.channels - counts.collapsedChannels) + +shouldShowMessageRequests());
                     }
                     if (Object.values(categories).map(c => c.channels).flat().some(e => e.index === itemIndex)) return 0;
-                    return originalList.props.itemSize(sectionIndex, (itemIndex + +shouldShowMessageRequests()));
+                    if (shouldShowMessageRequests() && !itemIndex) return 0;
+                    return originalList.props.itemSize(sectionIndex, itemIndex);
                 }
 
 
