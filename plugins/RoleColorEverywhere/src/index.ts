@@ -10,7 +10,7 @@ export default {
     onLoad: () => {
         patches.push(patchTypingWrapper());
         patches.push(patchDCDChatManager());
-        patches.push(patchVoiceUserConnected());
+        //patches.push(patchVoiceUserConnected()); TODO -- fix Show in VC option
         patches.push(patchMemberList());
     },
     onUnload: () => {
