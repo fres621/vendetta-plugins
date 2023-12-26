@@ -1,7 +1,8 @@
 import { findByProps, findByName } from "@vendetta/metro";
-import { after } from "@vendetta/patcher";
+import { after, before } from "@vendetta/patcher";
 import translations from "../translations";
 import filetypes from "../filetypes";
+import { ReactNative } from "@vendetta/metro/common";
 
 const RowManager = findByName("RowManager");
 
@@ -24,19 +25,45 @@ function makeRPL(filename = "unknown", size = "? bytes") {
            ctaEnabled: true }
     };
 
+function handleRow(row) {
+    const { message } = row;
+    if (!message) return;
+    if (!message.attachments) return;
+    let rpls: any[] = [];
+    let attachs: any[] = [];
+    message.attachments.forEach(attachment => {
+        if (filetypes.has(attachment.filename.toLowerCase().split(".").pop())) {
+            rpls.push(makeRPL(attachment.filename, attachment.size));
+        } else {
+            attachs.push(attachment);
+        };
+    });
+    if (rpls.length) {
+        if (!message.codedLinks?.length) message.codedLinks = [];
+        message.codedLinks.push(...rpls); message.attachments = attachs
+    };
+}
+
+
+const { NativeModules: nm } = ReactNative;
+
+const { DCDChatManager, InfoDictionaryManager, RTNClientInfoManager } = nm;
+const clientInfo = InfoDictionaryManager ?? RTNClientInfoManager;
+
 export default function() {
-    return after("generate", RowManager.prototype, ([row], {message}) => {
-        if (row.rowType != 1) return;
-        if (!message.attachments) return;
-        let rpls = [];
-        let attachs = [];
-        message.attachments.forEach(attachment => {
-            if (filetypes.has(attachment.filename.toLowerCase().split(".").pop())) {
-                rpls.push(makeRPL(attachment.filename, attachment.size));
-            } else {
-                attachs.push(attachment);
-            };
+    if (parseInt(clientInfo.Build) > 200013) {
+        return before("updateRows", DCDChatManager, (args) => {
+            var rows = JSON.parse(args[1]);
+
+            for (const row of rows) {
+                handleRow(row);
+            }
+
+            args[1] = JSON.stringify(rows);
         });
-        if (rpls.length) {message.codedLinks.push(...rpls); message.attachments = attachs};
-  })
+    } else {
+        return after("generate", RowManager.prototype, (_, row) => {
+            handleRow(row);
+        });
+    }
 };
