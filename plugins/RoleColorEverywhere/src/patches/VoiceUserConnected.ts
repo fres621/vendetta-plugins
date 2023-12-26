@@ -7,14 +7,17 @@ const ThemeStore = findByStoreName("ThemeStore");
 const { meta: { resolveSemanticColor } } = findByProps("colors", "meta");
 
 export default function patchVoiceUserConnected() {
-    return () => { };
     return after("default", findByName("VoiceUserConnected", false),([args],res)=>{
         if (storage.noVoice) return;
-        const unpatchRender = after("render", res.type.prototype, (a, res) => {
-            unpatchRender();
-            let text = (res.props?.children?.[1]?.props);
-            if (!text) return;
-            text.style.color = args?.member?.colorString || resolveSemanticColor(ThemeStore.theme, semanticColors.CHANNELS_DEFAULT);
-        });
+
+        try {
+            let p = res.type.prototype ? ["render", res.type.prototype] : ["type", res.type];
+            const unpatchRender = after(p[0], p[1], (a, res) => {
+                unpatchRender();
+                let text = (res.props?.children?.[1]?.props);
+                if (!text) return;
+                text.style.color = args?.member?.colorString || resolveSemanticColor(ThemeStore.theme, semanticColors.CHANNELS_DEFAULT);
+            });
+        } catch { };
     });
 };
