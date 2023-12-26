@@ -63,11 +63,9 @@ export default () => {
                 <Text style={{ marginLeft: '5%', color: interpolateColor(Colors.text, "#ff0000", storage.chatInterpolation / 100), fontFamily: constants.Fonts.DISPLAY_MEDIUM, fontSize: 16, marginBottom: 5, marginTop: -5 }}>Color interpolation (for chat text):</Text>
                 <Swidew onSlide={(v) => { storage.chatInterpolation = v }} value={storage.chatInterpolation} style={{ marginBottom: 0 }} />
 
-                {/*
-                <FormSwitchRow label="Show in voice channel member list" subLabel="Display the top role color in the voice channel member list." 
-                leading={<FormIcon source={Icons.Voice} />} value={!storage.noVoice} onValueChange={(v) => {storage.noVoice = !v}} >
+                <FormSwitchRow label="Show in voice channel member list" subLabel="Display the top role color in the voice channel member list."
+                    leading={<FormIcon source={Icons.Voice} />} value={!storage.noVoice} onValueChange={(v) => { storage.noVoice = !v }} >
                 </FormSwitchRow>
-                */}
             </FormSection>
         </ReactNative.ScrollView>
     );
