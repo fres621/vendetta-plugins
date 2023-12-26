@@ -9,7 +9,6 @@ const { meta: { resolveSemanticColor } } = findByProps("colors", "meta");
 
 const RowManager = findByName("RowManager");
 const GuildMemberStore = findByStoreName("GuildMemberStore");
-const SelectedChannelStore = findByStoreName("SelectedChannelStore");
 const ChannelStore = findByStoreName("ChannelStore");
 
 // Function to easily do stuff with components including getting to formatted text
