@@ -38,7 +38,7 @@ export default function patchTypingWrapper() {
             });
             
             function userElem(user) {
-                return React.createElement( Text, { style: { color: user.displayColor, fontFamily: constants.Fonts.DISPLAY_BOLD } }, user.displayName );
+                return React.createElement( Text, { style: { color: user.displayColor, fontFamily: constants.Fonts.DISPLAY_SEMIBOLD } }, user.displayName );
             };
 
             if (!users || users.length < 1) return;
