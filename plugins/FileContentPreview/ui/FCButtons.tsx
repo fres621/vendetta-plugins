@@ -4,7 +4,7 @@ import { Forms, General } from "@vendetta/ui/components";
 import { getAssetIDByName } from "@vendetta/ui/assets";
 import { showToast } from "@vendetta/ui/toasts";
 
-const { View, Text, TouchableOpacity } = General;
+const { View, TouchableOpacity } = General;
 const { FormIcon } = Forms;
 
 const Svg = findByName("Svg", false).default;

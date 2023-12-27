@@ -1,7 +1,7 @@
-import { React, clipboard, ReactNative, i18n, constants } from "@vendetta/metro/common";
-import { storage } from "../../plugin";
+import { React, ReactNative, i18n, constants } from "@vendetta/metro/common";
+import { storage } from "@vendetta/plugin";
 import { findByProps, findByName, findByStoreName } from "@vendetta/metro";
-import { Forms, General } from "@vendetta/ui/components";
+import { General } from "@vendetta/ui/components";
 import { getAssetIDByName } from "@vendetta/ui/assets";
 import { showToast } from "@vendetta/ui/toasts";
 import { DownloadButton, FCButton, FCButtonBar, MonospaceSvg, WordWrapSvg } from "./FCButtons";

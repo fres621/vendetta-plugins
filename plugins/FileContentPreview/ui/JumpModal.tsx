@@ -1,8 +1,8 @@
-import { React, clipboard, ReactNative, i18n, constants } from "@vendetta/metro/common";
+import { React, constants } from "@vendetta/metro/common";
 import { getAssetIDByName } from "@vendetta/ui/assets";
 import { Forms, General } from "@vendetta/ui/components";
 
-const { View, Text, TouchableOpacity } = General;
+const { View, TouchableOpacity } = General;
 const { FormText, FormIcon } = Forms;
 
 const JumpButton: any = ({ icon, buttonColor, textColor, text, onPress }) => (

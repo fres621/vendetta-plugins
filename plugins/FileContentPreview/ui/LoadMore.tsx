@@ -1,4 +1,3 @@
-
 import { React, i18n } from "@vendetta/metro/common";
 import { General } from "@vendetta/ui/components";
 
