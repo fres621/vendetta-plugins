@@ -1,13 +1,5 @@
-import { findByProps, findByName, findByStoreName } from "@vendetta/metro";
+import { findByProps, findByStoreName } from "@vendetta/metro";
 import { before } from "@vendetta/patcher";
-import { semanticColors } from "@vendetta/ui";
-import { getAssetIDByName } from "@vendetta/ui/assets";
-import { showToast } from "@vendetta/ui/toasts";
-import { React, clipboard, ReactNative, i18n } from "@vendetta/metro/common";
-import { Forms, General } from "@vendetta/ui/components";
-import translations from "../translations";
-import { storage } from "@vendetta/plugin";
-import { constants } from "@vendetta/metro/common";
 import filetypes from "../filetypes";
 import { FCModal } from "../ui/FCModal";
 
