@@ -1,6 +1,6 @@
 import { React, ReactNative, i18n, constants } from "@vendetta/metro/common";
 import { storage } from "@vendetta/plugin";
-import { findByProps, findByName, findByStoreName } from "@vendetta/metro";
+import { find, findByProps, findByName, findByStoreName } from "@vendetta/metro";
 import { General } from "@vendetta/ui/components";
 import { getAssetIDByName } from "@vendetta/ui/assets";
 import { showToast } from "@vendetta/ui/toasts";
@@ -12,7 +12,8 @@ import { semanticColors } from "@vendetta/ui";
 import LoadMore from "./LoadMore";
 
 const ThemeStore = findByStoreName("ThemeStore");
-const { meta: { resolveSemanticColor } } = findByProps("colors", "meta");
+const resolveSemanticColor = find(m => m.default?.internal?.resolveSemanticColor)?.default.internal.resolveSemanticColor
+    ?? find(m => m.meta?.resolveSemanticColor)?.meta.resolveSemanticColor ?? (() => {});
 
 // https://github.com/nexpid/VendettaPlugins/blob/main/stuff/types.tsx#L43-L47
 const Navigator = findByName("Navigator") ?? findByProps("Navigator")?.Navigator;

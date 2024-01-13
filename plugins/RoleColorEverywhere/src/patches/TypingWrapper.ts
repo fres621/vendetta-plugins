@@ -1,6 +1,6 @@
 import { React, constants } from '@vendetta/metro/common';
 import { after } from "@vendetta/patcher";
-import { findByProps, findByStoreName } from "@vendetta/metro";
+import { find, findByProps, findByStoreName } from "@vendetta/metro";
 import { General } from "@vendetta/ui/components";
 import { semanticColors } from "@vendetta/ui";
 import { storage } from "@vendetta/plugin";
@@ -8,7 +8,8 @@ import { storage } from "@vendetta/plugin";
 const { Text } = General;
 
 const ThemeStore = findByStoreName("ThemeStore");
-const { meta: { resolveSemanticColor } } = findByProps("colors", "meta");
+const resolveSemanticColor = find(m => m.default?.internal?.resolveSemanticColor)?.default.internal.resolveSemanticColor
+    ?? find(m => m.meta?.resolveSemanticColor)?.meta.resolveSemanticColor ?? (() => {});
 
 const UserStore = findByStoreName("UserStore");
 const RelationshipStore = findByStoreName("RelationshipStore");

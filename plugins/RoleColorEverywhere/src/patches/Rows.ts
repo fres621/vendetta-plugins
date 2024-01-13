@@ -1,11 +1,12 @@
 import { ReactNative } from '@vendetta/metro/common';
 import { after, before } from "@vendetta/patcher";
-import { findByProps, findByStoreName, findByName } from "@vendetta/metro";
+import { find, findByStoreName, findByName } from "@vendetta/metro";
 import { semanticColors } from "@vendetta/ui";
 import { storage } from "@vendetta/plugin";
 
 const ThemeStore = findByStoreName("ThemeStore");
-const { meta: { resolveSemanticColor } } = findByProps("colors", "meta");
+const resolveSemanticColor = find(m => m.default?.internal?.resolveSemanticColor)?.default.internal.resolveSemanticColor
+    ?? find(m => m.meta?.resolveSemanticColor)?.meta.resolveSemanticColor ?? (() => {});
 
 const RowManager = findByName("RowManager");
 const GuildMemberStore = findByStoreName("GuildMemberStore");
