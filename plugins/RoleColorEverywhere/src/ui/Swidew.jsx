@@ -1,11 +1,12 @@
 import { React, ReactNative } from "@vendetta/metro/common";
-import { findByProps, findByStoreName } from "@vendetta/metro";
+import { find, findByStoreName } from "@vendetta/metro";
 import { semanticColors } from "@vendetta/ui";
 import { General } from "@vendetta/ui/components";
 
 const { StyleSheet, PanResponder } = ReactNative;
 const ThemeStore = findByStoreName("ThemeStore");
-const { meta: { resolveSemanticColor } } = findByProps("colors", "meta");
+const resolveSemanticColor = find(m => m.default?.internal?.resolveSemanticColor)?.default.internal.resolveSemanticColor
+    ?? find(m => m.meta?.resolveSemanticColor)?.meta.resolveSemanticColor ?? (() => {});
 const { View } = General;
 const { useState, useRef } = React;
 

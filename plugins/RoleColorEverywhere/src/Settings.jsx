@@ -1,5 +1,5 @@
 import { ReactNative, constants } from "@vendetta/metro/common";
-import { findByProps, findByStoreName } from "@vendetta/metro";
+import { find, findByStoreName } from "@vendetta/metro";
 import { FormSwitchRow, FormIcon, FormSection } from "@vendetta/ui/components/Forms";
 import { useProxy } from "@vendetta/storage";
 import { storage } from "@vendetta/plugin";
@@ -10,7 +10,8 @@ import Swidew from "./ui/Swidew";
 
 const { Text, View } = General;
 const ThemeStore = findByStoreName("ThemeStore");
-const { meta: { resolveSemanticColor } } = findByProps("colors", "meta");
+const resolveSemanticColor = find(m => m.default?.internal?.resolveSemanticColor)?.default.internal.resolveSemanticColor
+    ?? find(m => m.meta?.resolveSemanticColor)?.meta.resolveSemanticColor ?? (() => {});
 
 const Icons = {
     Typing: getAssetIDByName('ic_messages'),
