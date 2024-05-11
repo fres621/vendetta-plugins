@@ -18,7 +18,7 @@ const getEmbedThemeColors = findByName("getEmbedThemeColors") ?? /* fallback jus
 }));
 
 function makeRPL(filename = "unknown", size = "? bytes") {
-    const { colors } = getEmbedThemeColors([ ThemeStore.theme ]);
+    const { colors } = getEmbedThemeColors(ThemeStore.theme);
     return { 
         borderColor: colors.borderColor,
         backgroundColor: colors.backgroundColor,
