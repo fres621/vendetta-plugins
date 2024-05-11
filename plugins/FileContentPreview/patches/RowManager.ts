@@ -2,12 +2,9 @@ import { findByProps, findByName } from "@vendetta/metro";
 import { after, before } from "@vendetta/patcher";
 import translations from "../translations";
 import filetypes from "../filetypes";
-import { ReactNative } from "@vendetta/metro/common";
+import { ReactNative, i18n } from "@vendetta/metro/common";
 
 const RowManager = findByName("RowManager");
-
-const Locale = findByProps("Messages");
-const loc = findByProps("getLocale");
 
 function makeRPL(filename = "unknown", size = "? bytes") {
     return { borderColor: -251658241,
@@ -16,11 +13,11 @@ function makeRPL(filename = "unknown", size = "? bytes") {
            headerColor: -4867391,
            headerText: '',
            acceptLabelBackgroundColor: -14441126,
-           titleText: Locale.Messages.SEARCH_ANSWER_HAS_ATTACHMENT.toUpperCase() + ' — ' + size,
+           titleText: i18n.Messages.SEARCH_ANSWER_HAS_ATTACHMENT.toUpperCase() + ' — ' + size,
            type: null,
            extendedType: 4,
            participantAvatarUris: [],
-           acceptLabelText: translations.PREVIEW[loc.getLocale()] ?? "Preview",
+           acceptLabelText: translations.PREVIEW[i18n.getLocale()] ?? "Preview",
            noParticipantsText: '\n' + filename,
            ctaEnabled: true }
     };
