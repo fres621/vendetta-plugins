@@ -1,26 +1,40 @@
-import { findByProps, findByName } from "@vendetta/metro";
+import { findByProps, findByName, findByStoreName } from "@vendetta/metro";
 import { after, before } from "@vendetta/patcher";
 import translations from "../translations";
 import filetypes from "../filetypes";
 import { ReactNative, i18n } from "@vendetta/metro/common";
 
 const RowManager = findByName("RowManager");
+const ThemeStore = findByStoreName("ThemeStore");
+
+const getEmbedThemeColors = findByName("getEmbedThemeColors") ?? /* fallback just in case */ (() => ({
+    colors: {
+        borderColor: 335939079,
+        backgroundColor: -14276817,
+        headerColor: -4867391,
+        headerText: '',
+        acceptLabelGreenBackgroundColor: -14385083,
+    }
+}));
 
 function makeRPL(filename = "unknown", size = "? bytes") {
-    return { borderColor: -251658241,
-           backgroundColor: -13947599,
-           thumbnailCornerRadius: 15,
-           headerColor: -4867391,
-           headerText: '',
-           acceptLabelBackgroundColor: -14441126,
-           titleText: i18n.Messages.SEARCH_ANSWER_HAS_ATTACHMENT.toUpperCase() + ' — ' + size,
-           type: null,
-           extendedType: 4,
-           participantAvatarUris: [],
-           acceptLabelText: translations.PREVIEW[i18n.getLocale()] ?? "Preview",
-           noParticipantsText: '\n' + filename,
-           ctaEnabled: true }
-    };
+    const { colors } = getEmbedThemeColors([ ThemeStore.theme ]);
+    return { 
+        borderColor: colors.borderColor,
+        backgroundColor: colors.backgroundColor,
+        thumbnailCornerRadius: 15,
+        headerColor: colors.headerColor,
+        headerText: '',
+        acceptLabelBackgroundColor: colors.acceptLabelGreenBackgroundColor,
+        titleText: i18n.Messages.SEARCH_ANSWER_HAS_ATTACHMENT.toUpperCase() + ' — ' + size,
+        type: null,
+        extendedType: 4,
+        participantAvatarUris: [],
+        acceptLabelText: translations.PREVIEW[i18n.getLocale()] ?? "Preview",
+        noParticipantsText: '\n' + filename,
+        ctaEnabled: true
+    }
+};
 
 function handleRow(row) {
     const { message } = row;
