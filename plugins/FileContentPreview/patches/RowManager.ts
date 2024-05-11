@@ -7,7 +7,7 @@ import { ReactNative } from "@vendetta/metro/common";
 const RowManager = findByName("RowManager");
 
 const Locale = findByProps("Messages");
-const { getLocale } = findByProps("getLocale");
+const loc = findByProps("getLocale");
 
 function makeRPL(filename = "unknown", size = "? bytes") {
     return { borderColor: -251658241,
@@ -20,7 +20,7 @@ function makeRPL(filename = "unknown", size = "? bytes") {
            type: null,
            extendedType: 4,
            participantAvatarUris: [],
-           acceptLabelText: translations.PREVIEW[getLocale()] ?? "Preview",
+           acceptLabelText: translations.PREVIEW[loc.getLocale()] ?? "Preview",
            noParticipantsText: '\n' + filename,
            ctaEnabled: true }
     };
