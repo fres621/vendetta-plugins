@@ -33,11 +33,12 @@ const plugins = [
                         tsx,
                         jsx,
                     },
-                    "paths": {
+                    paths: {
                         "@util/*": [
-                            path.resolve("./util/*")
+                            "./util/*"
                         ]
-                    }
+                    },
+                    baseUrl: path.resolve("./")
                 },
                 env: {
                     targets: "defaults",
