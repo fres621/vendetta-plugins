@@ -1,7 +1,7 @@
-# Vendetta Plugins Template
-This repo contains a template for creating [Vendetta](https://github.com/vendetta-mod/Vendetta) plugins.
+# fres's Vendetta Plugins
 
-# How to install?
-Paste a plugin URL into the Plugins page of Vendetta, following a basic format of:
+Howdy! This repository contains the source code for my [Vendetta](https://github.com/vendetta-mod/Vendetta) plugins.
 
-https://`YOUR_GITHUB_USERNAME`.github.io/`REPO_NAME`/`PLUGIN_NAME`
+These are compatible with any Vendetta plugin loader (Bunny, Pyoncord...)
+
+https://fres621.github.io/vendetta-plugins
