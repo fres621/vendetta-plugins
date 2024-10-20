@@ -29,15 +29,29 @@ const Colors = (e) => {
     return map[e] ? resolveSemanticColor(ThemeStore.theme, semanticColors[map[e]]) : "#FFFFFF";
 };
 
-type emoji = {
+interface EmojiFrecency {
     totalUses: number;
     recentUses: string[];
     frecency: number;
     score: number;
-};
+}
 
-function sortEmojisByScore(emojis) {
-    return Object.entries(emojis).sort((a: [string, emoji], b: [string, emoji]) => b[1].score - a[1].score);
+interface Emoji {
+    roles: string[];
+    require_colons: boolean;
+    name: string;
+    managed: boolean;
+    id: string;
+    available: boolean;
+    animated: boolean;
+    allNamesString: string;
+    guildId: string;
+    type: number;
+    url?: string;
+}
+
+function sortEmojisByScore(emojis: Record<string, EmojiFrecency>) {
+    return Object.entries(emojis).sort((a, b) => b[1].score - a[1].score);
 }
 
 /**
@@ -46,10 +60,11 @@ function sortEmojisByScore(emojis) {
  * @returns {string[]} - An array of emoji keys.
  */
 let frequentEmojis = sortEmojisByScore(UserSettingsProtoStore.frecencyWithoutFetchingLatest.emojiFrecency.emojis).map(
-    ([k, _v]) => k,
+    ([k, _v]) => k
 );
 
-const canReact = (guildId) => PermissionsStore.can(constants.Permissions.ADD_REACTIONS, GuildStore.getGuild(guildId));
+const canReact = (guildId: string) =>
+    PermissionsStore.can(constants.Permissions.ADD_REACTIONS, GuildStore.getGuild(guildId));
 
 var saved = [];
 
@@ -59,15 +74,14 @@ function save(value) {
     return saved;
 }
 
-function toggleReaction(channelId, messageId, reaction) {
+function toggleReaction(channelId: string, messageId: string, reaction: Partial<Emoji>) {
     let message = MessageStore.getMessage(channelId, messageId);
     if (!message) return; // in the case the user reacts right when a message is deleted
     let userReactions = message.reactions.filter((r) => r.me);
-    console.log(userReactions);
-    console.log(reaction);
-    if (userReactions.find((e) => e.emoji.name === reaction.name && e.emoji.id === reaction.id)) {
+    if (userReactions.find((e: any) => e.emoji.name === reaction.name && e.emoji.id === reaction.id)) {
         // Remove reaction
-        reactions.removeReactionWithConfirmation({
+        const removeReaction = reactions.removeReactionWithConfirmation || reactions.removeReaction;
+        removeReaction({
             channelId: channelId,
             messageId: messageId,
             emoji: { id: reaction.id, name: reaction.name },
@@ -112,7 +126,7 @@ export default function () {
                           if (
                               !PermissionsStore.can(
                                   constants.Permissions.USE_EXTERNAL_EMOJIS,
-                                  GuildStore.getGuild(guildId),
+                                  GuildStore.getGuild(guildId)
                               )
                           )
                               return false; // Server
@@ -137,7 +151,9 @@ export default function () {
                       let c = getCustomEmojiById(emoji);
                       if (c)
                           return {
-                              uri: c.url,
+                              uri:
+                                  c.url || // url is no longer a property in newer RN app versions
+                                  `https://cdn.discordapp.com/emojis/${c.id}.${c.animated ? "gif" : "png"}?size=48`,
                               name: c.name,
                               id: c.id,
                               animated: c.animated,
@@ -185,7 +201,7 @@ export default function () {
                         </TouchableOpacity>
                     );
                 })}
-            </View>,
+            </View>
         );
     });
 }
