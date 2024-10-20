@@ -1,7 +1,7 @@
 import { findByProps } from "@vendetta/metro";
 import { beforeStartCall } from "./components";
 import { before } from "@vendetta/patcher";
-import Settings from './components/Settings';
+import Settings from "./components/Settings";
 
 const voice = findByProps("call", "ring");
 const channelModule = findByProps("selectVoiceChannel");
@@ -26,7 +26,7 @@ export default {
     onUnload: () => {
         for (const unpatch of patches) {
             unpatch();
-        };
+        }
     },
     settings: Settings,
-}
+};

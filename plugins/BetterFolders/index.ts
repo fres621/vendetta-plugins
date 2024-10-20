@@ -15,7 +15,7 @@ export default {
     onUnload: () => {
         for (const unpatch of patches) {
             unpatch();
-        };
+        }
     },
-    settings: Settings
-}
+    settings: Settings,
+};

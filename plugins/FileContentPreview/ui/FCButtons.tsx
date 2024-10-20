@@ -40,11 +40,11 @@ interface FCButtonProps {
         background: {
             active: any;
             inactive: any;
-        },
+        };
         border: {
             active: any;
             inactive: any;
-        }
+        };
     };
     active: boolean;
     content: any;
@@ -54,51 +54,58 @@ export const FCButton: any = ({ onPress, info, colors, active, content }: FCButt
     return (
         <TouchableOpacity
             onPress={onPress}
-            onLongPress={() => { showToast(info, getAssetIDByName("ic_information_filled_24px")) }}
+            onLongPress={() => {
+                showToast(info, getAssetIDByName("ic_information_filled_24px"));
+            }}
             style={{
                 backgroundColor: active ? colors.background.active : colors.background.inactive,
                 padding: 4,
                 borderRadius: 5,
                 borderWidth: 2,
                 borderColor: active ? colors.border.active : colors.border.inactive,
-            }}>
+            }}
+        >
             {content}
         </TouchableOpacity>
-    )
-}
+    );
+};
 
 export const FCButtonBar: any = ({ children }) => {
     return (
-        <View style={{
-            padding: 15,
-            paddingBottom: 0,
-            display: "flex",
-            flexDirection: "row",
-            flexWrap: "nowrap",
-            justifyContent: "space-between"
-        }}>
-            {/* nested view because it was planned to have buttons both in the left and the right side, might still be used at some point */}
-            <View style={{
+        <View
+            style={{
+                padding: 15,
+                paddingBottom: 0,
                 display: "flex",
                 flexDirection: "row",
-                gap: 8
-            }}>
+                flexWrap: "nowrap",
+                justifyContent: "space-between",
+            }}
+        >
+            {/* nested view because it was planned to have buttons both in the left and the right side, might still be used at some point */}
+            <View
+                style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    gap: 8,
+                }}
+            >
                 {children}
             </View>
         </View>
-    )
-}
+    );
+};
 
 const download = ReactNative.NativeModules.MediaManager.downloadMediaAsset;
 
 export const DownloadButton: any = ({ url, saveText, failText, copyText }) => {
     function onPress() {
-        download(url, 0).then(saved => {
+        download(url, 0).then((saved) => {
             if (saved) {
                 showToast(saveText, getAssetIDByName("ic_selection_checked_24px"));
             } else {
                 showToast(failText, getAssetIDByName("ic_close_circle"));
-            };
+            }
         });
     }
     function onLongPress() {
@@ -108,7 +115,10 @@ export const DownloadButton: any = ({ url, saveText, failText, copyText }) => {
 
     return (
         <TouchableOpacity onPress={onPress} onLongPress={onLongPress}>
-            <FormIcon source={getAssetIDByName("ic_download_24px")} style={{ marginRight: 8, marginLeft: -8, opacity: 1 }} />
+            <FormIcon
+                source={getAssetIDByName("ic_download_24px")}
+                style={{ marginRight: 8, marginLeft: -8, opacity: 1 }}
+            />
         </TouchableOpacity>
     );
 };

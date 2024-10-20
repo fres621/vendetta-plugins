@@ -6,11 +6,13 @@ let patches = [];
 
 export default {
     onLoad: () => {
-        patches.push( after("isTrustedDomain", MaskedLink, ()=>{
-            return true;
-        }) );
+        patches.push(
+            after("isTrustedDomain", MaskedLink, () => {
+                return true;
+            }),
+        );
     },
     onUnload: () => {
         for (const unpatch of patches) unpatch();
-    }
+    },
 };

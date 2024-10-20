@@ -9,11 +9,12 @@ let patches = [];
 export default {
     onLoad: () => {
         storage.pinnedDMs ??= [
-            { // Temporary default one so I can check it works so far
+            {
+                // Temporary default one so I can check it works so far
                 id: "default",
                 name: "Pinned DMs",
-                ids: []
-            }
+                ids: [],
+            },
         ] as PinnedDMsCategory[];
         storage.collapsedPinnedDMs ??= [];
         patches.push(patchPrivateChannels());
@@ -21,13 +22,13 @@ export default {
         // Temporary, proper Settings will be added later on
         Object.defineProperty(window, "PinDMsDevApi", {
             configurable: true,
-            value: PinDMsApi
+            value: PinDMsApi,
         });
     },
     onUnload: () => {
         for (const unpatch of patches) {
             unpatch();
             delete window["PinDMsDevApi"];
-        };
-    }
-}
+        }
+    },
+};

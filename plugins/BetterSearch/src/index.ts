@@ -8,6 +8,6 @@ export default {
     onUnload: () => {
         for (const unpatch of patches) {
             unpatch();
-        };
-    }
-}
+        }
+    },
+};

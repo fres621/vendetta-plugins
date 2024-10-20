@@ -34,18 +34,13 @@ const plugins = [
                         jsx,
                     },
                     paths: {
-                        "@util/*": [
-                            "./util/*"
-                        ]
+                        "@util/*": ["./util/*"],
                     },
-                    baseUrl: path.resolve("./")
+                    baseUrl: path.resolve("./"),
                 },
                 env: {
                     targets: "defaults",
-                    include: [
-                        "transform-classes",
-                        "transform-arrow-functions",
-                    ],
+                    include: ["transform-classes", "transform-arrow-functions"],
                 },
             });
             return result.code;
@@ -61,7 +56,7 @@ for (let plug of await readdir("./plugins")) {
     try {
         const bundle = await rollup({
             input: `./plugins/${plug}/${manifest.main}`,
-            onwarn: () => { },
+            onwarn: () => {},
             plugins,
         });
 

@@ -10,10 +10,12 @@ const { FormSwitch, FormRow, FormIcon } = Forms;
 const { ScrollView } = ReactNative;
 
 const ThemeStore = findByStoreName("ThemeStore");
-const { meta: { resolveSemanticColor } } = findByProps("colors", "meta");
+const {
+    meta: { resolveSemanticColor },
+} = findByProps("colors", "meta");
 
 const Colors = {
-    text: resolveSemanticColor(ThemeStore.theme, semanticColors.TEXT_NORMAL)
+    text: resolveSemanticColor(ThemeStore.theme, semanticColors.TEXT_NORMAL),
 };
 
 const humanize = findByProps("intword");
@@ -26,34 +28,37 @@ export default () => {
     function toggleEveryone() {
         storage.everyone = !storage.everyone;
         setEveryone(storage.everyone);
-    };
+    }
     function toggleShowWhenNone() {
         storage.showWhenNone = !storage.showWhenNone;
         shouldShowWhenNone(storage.showWhenNone);
-    };
+    }
 
     return (
-        <ScrollView style={{flex: 1, marginTop: 10}}>
+        <ScrollView style={{ flex: 1, marginTop: 10 }}>
             <FormRow
                 label="Log everyone"
                 subLabel="Log every user instead of only friends. This might make the app slower and use more memory."
                 leading={<FormIcon source={getAssetIDByName("ic_header_members_add_24px")} />}
-                trailing={<FormSwitch
-                    value={everyone}
-                    onValueChange={toggleEveryone}
-                />}
+                trailing={<FormSwitch value={everyone} onValueChange={toggleEveryone} />}
                 onPress={toggleEveryone}
             />
             <FormRow
                 label="Show when unknown"
                 subLabel="Show the last message text when there is none logged."
                 leading={<FormIcon source={getAssetIDByName("ic_text_in_voice_24px")} />}
-                trailing={<FormSwitch
-                    value={showWhenNone}
-                    onValueChange={()=>{toggleShowWhenNone}}
-                />}
-                onPress={()=>{toggleShowWhenNone}}
+                trailing={
+                    <FormSwitch
+                        value={showWhenNone}
+                        onValueChange={() => {
+                            toggleShowWhenNone;
+                        }}
+                    />
+                }
+                onPress={() => {
+                    toggleShowWhenNone;
+                }}
             />
         </ScrollView>
-    )
-}
+    );
+};

@@ -4,26 +4,26 @@ import { after } from "@vendetta/patcher";
 import { findInReactTree } from "@vendetta/utils";
 import { storage } from "@vendetta/plugin";
 
-const { View } = ReactNative
+const { View } = ReactNative;
 const GuildStore = findByStoreName("GuildStore");
 
 export default function patchMemberList() {
     return after("render", View, (_, b) => {
         if (storage.noRole) return;
-        const aaa = findInReactTree(b, r => r?.props?.roleId);
+        const aaa = findInReactTree(b, (r) => r?.props?.roleId);
         if (!aaa) return;
         if (isNaN(aaa.props.roleId)) return;
         if (aaa.props.excludedApplications) return;
         if (aaa.props.hasOwnProperty("displayRoleIcon")) return; // fixes linked roles crash
         if (aaa.props.hasOwnProperty("searchable")) return; // fixes tabs v2 crash
-        let uwu = {type: Object.assign({}, aaa.type)};
+        let uwu = { type: Object.assign({}, aaa.type) };
         after("type", uwu.type, (_, res) => {
-            let owo = {type: Object.assign({}, res.props.children[1].type)};
+            let owo = { type: Object.assign({}, res.props.children[1].type) };
 
-            after("render", owo.type, (_, d)=>{
+            after("render", owo.type, (_, d) => {
                 let role = GuildStore.getGuild(aaa.props.guildId)?.roles?.[aaa.props.roleId];
                 if (!role?.colorString) return;
-                d.props.style.push({color: role.colorString});
+                d.props.style.push({ color: role.colorString });
             });
 
             res.props.children[1].type = owo.type; // is this a good idea?
@@ -31,6 +31,4 @@ export default function patchMemberList() {
 
         aaa.type = uwu.type; // is this a good idea?
     });
-};
-
-
+}

@@ -8,14 +8,8 @@
         "jsx": "react-native",
         "allowJs": true,
         "paths": {
-            "@util/*": [
-                "./util/*"
-            ]
+            "@util/*": ["./util/*"]
         }
     },
-    "include": [
-        "plugins",
-        "node_modules/vendetta-types",
-        "util"
-    ]
+    "include": ["plugins", "node_modules/vendetta-types", "util"]
 }

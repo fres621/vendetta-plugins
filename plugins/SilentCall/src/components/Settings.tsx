@@ -2,7 +2,7 @@ import { React, stylesheet } from "@vendetta/metro/common";
 import { Forms, General } from "@vendetta/ui/components";
 import { semanticColors } from "@vendetta/ui";
 import { getAssetIDByName } from "@vendetta/ui/assets";
-import { ViewChangelogMessage } from '@util/changelog';
+import { ViewChangelogMessage } from "@util/changelog";
 import { plugin, changelog } from "../meta";
 import { PatchErrorMessage } from "@util/bugReporter";
 
@@ -11,14 +11,14 @@ const styles = stylesheet.createThemedStyleSheet({
     title: {
         color: semanticColors.TEXT_PRIMARY,
         fontSize: 18,
-        textAlign: "center"
+        textAlign: "center",
     },
     sub: {
         color: semanticColors.TEXT_MUTED,
         fontSize: 14,
-        textAlign: "center"
-    }
-})
+        textAlign: "center",
+    },
+});
 
 export default function Settings() {
     return (

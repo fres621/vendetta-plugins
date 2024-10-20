@@ -1,4 +1,4 @@
-import { React, constants } from '@vendetta/metro/common';
+import { React, constants } from "@vendetta/metro/common";
 import { after } from "@vendetta/patcher";
 import { find, findByProps, findByStoreName } from "@vendetta/metro";
 import { General } from "@vendetta/ui/components";
@@ -8,8 +8,10 @@ import { storage } from "@vendetta/plugin";
 const { Text } = General;
 
 const ThemeStore = findByStoreName("ThemeStore");
-const resolveSemanticColor = find(m => m.default?.internal?.resolveSemanticColor)?.default.internal.resolveSemanticColor
-    ?? find(m => m.meta?.resolveSemanticColor)?.meta.resolveSemanticColor ?? (() => {});
+const resolveSemanticColor =
+    find((m) => m.default?.internal?.resolveSemanticColor)?.default.internal.resolveSemanticColor ??
+    find((m) => m.meta?.resolveSemanticColor)?.meta.resolveSemanticColor ??
+    (() => {});
 
 const UserStore = findByStoreName("UserStore");
 const RelationshipStore = findByStoreName("RelationshipStore");
@@ -24,29 +26,47 @@ export default function patchTypingWrapper() {
         const defaultTypingColor = resolveSemanticColor(ThemeStore.theme, semanticColors.HEADER_SECONDARY);
 
         const unpatchTyping = after("type", Typing, (_, res) => {
-            React.useEffect(() => () => { unpatchTyping() }, []);
+            React.useEffect(
+                () => () => {
+                    unpatchTyping();
+                },
+                [],
+            );
             const typingThing = res?.props?.children?.[0]?.props?.children?.[1]?.props;
 
-            if (!typingThing || !typingThing.children || typingThing.children === "Several people are typing...") return;
+            if (!typingThing || !typingThing.children || typingThing.children === "Several people are typing...")
+                return;
 
-            const users = TypingWrapper.useTypingUserIds(channel.id).map(user => {
+            const users = TypingWrapper.useTypingUserIds(channel.id).map((user) => {
                 const member = GuildMemberStore.getMember(channel.guild_id, user);
                 const userobj = UserStore.getUser(user);
-                const name = (member?.nick || RelationshipStore.getNickname(user) || userobj.globalName || userobj.username);
-                const color = (member?.colorString || defaultTypingColor);
-                
-                return {displayName: name, displayColor: color};
+                const name =
+                    member?.nick || RelationshipStore.getNickname(user) || userobj.globalName || userobj.username;
+                const color = member?.colorString || defaultTypingColor;
+
+                return { displayName: name, displayColor: color };
             });
-            
+
             function userElem(user) {
-                return React.createElement( Text, { style: { color: user.displayColor, fontFamily: constants.Fonts.DISPLAY_SEMIBOLD } }, user.displayName );
-            };
+                return React.createElement(
+                    Text,
+                    { style: { color: user.displayColor, fontFamily: constants.Fonts.DISPLAY_SEMIBOLD } },
+                    user.displayName,
+                );
+            }
 
             if (!users || users.length < 1) return;
 
-            typingThing.children = (users.length === 1 ? [userElem(users[0]), " is typing..."] :
-                [...users.slice(0, users.length - 1).flatMap((el, i)=>[userElem(el), i < (users.length-2) ? ", " : " and "]), userElem(users[users.length - 1]), " are typing..."])
-
+            typingThing.children =
+                users.length === 1
+                    ? [userElem(users[0]), " is typing..."]
+                    : [
+                          ...users
+                              .slice(0, users.length - 1)
+                              .flatMap((el, i) => [userElem(el), i < users.length - 2 ? ", " : " and "]),
+                          userElem(users[users.length - 1]),
+                          " are typing...",
+                      ];
         });
     });
-};
+}
